@@ -24,11 +24,19 @@ app.get('/', (req, res) => {
   res.send('Backend funcionando correctamente');
 });
 
+// función para validar contraseña
+const validarPassword = (password) => {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$_!%*?&])[A-Za-z\d@$!%*?&_]{8,}$/;
+  return regex.test(password);
+};
+
 // ruta registro
 app.post("/register", async (req, res) => {
   const { nombre, fechanacimiento, genero, email, password } = req.body;
 
-  console.log("Fecha de nacimiento recibida:", fechanacimiento);
+  if (!validarPassword(password)) {
+    return res.status(400).json({ message: "La contraseña debe estar formada por al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial" });
+  }
 
   try {
     const existingUser = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);

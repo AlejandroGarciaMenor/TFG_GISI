@@ -9,6 +9,12 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
 
+  // función para validar contraseña
+  const validarPassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$_!%*?&])[A-Za-z\d@$!%*?&_]{8,}$/;
+    return regex.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const fechaISO = new Date(fechanacimiento).toISOString().split("T")[0];
@@ -25,11 +31,17 @@ const Register = () => {
       return setMensaje("Debe ser mayor de edad para registrarse");
     }
 
+    // verificación de contraseña
+    if (!validarPassword(password)) {
+      return setMensaje("La contraseña debe estar formada por al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial");
+    }
+
     try {
       const res = await axios.post("http://localhost:5000/register", { nombre, fechanacimiento: fechaISO, genero, email, password });
       setMensaje(res.data.message);
     } catch (err) {
-      setMensaje(err.response?.data || "Error en el registro");
+      const errorMessage = err.response?.data?.message || "Error en el registro";
+      setMensaje(errorMessage);
     }
   };
 
