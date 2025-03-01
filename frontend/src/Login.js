@@ -10,11 +10,9 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos enviados:", { email, password });
     try {
       const res = await axios.post("http://localhost:5000/login", { email, password });
       localStorage.setItem("token", res.data.token);
-      console.log("Respuesta del servidor:", res.data);
       navigate("/cribado");
     } catch (err) {
         setError("Error en el login:", err.response ? err.response.data : err.message);

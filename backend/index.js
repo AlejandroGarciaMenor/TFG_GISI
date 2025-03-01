@@ -52,7 +52,6 @@ app.post("/register", async (req, res) => {
 // ruta login
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.log("Datos recibidos:", { email, password });
   try {
     const result = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);
     const user = result.rows[0];
@@ -68,10 +67,8 @@ app.post("/login", async (req, res) => {
     
     try {
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-      console.log("Token generado:", token); // Verifica si el token se genera correctamente
       res.json({ token });
     } catch (err) {
-      console.error("Error al generar el token:", err);
       res.status(500).send("Error al generar el token");
     }
       
