@@ -12,6 +12,19 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const fechaISO = new Date(fechanacimiento).toISOString().split("T")[0];
+
+    // verificación de fecha de nacimiento
+    const today = new Date();
+    const fechanacimiento_verificar = new Date(fechanacimiento);
+    let edad = today.getFullYear() - fechanacimiento_verificar.getFullYear();
+    const diferenciaMeses = today.getMonth() - fechanacimiento_verificar.getMonth();
+    if (diferenciaMeses < 0 || (diferenciaMeses === 0 && today.getDate() < fechanacimiento_verificar.getDate())) {
+      edad--;
+    }
+    if (edad < 18) {
+      return setMensaje("Debe ser mayor de edad para registrarse");
+    }
+
     try {
       const res = await axios.post("http://localhost:5000/register", { nombre, fechanacimiento: fechaISO, genero, email, password });
       setMensaje(res.data.message);
