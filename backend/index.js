@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -45,6 +46,38 @@ app.post("/register", async (req, res) => {
   } catch (err) {
     console.error("Error en el registro:", err);
     res.status(500).json({ message: "Error en el servidor" });
+  }
+});
+
+// ruta login
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  console.log("Datos recibidos:", { email, password });
+  try {
+    const result = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(400).send("Usuario no encontrado");
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).send("Contraseña incorrecta");
+    }
+    
+    try {
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+      console.log("Token generado:", token); // Verifica si el token se genera correctamente
+      res.json({ token });
+    } catch (err) {
+      console.error("Error al generar el token:", err);
+      res.status(500).send("Error al generar el token");
+    }
+      
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error en el servidor");
   }
 });
 
