@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./styles/Register.css";
 
 const Register = () => {
   const [nombre, setNombre] = useState("");
@@ -8,6 +10,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const navigate = useNavigate();
 
   // función para validar contraseña
   const validarPassword = (password) => {
@@ -38,6 +41,7 @@ const Register = () => {
 
     try {
       const res = await axios.post("http://localhost:5000/register", { nombre, fechanacimiento: fechaISO, genero, email, password });
+      navigate("/login");
       setMensaje(res.data.message);
     } catch (err) {
       const errorMessage = err.response?.data?.message || "Error en el registro";
@@ -46,22 +50,27 @@ const Register = () => {
   };
 
 return (
-    <div>
-        <h2>Registro de Usuario</h2>
-        <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
-            <input type="date" placeholder="Fecha de nacimiento" value={fechanacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} required />
-            <select value={genero} onChange={(e) => setGenero(e.target.value)} required>
-                <option value="">Seleccione su género</option>
-                <option value="Hombre">Hombre</option>
-                <option value="Mujer">Mujer</option>
-            </select>
-            <input type="email" placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            <button type="submit">Registrarse</button>
-        </form>
-        {mensaje && <p>{mensaje}</p>}
+  <div className="register-container">
+    <div className="register-image">
+      <img src={require("./images/registro.jpg")} alt="Bienvenido" />
     </div>
+    <div className="register-form">
+      <h2>Registro de Usuario</h2>
+      <form onSubmit={handleSubmit}>
+        <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
+        <input type="date" placeholder="Fecha de nacimiento" value={fechanacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} required />
+        <select value={genero} onChange={(e) => setGenero(e.target.value)} required>
+          <option value="">Seleccione su género</option>
+          <option value="Hombre">Hombre</option>
+          <option value="Mujer">Mujer</option>
+        </select>
+        <input type="email" placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <button type="submit">Registrarse</button>
+      </form>
+      {mensaje && <p>{mensaje}</p>}
+    </div>
+  </div>
 );
 };
 
