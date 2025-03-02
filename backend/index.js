@@ -4,6 +4,8 @@ const cors = require('cors');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,6 +19,15 @@ const pool = new Pool({
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
+});
+
+// configuracion servcio de correo
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
+  },
 });
 
 // ruta incicio
@@ -72,14 +83,59 @@ app.post("/login", async (req, res) => {
     if (!isMatch) {
       return res.status(400).send("Contraseña incorrecta");
     }
-    
-    try {
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-      res.json({ token });
-    } catch (err) {
-      res.status(500).send("Error al generar el token");
+
+    // si 2FA esta activado
+    if(user.two_factor_activado) {
+      const codigo = crypto.randomInt(100000, 999999).toString();
+      const expiracion =  new Date(Date.now() + 5 * 60 * 1000);
+
+      await pool.query("UPDATE usuarios SET two_factor_codigo = $1, two_factor_expiracion = $2 WHERE id = $3", [codigo, expiracion, user.id]);
+
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: "Código de verificación",
+        text: `EL código de verificación es: ${codigo}`,
+      });
+
+      return res.json({ message: "Código de verificación enviado" });
     }
+    
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    res.json({ token });
       
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error en el servidor");
+  }
+});
+
+// ruta verificar doble factor
+app.post("/verificar-2fa", async (req, res) => {
+  const { email, codigo } = req.body;
+
+  try {
+    const result = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(400).send("Usuario no encontrado");
+    }
+
+    if (user.two_factor_codigo !== codigo) {
+      return res.status(400).send("Código incorrecto");
+    }
+
+    if (new Date() > user.two_factor_expiracion) {
+      return res.status(400).send("Código expirado");
+    }
+
+    // si el codigo es correcto
+    await pool.query("UPDATE usuarios SET two_factor_codigo = null, two_factor_expiracion = null WHERE id = $1", [user.id]);
+
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    res.json({ token });
+
   } catch (err) {
     console.error(err);
     res.status(500).send("Error en el servidor");
