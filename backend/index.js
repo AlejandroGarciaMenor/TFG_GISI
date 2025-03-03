@@ -102,7 +102,7 @@ app.post("/login", async (req, res) => {
     }
     
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    res.json({ token });
+    res.json({ token, nombre: user.nombre });
       
   } catch (err) {
     console.error(err);
@@ -134,7 +134,7 @@ app.post("/verificar-2fa", async (req, res) => {
     await pool.query("UPDATE usuarios SET two_factor_codigo = null, two_factor_expiracion = null WHERE id = $1", [user.id]);
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    res.json({ token });
+    res.json({ token, nombre: user.nombre });
 
   } catch (err) {
     console.error(err);
