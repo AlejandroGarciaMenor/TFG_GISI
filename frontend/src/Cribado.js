@@ -11,42 +11,43 @@ const Cribado = () => {
   const [animacion, setAnimacion] = useState(false);
 
   const preguntas = [
-    { id: "p1", texto: "¿Te has sentido nervioso, ansioso o preocupado?" },
-    { id: "p2", texto: "¿Has experimentado pánico o miedo intenso?" },
-    { id: "p3", texto: "¿Evitas situaciones que te generan ansiedad?" }
+    { id: "p1", texto: "¿Sentirse nervioso, ansioso, preocupado o al límite?" },
+    { id: "p2", texto: "¿Sentir pánico o estar atemorizado?" },
+    { id: "p3", texto: "¿Evitar situaciones que le ponen nervioso?" }
   ];
 
   const opciones = [
-    { texto: "Nada (Nunca)", valor: 0 },
-    { texto: "Algo (Ocasionalmente)", valor: 1 },
-    { texto: "Leve (Algunos días)", valor: 2 },
-    { texto: "Moderado (Frecuente)", valor: 3 },
-    { texto: "Grave (Casi todos los días)", valor: 4 }
+    { texto: "Nada (En ningún momento)", valor: 0 },
+    { texto: "Algo (Raro, menos de un día o dos)", valor: 1 },
+    { texto: "Leve (Varios días)", valor: 2 },
+    { texto: "Moderado (Más de la mitad de los días)", valor: 3 },
+    { texto: "Grave (Casi cada día)", valor: 4 }
   ];
 
   const handleSelect = (valor) => {
-    setAnimacion(true); // Activamos la animación de salida
+    setAnimacion(true); 
     setRespuestas((prev) => ({ ...prev, [preguntas[indicePregunta].id]: valor }));
 
     setTimeout(() => {
-      setAnimacion(false); // Quitamos animación de salida
+      setAnimacion(false); 
       if (indicePregunta < preguntas.length - 1) {
         setIndicePregunta(indicePregunta + 1);
       } else {
         calcularResultado();
       }
-    }, 300); // Tiempo para la transición CSS
+    }, 300);
   };
 
   const calcularResultado = () => {
-    const total = Object.values(respuestas).reduce((acc, val) => acc + val, 0);
-    total >= 6 ? navigate("/analisis-detallado") : alert("No presentas síntomas preocupantes.");
+    const algunaRespuestaAlta = Object.values(respuestas).some((val) => val >= 2);
+    algunaRespuestaAlta ? navigate("/analisis-detallado") : alert("No presentas síntomas preocupantes.");
   };
 
   return (
     <div className="cribado-container">
-      <h1 className="titulo">Bienvenido, {nombre}!</h1>
-      <p className="subtitulo">Realizaremos un breve cribado sobre tu estado emocional.</p>
+      <h1 className="titulo">Hola, {nombre}!</h1>
+      <p className="subtitulo">Realizaremos un breve cribado sobre tu estado emocional (Medida de síntomas transversales del DSM-5).</p>
+      <p className="subtitulo">Durante las últimas DOS (2) SEMANAS, ¿cuánto (o con qué frecuencia) le han perturbado los siguientes problemas?</p>
 
       <div className={`pregunta-card ${animacion ? "salida" : "entrada"}`}>
         <h2>{preguntas[indicePregunta].texto}</h2>
