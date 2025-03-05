@@ -147,13 +147,25 @@ app.post("/iniciar-sesion-cribado", async (req, res) => {
   const { userId } = req.body;
 
   try {
-    const result = await pool.query(
+    const ultimaSesion = await pool.query(
+      "SELECT id_sesion FROM cribado_sesiones WHERE id_usuario = $1 AND fecha > NOW() - INTERVAL '2 s' ORDER BY fecha DESC LIMIT 1",
+      [userId]
+    );
+
+    if (ultimaSesion.rows.length > 0) {
+      const idSesionExistente = ultimaSesion.rows[0].id_sesion;
+      console.log("Intento de crear una sesión duplicada:", idSesionExistente);
+      return res.status(200).json({ idSesion: idSesionExistente });º
+    }
+
+    const nueva_sesion = await pool.query(
       "INSERT INTO cribado_sesiones (id_usuario) VALUES ($1) RETURNING id_sesion",
       [userId]
     );
 
-    const idSesion = result.rows[0].id_sesion;
-    res.status(200).json({ idSesion });
+    const idSesionNueva = nueva_sesion.rows[0].id_sesion;
+    console.log("Nueva Sesión de cribado iniciada:", idSesionNueva);
+    res.status(200).json({ idSesionNueva });
   } catch (err) {
     console.error("Error al iniciar la sesión de cribado:", err);
     res.status(500).json({ message: "Error en el servidor" });

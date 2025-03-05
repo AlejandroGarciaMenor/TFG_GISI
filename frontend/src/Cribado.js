@@ -21,10 +21,8 @@ const Cribado = () => {
         setIdSesion(res.data.idSesion);
       } catch (err) {
         console.error("Error al iniciar la sesión de cribado:", err);
-        alert("Error al iniciar la sesión de cribado");
       }
     };
-
     iniciarSesionCribado();
   }, [userId]);
 
@@ -70,10 +68,12 @@ const Cribado = () => {
     }
   };
 
+  /*
   const calcularResultado = () => {
     const algunaRespuestaAlta = Object.values(respuestas).some((val) => val >= 2);
     algunaRespuestaAlta ? navigate("/analisis-detallado") : alert("No presentas síntomas preocupantes.");
   };
+  */
 
   return (
     <div className="cribado-container">
