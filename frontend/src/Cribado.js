@@ -1,19 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./styles/Cribado.css";
 import "./styles/common.css";
 
 const Cribado = () => {
   const navigate = useNavigate();
   const nombre = sessionStorage.getItem("nombre");
+  const userId = sessionStorage.getItem("id");
   const [indicePregunta, setIndicePregunta] = useState(0);
   const [respuestas, setRespuestas] = useState({});
   const [animacion, setAnimacion] = useState(false);
+  const [idSesion, setIdSesion] = useState(null);
+
+  // creo una sesion de cribado
+  useEffect(() => {
+    const iniciarSesionCribado = async () => {
+      try {
+        const res = await axios.post("http://localhost:5000/iniciar-sesion-cribado", { userId });
+        setIdSesion(res.data.idSesion);
+      } catch (err) {
+        console.error("Error al iniciar la sesión de cribado:", err);
+        alert("Error al iniciar la sesión de cribado");
+      }
+    };
+
+    iniciarSesionCribado();
+  }, [userId]);
 
   const preguntas = [
-    { id: "p1", texto: "¿Sentirse nervioso, ansioso, preocupado o al límite?" },
-    { id: "p2", texto: "¿Sentir pánico o estar atemorizado?" },
-    { id: "p3", texto: "¿Evitar situaciones que le ponen nervioso?" }
+    { id: 1, texto: "¿Sentirse nervioso, ansioso, preocupado o al límite?" },
+    { id: 2, texto: "¿Sentir pánico o estar atemorizado?" },
+    { id: 3, texto: "¿Evitar situaciones que le ponen nervioso?" }
   ];
 
   const opciones = [
@@ -33,9 +51,23 @@ const Cribado = () => {
       if (indicePregunta < preguntas.length - 1) {
         setIndicePregunta(indicePregunta + 1);
       } else {
-        calcularResultado();
+        guardarRespuestas();
       }
     }, 300);
+  };
+
+  // guardo las respuestas en la base de datos
+  const guardarRespuestas = async () => {
+    try {
+      await axios.post("http://localhost:5000/guardar-respuestas", {
+        idSesion,
+        respuestas
+      });
+      navigate("/analisis-detallado");
+    } catch (err) {
+      console.error("Error al guardar las respuestas:", err);
+      alert("Error al guardar las respuestas");
+    }
   };
 
   const calcularResultado = () => {

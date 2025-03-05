@@ -102,7 +102,7 @@ app.post("/login", async (req, res) => {
     }
     
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    res.json({ token, nombre: user.nombre });
+    res.json({ token, nombre: user.nombre, id: user.id });
       
   } catch (err) {
     console.error(err);
@@ -134,7 +134,7 @@ app.post("/verificar-2fa", async (req, res) => {
     await pool.query("UPDATE usuarios SET two_factor_codigo = null, two_factor_expiracion = null WHERE id = $1", [user.id]);
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    res.json({ token, nombre: user.nombre });
+    res.json({ token, nombre: user.nombre, id: user.id });
 
   } catch (err) {
     console.error(err);
@@ -142,6 +142,42 @@ app.post("/verificar-2fa", async (req, res) => {
   }
 });
 
+// ruta iniciar sesion cribado
+app.post("/iniciar-sesion-cribado", async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const result = await pool.query(
+      "INSERT INTO cribado_sesiones (id_usuario) VALUES ($1) RETURNING id_sesion",
+      [userId]
+    );
+
+    const idSesion = result.rows[0].id_sesion;
+    res.status(200).json({ idSesion });
+  } catch (err) {
+    console.error("Error al iniciar la sesión de cribado:", err);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+});
+
+// ruta para guardar las respuestas
+app.post("/guardar-respuestas", async (req, res) => {
+  const { idSesion, respuestas } = req.body;
+
+  try {
+    for (const pregunta in respuestas) {
+      await pool.query(
+        "INSERT INTO respuestas_cribado (id_sesion, numero_pregunta, puntuacion_respuesta) VALUES ($1, $2, $3)",
+        [idSesion, pregunta, respuestas[pregunta]]
+      );
+    }
+
+    res.status(200).json({ message: "Respuestas guardadas correctamente" });
+  } catch (err) {
+    console.error("Error al guardar las respuestas:", err);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+});
 
 // inicio del servidor
 app.listen(PORT, () => {

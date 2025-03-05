@@ -21,6 +21,7 @@ const Login = () => {
       } else {
         localStorage.setItem("token", res.data.token);
         sessionStorage.setItem("nombre", res.data.nombre);
+        sessionStorage.setItem("id", res.data.id);
         navigate("/cribado");
       }
     } catch (err) {
@@ -35,6 +36,7 @@ const Login = () => {
       const res = await axios.post("http://localhost:5000/verificar-2fa", { email, codigo });
       localStorage.setItem("token", res.data.token);
       sessionStorage.setItem("nombre", res.data.nombre);
+      sessionStorage.setItem("id", res.data.id);
       navigate("/cribado");
     } catch (err) {
       setError("Error en la verificación:", err.response ? err.response.data : err.message);
