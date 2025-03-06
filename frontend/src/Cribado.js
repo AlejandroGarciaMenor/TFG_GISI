@@ -40,26 +40,34 @@ const Cribado = () => {
     { texto: "Grave (Casi cada día)", valor: 4 }
   ];
 
+  // funcion para manejar la seleccion de una opcion
   const handleSelect = (valor) => {
-    setAnimacion(true); 
-    setRespuestas((prev) => ({ ...prev, [preguntas[indicePregunta].id]: valor }));
+    const preguntaId = preguntas[indicePregunta].id;
 
-    setTimeout(() => {
-      setAnimacion(false); 
-      if (indicePregunta < preguntas.length - 1) {
-        setIndicePregunta(indicePregunta + 1);
-      } else {
-        guardarRespuestas();
-      }
-    }, 300);
+    const nuevasRespuestas = { ...respuestas, [preguntaId]: valor };
+    setRespuestas(nuevasRespuestas);
+  
+    if (indicePregunta === preguntas.length - 1) {  // si es ultima pregunta
+      setTimeout(() => {
+        guardarRespuestas(nuevasRespuestas);
+      }, 300);
+    } else {  // si no lo es avanzamos a la siguiente pregunta
+      setTimeout(() => {
+        setIndicePregunta((prev) => prev + 1);
+      }, 300);
+    }
+  
+    setAnimacion(true);
+    setTimeout(() => setAnimacion(false), 300);
   };
 
+
   // guardo las respuestas en la base de datos
-  const guardarRespuestas = async () => {
+  const guardarRespuestas = async (respuestasFinales) => {
     try {
       await axios.post("http://localhost:5000/guardar-respuestas", {
         idSesion,
-        respuestas
+        respuestas: respuestasFinales
       });
       navigate("/analisis-detallado");
     } catch (err) {
@@ -68,12 +76,6 @@ const Cribado = () => {
     }
   };
 
-  /*
-  const calcularResultado = () => {
-    const algunaRespuestaAlta = Object.values(respuestas).some((val) => val >= 2);
-    algunaRespuestaAlta ? navigate("/analisis-detallado") : alert("No presentas síntomas preocupantes.");
-  };
-  */
 
   return (
     <div className="cribado-container">

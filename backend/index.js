@@ -178,6 +178,8 @@ app.post("/guardar-respuestas", async (req, res) => {
 
   try {
     for (const pregunta in respuestas) {
+      console.log(pregunta, respuestas[pregunta]);
+      console.log(Object.keys(respuestas).length);
       await pool.query(
         "INSERT INTO respuestas_cribado (id_sesion, numero_pregunta, puntuacion_respuesta) VALUES ($1, $2, $3)",
         [idSesion, pregunta, respuestas[pregunta]]
