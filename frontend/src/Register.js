@@ -41,7 +41,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/register", { nombre, fechanacimiento: fechaISO, genero, email, password });
+      const res = await axios.post("https://localhost:5000/register", { nombre, fechanacimiento: fechaISO, genero, email, password });
       navigate("/login");
       setMensaje(res.data.message);
     } catch (err) {

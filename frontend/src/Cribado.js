@@ -17,7 +17,7 @@ const Cribado = () => {
   useEffect(() => {
     const iniciarSesionCribado = async () => {
       try {
-        const res = await axios.post("http://localhost:5000/iniciar-sesion-cribado", { userId });
+        const res = await axios.post("https://localhost:5000/iniciar-sesion-cribado", { userId });
         setIdSesion(res.data.idSesion);
       } catch (err) {
         console.error("Error al iniciar la sesión de cribado:", err);
@@ -65,7 +65,7 @@ const Cribado = () => {
   // guardo las respuestas en la base de datos
   const guardarRespuestas = async (respuestasFinales) => {
     try {
-      await axios.post("http://localhost:5000/guardar-respuestas", {
+      await axios.post("https://localhost:5000/guardar-respuestas", {
         idSesion,
         respuestas: respuestasFinales
       });

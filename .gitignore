@@ -3,5 +3,8 @@
 
 /frontend/build
 /frontend/node_modules
+/frontend/.env
 
 .dependencias
+
+/ssl

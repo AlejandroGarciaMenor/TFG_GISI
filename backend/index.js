@@ -7,6 +7,15 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
+// certificado
+const fs = require('fs');
+const https = require('https');
+
+const options = {
+  key: fs.readFileSync('../ssl/localhost-key.pem'),
+  cert: fs.readFileSync('../ssl/localhost.pem'),
+};
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(cors());
@@ -193,7 +202,13 @@ app.post("/guardar-respuestas", async (req, res) => {
   }
 });
 
-// inicio del servidor
-app.listen(PORT, () => {
+/*
+ // inicio del servidor
+ app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
+ });
+*/
+
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`Servidor HTTPS en ejecución en https://localhost:${PORT}`);
 });
