@@ -205,8 +205,9 @@ app.post("/guardar-respuestas", async (req, res) => {
 app.post("/chatbot", async (req, res) => {
   const { input } = req.body;
   console.log("Mensaje del usuario para el chatbot recibido en backend:", input);
-  const respuesta = "Hola, soy un chatbot";
+  const respuesta = "Chatbot dice hola";
   res.json({ respuesta });
+  console.log("Respuesta del chatbot enviada al frontend:", respuesta);
 });
 
 https.createServer(options, app).listen(PORT, () => {

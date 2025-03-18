@@ -3,7 +3,7 @@ import axios from "axios";
 
 const Chatbot = () => {
     const [input, setInput] = useState("");
-    const [respuestas, setRespuestas] = useState([{texto: "Hola, soy un chatbot"}]);
+    const [respuestas, setRespuestas] = useState([]);
 
     const enviarMensaje = async () => {
         
