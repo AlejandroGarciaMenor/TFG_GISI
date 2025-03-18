@@ -202,12 +202,12 @@ app.post("/guardar-respuestas", async (req, res) => {
   }
 });
 
-/*
- // inicio del servidor
- app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
- });
-*/
+app.post("/chatbot", async (req, res) => {
+  const { input } = req.body;
+  console.log("Mensaje del usuario para el chatbot recibido en backend:", input);
+  const respuesta = "Hola, soy un chatbot";
+  res.json({ respuesta });
+});
 
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS en ejecución en https://localhost:${PORT}`);
