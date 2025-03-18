@@ -69,7 +69,7 @@ const Cribado = () => {
         idSesion,
         respuestas: respuestasFinales
       });
-      navigate("/analisis-detallado");
+      navigate("/chatbot");
     } catch (err) {
       console.error("Error al guardar las respuestas:", err);
       alert("Error al guardar las respuestas");

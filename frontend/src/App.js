@@ -4,6 +4,7 @@ import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
 import Cribado from "./Cribado";
+import Chatbot from "./Chatbot";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/cribado" element={<Cribado />} />
+          <Route path="/chatbot" element={<Chatbot />} />
         </Routes>
       </div>
     </Router>
