@@ -3,17 +3,19 @@ import axios from "axios";
 
 const Chatbot = () => {
     const [input, setInput] = useState("");
-    const [respuestas, setRespuestas] = useState([]);
+    const [respuestas, setRespuestas] = useState([
+        {tipo: "bot", texto: "Hola, soy Chatbot."}
+    ]);
 
     const enviarMensaje = async () => {
         
-        const nuevaRespuesta = {texto: input};
+        const nuevaRespuesta = {tipo:"usuario", texto: input};
         setRespuestas([...respuestas, nuevaRespuesta]);
 
         try {
             const response = await axios.post("https://localhost:5000/chatbot", {input});
 
-            const respuestaBot = {texto: response.data.respuesta};
+            const respuestaBot = {tipo: "bot", texto: response.data.respuesta};
 
             setRespuestas([...respuestas, nuevaRespuesta, respuestaBot]);
         } catch (error) {
@@ -26,11 +28,11 @@ const Chatbot = () => {
     return(
         <div className="chat-container">
             <div className="chat-box">
-                <div className="mensaje">
-                    {respuestas.map((mensaje) => (
+                {respuestas.map((mensaje, index) => (
+                    <div key={index} className={`mensaje ${mensaje.tipo}`}>
                         <p>{mensaje.texto}</p>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
             <div className="input-box">
                 <input

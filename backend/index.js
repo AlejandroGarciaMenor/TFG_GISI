@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const axios = require('axios');
 
 // certificado
 const fs = require('fs');
@@ -202,12 +203,31 @@ app.post("/guardar-respuestas", async (req, res) => {
   }
 });
 
+const PROMPT_BASE = "Dale la bienvenida al usuario"
+
 app.post("/chatbot", async (req, res) => {
-  const { input } = req.body;
-  console.log("Mensaje del usuario para el chatbot recibido en backend:", input);
-  const respuesta = "Chatbot dice hola";
-  res.json({ respuesta });
-  console.log("Respuesta del chatbot enviada al frontend:", respuesta);
+  try{
+    const { input } = req.body;
+    console.log("Mensaje del usuario para el chatbot recibido en backend:", input);
+    const prompt = `${PROMPT_BASE}\nUsuario: ${input}\nBot:`;
+    
+    const respuesta_huggin = await axios.post(
+      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1",
+      { inputs: prompt},
+      { headers: { Authorization: `Bearer ${process.env.HF_API_KEY}`}}
+    );
+
+    console.log("Respuesta de Hugging Face:", respuesta_huggin.data);
+    
+    const respuesta_enviada = respuesta_huggin.data[0].generated_text.split('Bot:')[1].trim();
+    res.json({ respuesta: respuesta_enviada });
+    
+    console.log("Respuesta del chatbot enviada al frontend:", respuesta_enviada);
+  } catch (error) {
+    console.error("Error en el chatbot:", error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+
 });
 
 https.createServer(options, app).listen(PORT, () => {
