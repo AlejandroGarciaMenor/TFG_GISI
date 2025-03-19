@@ -203,26 +203,39 @@ app.post("/guardar-respuestas", async (req, res) => {
   }
 });
 
+const HF_MODEL_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1";
 const PROMPT_BASE = "Dale la bienvenida al usuario"
+
+async function obtenerRespuestaChatbot(input) {
+  const prompt = `${PROMPT_BASE}\nUsuario: ${input}\nBot:`;
+  const respuesta_huggin = await axios.post(
+    HF_MODEL_URL,
+    { inputs: prompt },
+    { headers: { Authorization: `Bearer ${process.env.HF_API_KEY}` } }
+  );
+
+  if(!respuesta_huggin || !respuesta_huggin.data[0] || !respuesta_huggin.data[0].generated_text) {
+    throw new Error("Respuesta inválida de Hugging Face");
+  }
+
+  const texto_generado = respuesta_huggin.data[0].generated_text;
+  const texto_extraido = texto_generado.split('Bot:')[1].trim();
+  return texto_extraido;
+}
 
 app.post("/chatbot", async (req, res) => {
   try{
     const { input } = req.body;
     console.log("Mensaje del usuario para el chatbot recibido en backend:", input);
-    const prompt = `${PROMPT_BASE}\nUsuario: ${input}\nBot:`;
     
-    const respuesta_huggin = await axios.post(
-      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1",
-      { inputs: prompt},
-      { headers: { Authorization: `Bearer ${process.env.HF_API_KEY}`}}
-    );
+    if(!input || input.trim() === "") {
+      return res.status(400).json({ message: "Mensaje vacío" });
+    }
+    
+    const respuesta = await obtenerRespuestaChatbot(input);
+    console.log("Respuesta enviada a front:", respuesta);
+    res.json({respuesta });
 
-    console.log("Respuesta de Hugging Face:", respuesta_huggin.data);
-    
-    const respuesta_enviada = respuesta_huggin.data[0].generated_text.split('Bot:')[1].trim();
-    res.json({ respuesta: respuesta_enviada });
-    
-    console.log("Respuesta del chatbot enviada al frontend:", respuesta_enviada);
   } catch (error) {
     console.error("Error en el chatbot:", error);
     res.status(500).json({ message: "Error en el servidor" });
