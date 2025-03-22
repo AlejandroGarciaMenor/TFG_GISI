@@ -5,6 +5,6 @@
 /frontend/node_modules
 /frontend/.env
 
-.dependencias
+.dependencias.txt
 
 /ssl

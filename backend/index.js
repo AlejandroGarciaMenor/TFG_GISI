@@ -7,6 +7,9 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const axios = require('axios');
+// const { InferenceClient } = require("@huggingface/inference");
+
+
 
 // certificado
 const fs = require('fs');
@@ -203,11 +206,12 @@ app.post("/guardar-respuestas", async (req, res) => {
   }
 });
 
+
 const HF_MODEL_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1";
-const PROMPT_BASE = "Dale la bienvenida al usuario"
+const promptBase = require('./prompt');
 
 async function obtenerRespuestaChatbot(input) {
-  const prompt = `${PROMPT_BASE}\nUsuario: ${input}\nBot:`;
+  const prompt = `${promptBase}\nUsuario: ${input}\nBot:`;
   const respuesta_huggin = await axios.post(
     HF_MODEL_URL,
     { inputs: prompt },
@@ -242,6 +246,8 @@ app.post("/chatbot", async (req, res) => {
   }
 
 });
+
+
 
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS en ejecución en https://localhost:${PORT}`);
