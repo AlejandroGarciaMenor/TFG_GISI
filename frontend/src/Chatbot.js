@@ -1,50 +1,36 @@
-import React,  { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Chatbot = () => {
-    const [input, setInput] = useState("");
-    const [respuestas, setRespuestas] = useState([
-        {tipo: "bot", texto: "Hola, soy Chatbot."}
-    ]);
+  const [mensaje, setMensaje] = useState('');
+  const [historial, setHistorial] = useState([]);
 
-    const enviarMensaje = async () => {
-        
-        const nuevaRespuesta = {tipo:"usuario", texto: input};
-        setRespuestas([...respuestas, nuevaRespuesta]);
+  const handleEnviar = async () => {
+    try {
+      const response = await axios.post('https://localhost:5000/chatbot', { input: mensaje });
+      setHistorial([...historial, { quien: 'usuario', texto: mensaje }, { quien: 'bot', texto: response.data.respuesta }]);
+      setMensaje('');
+    } catch (error) {
+      console.error('Error al enviar el mensaje al backend:', error);
+    }
+  };
 
-        try {
-            const response = await axios.post("https://localhost:5000/chatbot", {input});
-
-            const respuestaBot = {tipo: "bot", texto: response.data.respuesta};
-
-            setRespuestas([...respuestas, nuevaRespuesta, respuestaBot]);
-        } catch (error) {
-            console.error("Error:", error);
-        }
-
-        setInput("");
-    };
-
-    return(
-        <div className="chat-container">
-            <div className="chat-box">
-                {respuestas.map((mensaje, index) => (
-                    <div key={index} className={`mensaje ${mensaje.tipo}`}>
-                        <p>{mensaje.texto}</p>
-                    </div>
-                ))}
-            </div>
-            <div className="input-box">
-                <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Escribe un mensaje..."
-                />
-                <button onClick={enviarMensaje}>Enviar</button>
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <div>
+        {historial.map((msg, idx) => (
+          <p key={idx}><strong>{msg.quien}:</strong> {msg.texto}</p>
+        ))}
+      </div>
+      <input 
+        type="text" 
+        value={mensaje} 
+        onChange={(e) => setMensaje(e.target.value)} 
+        placeholder="Escribe un mensaje..." 
+      />
+      <button onClick={handleEnviar}>Enviar</button>
+    </div>
+  );
 };
 
 export default Chatbot;

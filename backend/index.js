@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const axios = require('axios');
-// const { InferenceClient } = require("@huggingface/inference");
+const { HfInference } = require("@huggingface/inference");
 
 
 
@@ -206,43 +206,45 @@ app.post("/guardar-respuestas", async (req, res) => {
   }
 });
 
-
-const HF_MODEL_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1";
 const promptBase = require('./prompt');
-
-async function obtenerRespuestaChatbot(input) {
-  const prompt = `${promptBase}\nUsuario: ${input}\nBot:`;
-  const respuesta_huggin = await axios.post(
-    HF_MODEL_URL,
-    { inputs: prompt },
-    { headers: { Authorization: `Bearer ${process.env.HF_API_KEY}` } }
-  );
-
-  if(!respuesta_huggin || !respuesta_huggin.data[0] || !respuesta_huggin.data[0].generated_text) {
-    throw new Error("Respuesta inválida de Hugging Face");
-  }
-
-  const texto_generado = respuesta_huggin.data[0].generated_text;
-  const texto_extraido = texto_generado.split('Bot:')[1].trim();
-  return texto_extraido;
-}
+const client = new HfInference(process.env.HF_API_KEY);
 
 app.post("/chatbot", async (req, res) => {
-  try{
-    const { input } = req.body;
-    console.log("Mensaje del usuario para el chatbot recibido en backend:", input);
-    
-    if(!input || input.trim() === "") {
-      return res.status(400).json({ message: "Mensaje vacío" });
+  const { input } = req.body;
+  if (!input || input.trim() === '') {
+    return res.status(400).json({ message: 'El mensaje está vacío' });
+  }
+
+  try {
+    let out = "";
+
+    const mensajes = [
+      {role: "system", content: promptBase},
+      {role: "user", content: input }
+    ];
+
+    const stream = client.chatCompletionStream({
+      model: "Qwen/QwQ-32B",
+      messages: mensajes,
+      provider: "hf-inference",
+      temperature: 0.5,
+      max_tokens: 2048,
+      top_p: 0.7,
+      apply_chat_template: true
+    });
+
+    for await (const chunk of stream) {
+      if (chunk.choices && chunk.choices.length > 0) {
+        const newContent = chunk.choices[0].delta.content;
+        out += newContent;
+      }
     }
-    
-    const respuesta = await obtenerRespuestaChatbot(input);
-    console.log("Respuesta enviada a front:", respuesta);
-    res.json({respuesta });
+
+    res.json({ respuesta: out });
 
   } catch (error) {
-    console.error("Error en el chatbot:", error);
-    res.status(500).json({ message: "Error en el servidor" });
+    console.error('Error al conectar con Hugging Face:', error);
+    res.status(500).json({ message: 'Error en el servidor' });
   }
 
 });
