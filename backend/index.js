@@ -208,6 +208,7 @@ app.post("/guardar-respuestas", async (req, res) => {
 
 const promptBase = require('./prompt');
 const client = new HfInference(process.env.HF_API_KEY);
+let historial_conversacion = [];
 
 app.post("/chatbot", async (req, res) => {
   const { input } = req.body;
@@ -218,10 +219,13 @@ app.post("/chatbot", async (req, res) => {
   try {
     let out = "";
 
+    historial_conversacion.push({ role: "user", content: input });
+
     const mensajes = [
       {role: "system", content: promptBase},
-      {role: "user", content: input }
+      ...historial_conversacion
     ];
+    console.log(mensajes);
 
     const stream = client.chatCompletionStream({
       model: "Qwen/QwQ-32B",
@@ -240,6 +244,8 @@ app.post("/chatbot", async (req, res) => {
       }
     }
 
+    historial_conversacion.push({ role: "bot", content: out });
+
     res.json({ respuesta: out });
 
   } catch (error) {
@@ -250,6 +256,9 @@ app.post("/chatbot", async (req, res) => {
 });
 
 
+async function clasificarSintomas(sintomas) {
+
+}
 
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS en ejecución en https://localhost:${PORT}`);
