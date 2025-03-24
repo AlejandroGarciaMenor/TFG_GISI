@@ -4,6 +4,7 @@ import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
 import Cribado from "./Cribado";
+import Gravedad from "./Gravedad";
 import Chatbot from "./Chatbot";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/cribado" element={<Cribado />} />
+          <Route path="/gravedad" element={<Gravedad />} />
           <Route path="/chatbot" element={<Chatbot />} />
         </Routes>
       </div>
