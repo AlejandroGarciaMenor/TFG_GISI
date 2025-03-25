@@ -206,6 +206,37 @@ app.post("/guardar-respuestas", async (req, res) => {
   }
 });
 
+// ruta para guardar la gravedad
+app.post("/guardar-gravedad", async (req, res) => {
+  const { user_id, puntuacion_gravedad } = req.body;
+  console.log("ID de usuario:", user_id);
+  console.log("Puntuación de gravedad:", puntuacion_gravedad);
+
+  const id_ultima_sesion = await pool.query(
+    "SELECT id_sesion FROM cribado_sesiones WHERE id_usuario = $1 ORDER BY fecha DESC LIMIT 1",
+    [user_id]
+  );
+
+  if (id_ultima_sesion.rows.length === 0) {
+    return res.status(404).json({ message: "No se encontró ninguna sesión para este usuario" });
+  }
+
+  const id_sesion = id_ultima_sesion.rows[0].id_sesion;
+  console.log("ID de la última sesión:", id_sesion);
+
+  try {
+    await pool.query(
+      "UPDATE cribado_sesiones SET puntuacion_gravedad = $1 WHERE id_sesion = $2",
+      [puntuacion_gravedad, id_sesion]
+    );
+
+    res.status(200).json({ message: "Gravedad guardada correctamente" });
+  } catch (err) {
+    console.error("Error al guardar la gravedad:", err);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+});
+
 const promptBase = require('./prompt');
 const client = new HfInference(process.env.HF_API_KEY);
 let historial_conversacion = [];

@@ -4,21 +4,22 @@ import axios from "axios";
 import "./styles/Gravedad.css";
 import "./styles/common.css";
 
-const Gravedad = ({ idSesion }) => {
+const Gravedad = () => {
   const navigate = useNavigate();
   const nombre = sessionStorage.getItem("nombre");
+  const userId = sessionStorage.getItem("id");
   const [indicePreguntaGravedad, setIndicePreguntaGravedad] = useState(0);
   const [respuestasGravedad, setRespuestasGravedad] = useState({});
   const [animacion, setAnimacion] = useState(false);
 
   const preguntasGravedad = [
-    { id: 4, texto: "Sentí miedo" },
-    { id: 5, texto: "Sentí ansiedad" },
-    { id: 6, texto: "Me sentí preocupado/a" },
-    { id: 7, texto: "Tuve dificultad para concentrarme en otra cosa que no fuera mi ansiedad" },
-    { id: 8, texto: "Me sentí nervioso/a" },
-    { id: 9, texto: "Me sentí intranquilo/a" },
-    { id: 10, texto: "Me sentí tenso/a" }
+    { id: 1, texto: "Sentí miedo" },
+    { id: 2, texto: "Sentí ansiedad" },
+    { id: 3, texto: "Me sentí preocupado/a" },
+    { id: 4, texto: "Tuve dificultad para concentrarme en otra cosa que no fuera mi ansiedad" },
+    { id: 5, texto: "Me sentí nervioso/a" },
+    { id: 6, texto: "Me sentí intranquilo/a" },
+    { id: 7, texto: "Me sentí tenso/a" }
   ];
 
   const opcionesGravedad = [
@@ -26,7 +27,8 @@ const Gravedad = ({ idSesion }) => {
     { texto: "Rara vez", valor: 2 },
     { texto: "Algunas veces", valor: 3 },
     { texto: "A menudo", valor: 4 },
-    { texto: "Siempre", valor: 5 }
+    { texto: "Siempre", valor: 5 },
+    { texto: "No lo sé / Prefiero no contestar", valor: 0 }
   ];
 
   // funcion para manejar la seleccion de una opcion
@@ -52,9 +54,15 @@ const Gravedad = ({ idSesion }) => {
   // guardo las respuestas en la base de datos
   const guardarRespuestas = async (respuestasFinales) => {
     try {
-      const sumaGravedad = Object.values(respuestasFinales).reduce((a, b) => a + b, 0);
-      await axios.post("https://localhost:5000/guardar-gravedad", {
+      const sumaRespuestas = Object.values(respuestasFinales).reduce((a, b) => a + b, 0);
+      const totalRespuestas = Object.values(respuestasFinales).filter(valor => valor !== 0).length;
+      const totalPreguntas = preguntasGravedad.length;
 
+      const puntuacion_gravedad = Math.round((sumaRespuestas * totalPreguntas) / totalRespuestas);
+
+      await axios.post("https://localhost:5000/guardar-gravedad", {
+        user_id: userId,
+        puntuacion_gravedad
       });
       navigate("/chatbot");
     } catch (err) {
