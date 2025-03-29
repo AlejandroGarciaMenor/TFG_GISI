@@ -53,7 +53,7 @@ const Register = () => {
 return (
   <div className="register-container">
     <div className="register-image">
-      <img src={require("./images/registro.jpg")} alt="Bienvenido" />
+      <img src="/images/registro.jpg" alt="Bienvenido" />
     </div>
     <div className="register-form">
       <h2>Registro de Usuario</h2>

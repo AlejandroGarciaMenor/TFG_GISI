@@ -6,6 +6,7 @@ import Register from "./Register";
 import Cribado from "./Cribado";
 import Gravedad from "./Gravedad";
 import Chatbot from "./Chatbot";
+import PerfilUsuario from "./PerfilUsuario";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/cribado" element={<Cribado />} />
           <Route path="/gravedad" element={<Gravedad />} />
           <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/perfil-usuario" element={<PerfilUsuario />} />
         </Routes>
       </div>
     </Router>

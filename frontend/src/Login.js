@@ -46,7 +46,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-image">
-        <img src={require("./images/login.jpg")} alt="Imagen de LogIn" />
+        <img src="/images/login.jpg" alt="Imagen de LogIn" />
       </div>
       <div className="login-form">
         <h2>{show2FA ? "Verificar Código 2FA" : "Iniciar sesión"}</h2>
