@@ -49,7 +49,7 @@ const Cribado = () => {
   
     if (indicePregunta === preguntas.length - 1) {  // si es ultima pregunta
       setTimeout(() => {
-        guardarRespuestas(nuevasRespuestas);
+        evaluarRespuestas(nuevasRespuestas);
       }, 300);
     } else {  // si no lo es avanzamos a la siguiente pregunta
       setTimeout(() => {
@@ -61,6 +61,18 @@ const Cribado = () => {
     setTimeout(() => setAnimacion(false), 300);
   };
 
+  // funcion para evaluar las respuestas
+  const evaluarRespuestas = (respuestasFinales) => {
+    const valores = Object.values(respuestasFinales);
+    const valoresMenoresUmbral = valores.every((valor) => valor < 2);
+
+    if(valoresMenoresUmbral){
+      navigate("/perfil-usuario");
+    } else {
+      guardarRespuestas(respuestasFinales);
+    }
+  }
+
 
   // guardo las respuestas en la base de datos
   const guardarRespuestas = async (respuestasFinales) => {
@@ -69,7 +81,7 @@ const Cribado = () => {
         idSesion,
         respuestas: respuestasFinales
       });
-      navigate("/chatbot");
+      navigate("/gravedad");
     } catch (err) {
       console.error("Error al guardar las respuestas:", err);
       alert("Error al guardar las respuestas");
