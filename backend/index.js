@@ -7,7 +7,8 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const axios = require('axios');
-const { HfInference } = require("@huggingface/inference");
+// const { HfInference } = require("@huggingface/inference");
+const OpenAI = require('openai');
 
 
 
@@ -238,7 +239,10 @@ app.post("/guardar-gravedad", async (req, res) => {
 });
 
 const promptBase = require('./prompt');
-const client = new HfInference(process.env.HF_API_KEY);
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
 let historial_conversacion = [];
 
 app.post("/chatbot", async (req, res) => {
@@ -248,7 +252,6 @@ app.post("/chatbot", async (req, res) => {
   }
 
   try {
-    let out = "";
 
     historial_conversacion.push({ role: "user", content: input });
 
@@ -256,31 +259,22 @@ app.post("/chatbot", async (req, res) => {
       {role: "system", content: promptBase},
       ...historial_conversacion
     ];
-    console.log(mensajes);
 
-    const stream = client.chatCompletionStream({
-      model: "Qwen/QwQ-32B",
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
       messages: mensajes,
-      provider: "hf-inference",
-      temperature: 0.5,
+      temperature: 1,
       max_tokens: 2048,
-      top_p: 0.7,
-      apply_chat_template: true
+      top_p: 1,
     });
 
-    for await (const chunk of stream) {
-      if (chunk.choices && chunk.choices.length > 0) {
-        const newContent = chunk.choices[0].delta.content;
-        out += newContent;
-      }
-    }
+    const respuesta = response.choices[0].message.content;
+    historial_conversacion.push({ role: "assistant", content:respuesta });
 
-    historial_conversacion.push({ role: "bot", content: out });
-
-    res.json({ respuesta: out });
+    res.json({ respuesta});
 
   } catch (error) {
-    console.error('Error al conectar con Hugging Face:', error);
+    console.error('Error al conectar con la API:', error);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 
