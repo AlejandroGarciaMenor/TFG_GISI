@@ -67,9 +67,11 @@ const Cribado = () => {
     const valoresMenoresUmbral = valores.every((valor) => valor < 2);
 
     if(valoresMenoresUmbral){
+      guardarRespuestas(respuestasFinales);
       navigate("/perfil-usuario");
     } else {
       guardarRespuestas(respuestasFinales);
+      navigate("/gravedad");
     }
   }
 
@@ -81,7 +83,7 @@ const Cribado = () => {
         idSesion,
         respuestas: respuestasFinales
       });
-      navigate("/gravedad");
+      //navigate("/gravedad");
     } catch (err) {
       console.error("Error al guardar las respuestas:", err);
       alert("Error al guardar las respuestas");
