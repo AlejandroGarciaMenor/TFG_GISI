@@ -39,7 +39,7 @@ const Gravedad = () => {
 
     if (indicePreguntaGravedad === preguntasGravedad.length - 1) { 
       setTimeout(() => {
-        guardarRespuestas(nuevasRespuestasGravedad);
+        evaluarRespuestas(nuevasRespuestasGravedad);
       }, 300);
     } else { 
       setTimeout(() => {
@@ -51,20 +51,30 @@ const Gravedad = () => {
     setTimeout(() => setAnimacion(false), 300);
   };
 
+  const evaluarRespuestas = (respuestasFinales) => {
+    const sumaRespuestas = Object.values(respuestasFinales).reduce((a, b) => a + b, 0);
+    const totalRespuestas = Object.values(respuestasFinales).filter(valor => valor !== 0).length;
+    const totalPreguntas = preguntasGravedad.length;
+
+    const puntuacion_gravedad = Math.round((sumaRespuestas * totalPreguntas) / totalRespuestas);
+    if (totalRespuestas <= 5) {
+      navigate("/chatbot");
+    } else if (puntuacion_gravedad <= 15 || puntuacion_gravedad >= 28) {
+      guardarRespuestas(puntuacion_gravedad);
+      navigate("/perfil-usuario");
+    } else{
+      guardarRespuestas(puntuacion_gravedad);
+      navigate("/chatbot");
+    }
+  }
+
   // guardo las respuestas en la base de datos
-  const guardarRespuestas = async (respuestasFinales) => {
+  const guardarRespuestas = async (puntuacion_gravedad) => {
     try {
-      const sumaRespuestas = Object.values(respuestasFinales).reduce((a, b) => a + b, 0);
-      const totalRespuestas = Object.values(respuestasFinales).filter(valor => valor !== 0).length;
-      const totalPreguntas = preguntasGravedad.length;
-
-      const puntuacion_gravedad = Math.round((sumaRespuestas * totalPreguntas) / totalRespuestas);
-
       await axios.post("https://localhost:5000/guardar-gravedad", {
         user_id: userId,
         puntuacion_gravedad
       });
-      navigate("/chatbot");
     } catch (err) {
       console.error("Error al guardar las respuestas:", err);
       alert("Error al guardar las respuestas");
