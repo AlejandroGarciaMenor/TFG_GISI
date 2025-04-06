@@ -296,6 +296,10 @@ app.post("/chatbot", async (req, res) => {
     const tiposAnsiedadDetectados = extraerTipoAnsiedad(respuesta);
     console.log("Tipos de ansiedad detectados:", tiposAnsiedadDetectados);
 
+    if (tiposAnsiedadDetectados.length > 0) {
+      await insertarTiposAnsiedad(user_id, tiposAnsiedadDetectados);
+    }
+
     res.json({ respuesta});
 
   } catch (error) {
@@ -307,13 +311,13 @@ app.post("/chatbot", async (req, res) => {
 
 function extraerTipoAnsiedad(respuesta) {
   const tipos = [
-    { nombre: "ansiedad generalizada", patrones: [/ansiedad generalizada/i, /trastorno de ansiedad generalizada/i] },
-    { nombre: "ansiedad social", patrones: [/ansiedad social/i, /fobia social/i] },
-    { nombre: "fobia específica", patrones: [/fobia específica/i] },
-    { nombre: "trastorno de pánico", patrones: [/trastorno de pánico/i] },
-    { nombre: "agorafobia", patrones: [/agorafobia/i] },
-    { nombre: "ansiedad inducida por sustancias", patrones: [/inducido por sustancias/i] },
-    { nombre: "trastorno de ansiedad por otra afección médica", patrones: [/afección médica/i, /por una condición médica/i] },
+    { nombre: "Trastorno de ansiedad generalizada", patrones: [/ansiedad generalizada/i, /trastorno de ansiedad generalizada/i] },
+    { nombre: "Fobia social (trastorno de ansiedad social)", patrones: [/ansiedad social/i, /fobia social/i] },
+    { nombre: "Fobia específica", patrones: [/fobia específica/i] },
+    { nombre: "Trastorno de pánico", patrones: [/trastorno de pánico/i] },
+    { nombre: "Agorafobia", patrones: [/agorafobia/i] },
+    { nombre: "Trastorno de ansiedad inducido por sustancias", patrones: [/inducido por sustancias/i] },
+    { nombre: "Trastorno de ansiedad por otra afeción médica", patrones: [/afección médica/i, /por una condición médica/i] },
   ];
 
   const tiposDetectados = [];
@@ -328,6 +332,20 @@ function extraerTipoAnsiedad(respuesta) {
   }
 
   return tiposDetectados;
+}
+
+async function insertarTiposAnsiedad(user_id, tiposAnsiedadDetectados) {
+  for (const tipo of tiposAnsiedadDetectados) {
+    const idTipoAnsiedad = await pool.query(
+      "SELECT id_ansiedad FROM tipo_ansiedad WHERE nombre = $1",
+      [tipo]
+    );
+    const idAnsiedad = idTipoAnsiedad.rows[0].id_ansiedad;
+    await pool.query(
+      "INSERT INTO deteccion (id_usuario, id_ansiedad) VALUES ($1, $2)",
+      [user_id, idAnsiedad]
+    );
+  }
 }
 
 https.createServer(options, app).listen(PORT, () => {
