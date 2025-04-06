@@ -238,7 +238,7 @@ app.post("/guardar-gravedad", async (req, res) => {
   }
 });
 
-const promptBase = require('./prompt');
+const generarPromptPersonalizado = require('./promptPersonalizado');
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
@@ -246,17 +246,38 @@ const openai = new OpenAI({
 let historial_conversacion = [];
 
 app.post("/chatbot", async (req, res) => {
-  const { input } = req.body;
+  const { input, user_id } = req.body;
+
+  console.log("ID de usuario:", user_id);
+
   if (!input || input.trim() === '') {
     return res.status(400).json({ message: 'El mensaje está vacío' });
   }
 
   try {
 
+    // extraigo los datos de la última sesión de cuestionarios
+    const puntuacion_respuestas_data = await pool.query(
+      "select puntuacion_respuesta from respuestas_cribado inner join cribado_sesiones on respuestas_cribado.id_sesion = cribado_sesiones.id_sesion where cribado_sesiones.id_usuario = $1 order by cribado_sesiones.fecha DESC limit 3 ",
+      [user_id]
+    );
+    const puntuacion_respuestas = puntuacion_respuestas_data.rows.map(row => row.puntuacion_respuesta);
+    console.log("Puntuaciones de respuestas:", puntuacion_respuestas);
+
+    const puntuacion_gravedad_data = await pool.query(
+      "select puntuacion_gravedad from cribado_sesiones where id_usuario = $1 order by fecha DESC limit 1",
+      [user_id]
+    );
+    const puntuacion_gravedad = puntuacion_gravedad_data.rows[0].puntuacion_gravedad;
+    console.log("Puntuación de gravedad:", puntuacion_gravedad);
+
+    const promptPersonalizado = generarPromptPersonalizado(puntuacion_respuestas, puntuacion_gravedad);
+    console.log("Prompt personalizado:", promptPersonalizado);
+
     historial_conversacion.push({ role: "user", content: input });
 
     const mensajes = [
-      {role: "system", content: promptBase},
+      {role: "system", content: promptPersonalizado},
       ...historial_conversacion
     ];
 

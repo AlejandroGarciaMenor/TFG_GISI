@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Chatbot = () => {
+  const userId = sessionStorage.getItem("id");
   const [mensaje, setMensaje] = useState('');
   const [historial, setHistorial] = useState([]);
 
   const handleEnviar = async () => {
     try {
-      const response = await axios.post('https://localhost:5000/chatbot', { input: mensaje });
+      const response = await axios.post('https://localhost:5000/chatbot', { 
+        input: mensaje,
+        user_id: userId
+      });
       setHistorial([...historial, { quien: 'usuario', texto: mensaje }, { quien: 'bot', texto: response.data.respuesta }]);
       setMensaje('');
     } catch (error) {
