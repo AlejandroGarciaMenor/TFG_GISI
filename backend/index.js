@@ -238,6 +238,7 @@ app.post("/guardar-gravedad", async (req, res) => {
   }
 });
 
+// chatbot
 const generarPromptPersonalizado = require('./promptPersonalizado');
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -292,6 +293,9 @@ app.post("/chatbot", async (req, res) => {
     const respuesta = response.choices[0].message.content;
     historial_conversacion.push({ role: "assistant", content:respuesta });
 
+    const tiposAnsiedadDetectados = extraerTipoAnsiedad(respuesta);
+    console.log("Tipos de ansiedad detectados:", tiposAnsiedadDetectados);
+
     res.json({ respuesta});
 
   } catch (error) {
@@ -301,9 +305,29 @@ app.post("/chatbot", async (req, res) => {
 
 });
 
+function extraerTipoAnsiedad(respuesta) {
+  const tipos = [
+    { nombre: "ansiedad generalizada", patrones: [/ansiedad generalizada/i, /trastorno de ansiedad generalizada/i] },
+    { nombre: "ansiedad social", patrones: [/ansiedad social/i, /fobia social/i] },
+    { nombre: "fobia específica", patrones: [/fobia específica/i] },
+    { nombre: "trastorno de pánico", patrones: [/trastorno de pánico/i] },
+    { nombre: "agorafobia", patrones: [/agorafobia/i] },
+    { nombre: "ansiedad inducida por sustancias", patrones: [/inducido por sustancias/i] },
+    { nombre: "trastorno de ansiedad por otra afección médica", patrones: [/afección médica/i, /por una condición médica/i] },
+  ];
 
-async function clasificarSintomas(sintomas) {
+  const tiposDetectados = [];
 
+  for (const tipo of tipos) {
+    for (const patron of tipo.patrones) {
+      if (patron.test(respuesta)) {
+        tiposDetectados.push(tipo.nombre);
+        break; 
+      }
+    }
+  }
+
+  return tiposDetectados;
 }
 
 https.createServer(options, app).listen(PORT, () => {
