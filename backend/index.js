@@ -298,9 +298,16 @@ app.post("/chatbot", async (req, res) => {
 
     if (tiposAnsiedadDetectados.length > 0) {
       await insertarTiposAnsiedad(user_id, tiposAnsiedadDetectados);
+      res.json({
+        respuesta,
+        tipos_ansiedad: tiposAnsiedadDetectados,    
+      })
+    } else {
+      res.json({ 
+        respuesta,
+        tipos_ansiedad: []
+      });
     }
-
-    res.json({ respuesta});
 
   } catch (error) {
     console.error('Error al conectar con la API:', error);
