@@ -7,6 +7,7 @@ import Cribado from "./Cribado";
 import Gravedad from "./Gravedad";
 import Chatbot from "./Chatbot";
 import PerfilUsuario from "./PerfilUsuario";
+import PoliticaPrivacidad from "./PoliticaPrivacidad";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/gravedad" element={<Gravedad />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/perfil-usuario" element={<PerfilUsuario />} />
+          <Route path="/privacidad" element={<PoliticaPrivacidad />} />
         </Routes>
       </div>
     </Router>

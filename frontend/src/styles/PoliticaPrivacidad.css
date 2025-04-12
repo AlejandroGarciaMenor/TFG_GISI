@@ -1,0 +1,30 @@
+.politica-privacidad-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+  
+.politica-privacidad-container h1 {
+    text-align: center;
+    font-size: 2rem; 
+    color: #00796b;
+}
+  
+.politica-privacidad-container h3 {
+    font-size: 1.5rem; 
+    color: #00796b;
+}
+    
+.politica-privacidad-container ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+  
+.politica-privacidad-container ul li {
+    margin-bottom: 10px;
+}
