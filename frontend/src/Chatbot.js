@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Modal from 'react-modal';
 import "./styles/Chatbot.css";
+
+Modal.setAppElement('#root');
 
 const Chatbot = () => {
   const userId = sessionStorage.getItem("id");
@@ -9,6 +12,7 @@ const Chatbot = () => {
   const imagenBot = "./images/chatbot.jpg";
   const [mensaje, setMensaje] = useState('');
   const [historial, setHistorial] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleEnviar = async () => {
     if (!mensaje.trim()) return;
@@ -23,8 +27,8 @@ const Chatbot = () => {
       if(response.data.tipos_ansiedad && response.data.tipos_ansiedad.length > 0) {
         const tipos = response.data.tipos_ansiedad.join(', ');
         setTimeout(() => {
-          alert(`Tipos de ansiedad detectados: ${tipos}`);
-        }, 20000);
+          setModalIsOpen(true);
+        }, 3000);
       }
 
       setMensaje('');
@@ -37,7 +41,7 @@ const Chatbot = () => {
     <div className='chatbot-container'>
       <div className='chatbot-header'>
         <h2>¡Bienvenido a AnxBot!</h2>
-        <p>¿Que tal estás {nombreUsuario} ?  Sientete libre de contarme todo lo relacionado con tu ansiedad!</p>
+        <p>¿Que tal estás {nombreUsuario} ?  ¡Sientete libre de contarme todo lo relacionado con tu ansiedad!</p>
         <a href='./perfil-usuario' className='perfil-link'>Ir a mi perfil</a>
       </div>
       <div className='chatbot-historial'>
@@ -58,6 +62,21 @@ const Chatbot = () => {
         />
         <button onClick={handleEnviar}>Enviar</button>
       </div>
+      
+      {}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        className="modal"
+        overlayClassName="overlay"
+      >
+        <h2>Parece que AnxBot ha detectado que puedes tener un tipo de ansiedad.</h2>
+        <p>Recuerda que <strong>NO SE TRATA DE UN DIAGNÓSTICO MÉDICO</strong>, simplemente es una ORIENTACIÓN.</p>  
+        <p>¡Te aconsejamos que visites tu perfil de usuario para encontrar herramientas que te ayuden a combatir la ansiedad!</p>
+        <a href="./perfil-usuario" className="perfil-link">Ir a mi perfil</a>
+        <button onClick={() => setModalIsOpen(false)} className="close-button">Cerrar</button>
+      </Modal>
+
     </div>
   );
 };
