@@ -67,6 +67,10 @@ return (
         </select>
         <input type="email" placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <div className="checkbox-container">
+          <input type="checkbox" required /> 
+          <label>He leído y acepto la<a href="/privacidad"> Política de Privacidad</a></label>
+        </div>
         <button type="submit">Registrarse</button>
       </form>
       {mensaje && <p>{mensaje}</p>}

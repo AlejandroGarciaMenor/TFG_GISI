@@ -22,7 +22,7 @@ const PoliticaPrivacidad = () => {
                 <li>Mejorar el funcionamiento de AnxBot y resolver errores técnicos.</li>
             </ul>
             <h3>3. ¿Cómo tratamos tus datos?</h3>
-            <p>Los datos se procesan y almacenan en servidores seguros bajo nuestra responsabilidad. Algunas interacciones del chatbot se procesan a través de la API de OpenAI, que no guarda, entrena ni reutiliza los datos personales, cumpliendo con su política de privacidad: <a href="https://openai.com/policies/privacy-policy/" target="_blank" rel="noopener noreferrer">https://openai.com/policies/privacy-policy/</a>.</p>
+            <p>Los datos se procesan y almacenan en servidores seguros bajo nuestra responsabilidad. Las interacciones del chatbot se procesan a través de la API de OpenAI, que no guarda, entrena ni reutiliza los datos personales, cumpliendo con su política de privacidad: <a href="https://openai.com/policies/privacy-policy/" target="_blank" rel="noopener noreferrer">https://openai.com/policies/privacy-policy/</a>.</p>
             <h3>4. ¿Cuánto tiempo guardamos tus datos?</h3>
             <p>Los datos se conservan mientras tengas una cuenta activa en AnxBot. Puedes solicitar la eliminación de tus datos en cualquier momento.</p>
             <h3>5. ¿Cuáles son tus derechos?</h3>
