@@ -288,6 +288,7 @@ app.post("/chatbot", async (req, res) => {
       temperature: 1,
       max_tokens: 2048,
       top_p: 1,
+      user: user_id
     });
 
     const respuesta = response.choices[0].message.content;
