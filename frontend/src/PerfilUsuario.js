@@ -3,6 +3,7 @@ import axios from "axios";
 
 import "./styles/PerfilUsuario.css";
 import DatosPerfilUsuario from "./components/DatosPerfilUsuario";
+import EstadisticasUsuario from "./components/EstadisticasUsuario";
 
 const PerfilUsuario = () => {
     const userId = sessionStorage.getItem("id");
@@ -32,7 +33,8 @@ const PerfilUsuario = () => {
 
     return (
         <div className="perfil-usuario-container">
-            <DatosPerfilUsuario usuario={usuario}/>
+            <DatosPerfilUsuario usuario={usuario.usuario}/>
+            <EstadisticasUsuario puntuaciones_gravedad={usuario.puntuaciones_gravedad}/>
         </div>
     );
 }

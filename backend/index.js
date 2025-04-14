@@ -369,8 +369,25 @@ app.get("/usuario", async (req, res) => {
   if (!usuario) {
     return res.status(404).json({ message: "Usuario no encontrado" });
   }
-  console.log("Datos del usuario:", usuario);
-  res.json(usuario);
+
+  const cribadoQuery = await pool.query(
+    "SELECT fecha, puntuacion_gravedad FROM (SELECT fecha, puntuacion_gravedad from cribado_sesiones where id_usuario = $1 order by fecha desc limit 10) as subquery ORDER BY fecha ASC",
+    [userId]
+  );
+  const puntuaciones_gravedad = cribadoQuery.rows.map(row => ({
+    fecha: row.fecha,
+    puntuacion_gravedad: row.puntuacion_gravedad,
+  }));
+
+  respuesta = {
+    usuario,
+    puntuaciones_gravedad
+  }
+  
+  return res.json({
+    usuario,
+    puntuaciones_gravedad
+  });
 
 });
 
