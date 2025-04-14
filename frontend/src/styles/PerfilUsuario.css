@@ -41,8 +41,40 @@
   color: #00796b;
 }
 
-.perfil-info p {
+.perfil-info p label{
   margin: 5px 0;
   font-size: 16px;
-  color: #333;
+}
+
+.perfil-info form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; 
+}
+
+.perfil-info input, .perfil-info select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.perfil-info button {
+  padding: 10px;
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.perfil-info button.boton-editar {
+  background-color: #00796b;
+}
+.perfil-info button.boton-cancelar{
+  background-color: #f44336;
+}
+
+.mensaje-error {
+  color: #f44336;
 }

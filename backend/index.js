@@ -374,6 +374,27 @@ app.get("/usuario", async (req, res) => {
 
 });
 
+// ruta para actualizar los datos del usuario
+app.put("/usuario", async (req, res) => {
+  const {nombre, fechanacimiento, genero, email} = req.body;
+  const userId = req.body.user_id;
+
+  try {
+    const result = await pool.query(
+      "UPDATE usuarios SET nombre = $1, fechanacimiento = $2, genero = $3, email = $4 WHERE id = $5",
+      [nombre, fechanacimiento, genero, email, userId]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.json({ message: "Datos actualizados correctamente" });
+  } catch (err) {
+    console.error("Error al actualizar los datos del usuario:", err);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+
+});
+
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS en ejecución en https://localhost:${PORT}`);
 });
