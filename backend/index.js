@@ -356,6 +356,24 @@ async function insertarTiposAnsiedad(user_id, tiposAnsiedadDetectados) {
   }
 }
 
+// ruta para obtener los datos del usuario
+app.get("/usuario", async (req, res) => {
+  const { userId } = req.query;
+
+  const usuarioQuery = await pool.query(
+    "SELECT nombre, fechanacimiento, genero, email FROM usuarios WHERE id = $1",
+    [userId]
+  );
+  const usuario = usuarioQuery.rows[0];
+
+  if (!usuario) {
+    return res.status(404).json({ message: "Usuario no encontrado" });
+  }
+  console.log("Datos del usuario:", usuario);
+  res.json(usuario);
+
+});
+
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS en ejecución en https://localhost:${PORT}`);
 });

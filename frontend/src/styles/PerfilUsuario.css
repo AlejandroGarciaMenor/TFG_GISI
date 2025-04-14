@@ -1,136 +1,48 @@
 .perfil-usuario-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-}
-  
-.cabecera-usuario {
-  display: flex;
-  align-items: center;
-  background-color: #f5f5f5;
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 150%;
-  max-width: 2000px;
+  background-color: #f9f9f9; 
+
 }
 
-.cabecera-usuario img {
+.datos-perfil-usuario {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 50px; /* Espaciado entre la imagen y la información */
+  margin-bottom: 20px;
+}
+
+.perfil-imagen {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  margin-right: 20px;
   object-fit: cover;
-  border: 2px solid #ddd;
+  border: 2px solid #00796b;
 }
 
-.datos-usuario h3 {
+.perfil-info {
+  flex: 1;
+}
+
+.perfil-info h2 {
   margin: 0;
   font-size: 24px;
-  color: #333;
+  color: #00796b;
 }
 
-.datos-usuario p {
-  margin: 5px 0 0;
+.perfil-info p {
+  margin: 5px 0;
   font-size: 16px;
-  color: #666;
-}
-
-.modulos-cuestionarios {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  width: 150%;
-  max-width: 2000px;
-  height: 200px;
-}
-
-.modulo-chatbot {
-  width: 150%;
-  max-width: 2000px;
-  height: 200px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.modulo-recomendaciones {
-  width: 150%;
-  max-width: 2000px;
-  height: 200px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.modulo {
-  flex: 1;
-  min-width: 300px;
-  max-height: 200px;
-  height: 100%;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-size:cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.modulo:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.modulo-contenido {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
-  z-index: 2;
-}
-
-.modulo-contenido h2 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.modulo-contenido p {
-  margin: 5px 0 0;
-  font-size: 14px;
-}
-
-.modulo::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-  filter: brightness(0.7);
+  color: #333;
 }
