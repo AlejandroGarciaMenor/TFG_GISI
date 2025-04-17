@@ -272,7 +272,17 @@ app.post("/chatbot", async (req, res) => {
     const puntuacion_gravedad = puntuacion_gravedad_data.rows[0].puntuacion_gravedad;
     console.log("Puntuación de gravedad:", puntuacion_gravedad);
 
-    const promptPersonalizado = generarPromptPersonalizado(puntuacion_respuestas, puntuacion_gravedad);
+    // extraigo los resumenes de conversaciones previas entre chatbot y usuario
+    const historial_conversaciones = await pool.query(
+      "SELECT fecha, resumen FROM conversacion WHERE id_usuario = $1 ORDER BY fecha DESC",
+      [user_id]
+    );
+    const conversaciones_previas = historial_conversaciones.rows.map(row => ({
+      fecha: row.fecha,
+      resumen: row.resumen,
+    }));
+
+    const promptPersonalizado = generarPromptPersonalizado(puntuacion_respuestas, puntuacion_gravedad, conversaciones_previas);
     console.log("Prompt personalizado:", promptPersonalizado);
 
     historial_conversacion.push({ role: "user", content: input });
@@ -367,7 +377,9 @@ app.post("/guardar-resumen", async (req, res) => {
   try {
     const mensajesUsuario = historial.filter(msg => msg.quien === "usuario").map(msg => msg.texto).join(" ");
     const promptResumen = `A partir de la siguiente conversación, genera un resumen de los síntomas mencionados por el usuario. 
-    Hazlo en un tono que luego se le pueda presentar al usuario en su perfil, contándoselo de forma sensible: ${mensajesUsuario}`;
+    Hazlo en un tono que luego se le pueda presentar al usuario en su perfil hablando directamente en segunda persona al usuario, contándoselo de forma sensible.
+    No le preguntes cómo está ni nada similar, solo cuéntale el resumen de su situación. Ejemplo: "Mencionaste que te sientes ansioso y que a veces tienes ataques de pánico. También mencionaste que evitas situaciones sociales porque te sientes incómodo en ellas".
+    Mensajes que ha mandado el usuario: ${mensajesUsuario}`;
     
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',

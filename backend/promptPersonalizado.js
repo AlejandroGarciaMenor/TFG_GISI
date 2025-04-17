@@ -1,6 +1,6 @@
 const promptBase = require("./promptBase");
 
-const generarPromptPersonalizado = (puntuacion_respuestas, puntuacion_gravedad) => {
+const generarPromptPersonalizado = (puntuacion_respuestas, puntuacion_gravedad, conversaciones_previas) => {
   return `
 Contexto del usuario:
 
@@ -25,6 +25,13 @@ El usuario ha completado un cuestionario estructurado de ansiedad diseñado para
     - 21 a 27: Nivel de ansiedad moderado.
     - 28 a 35: Nivel de ansiedad severo.
   La puntuación de gravedad es: ${puntuacion_gravedad || "No disponible"}.
+
+Además, el usuario ha tenido las siguientes conversaciones previas con el chatbot:
+${conversaciones_previas.length > 0 ? conversaciones_previas.map((conversacion, index) => `
+  Conversación ${index + 1}:
+  - Fecha: ${new Date(conversacion.fecha).toLocaleDateString()}.
+  - Resumen: ${conversacion.resumen}
+`).join("") : "No disponible"}
 
 ${promptBase}
   `;
