@@ -52,8 +52,7 @@ const Chatbot = () => {
     <div className='chatbot-container'>
       <div className='chatbot-header'>
         <h2>¡Bienvenido a AnxBot!</h2>
-        <p>¿Que tal estás {nombreUsuario} ?  ¡Sientete libre de contarme todo lo relacionado con tu ansiedad!</p>
-        <a href='./perfil-usuario' className='perfil-link' onClick={handleIrPerfil}>Ir a mi perfil</a>
+        <p>¿Que tal estás {nombreUsuario} ?  Cuénatme todos los síntomas que tengas relacionados con tu ansiedad!</p>
       </div>
       <div className='chatbot-historial'>
         {historial.map((msg, idx) => (
@@ -73,6 +72,20 @@ const Chatbot = () => {
         />
         <button onClick={handleEnviar}>Enviar</button>
       </div>
+
+      {historial.length >= 12 && (
+        <div className="perfil-link-container">
+          <p>
+            Aunque por el momento AnxBot no ha conseguido clasificar ningún tipo de trastorno de ansiedad, hemos ido recopilando tus síntomas.
+            <br />
+            <br />
+            Puedes seguir conversando con AnxBot e incluso pedirle algunas recomendaciones, pero si quieres puedes visitar tu perfil de usuario
+            para ver un resumen de tus síntomas y encontrar herramientas que te ayuden a combatir la ansiedad:
+            <br />
+          </p>
+          <a href='./perfil-usuario' className='perfil-link' onClick={handleIrPerfil}>Ir a mi perfil</a>    
+        </div>
+      )}
       
       {}
       <Modal
