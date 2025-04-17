@@ -73,7 +73,7 @@ const Chatbot = () => {
         <button onClick={handleEnviar}>Enviar</button>
       </div>
 
-      {historial.length >= 12 && (
+      {historial.length >= 10 && (
         <div className="perfil-link-container">
           <p>
             Aunque por el momento AnxBot no ha conseguido clasificar ningún tipo de trastorno de ansiedad, hemos ido recopilando tus síntomas.
