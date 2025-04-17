@@ -71,7 +71,7 @@ const BloqueDatosUsuario = ({ usuario }) => {
                         <>
                         <h2>{usuario.nombre}</h2>
                         <p>Email: {usuario.email}</p>
-                        <p>Fecha de nacimiento: {usuario.fechanacimiento}</p>
+                        <p>Fecha de nacimiento: {new Date(usuario.fechanacimiento).toLocaleDateString()}</p>
                         <p>Género: {usuario.genero}</p>
                         <button className="boton-editar" onClick={() => setEditando(true)}>Editar</button>
                         </>

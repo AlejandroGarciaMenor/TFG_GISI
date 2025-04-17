@@ -413,14 +413,19 @@ app.get("/usuario", async (req, res) => {
     puntuacion_gravedad: row.puntuacion_gravedad,
   }));
 
-  respuesta = {
-    usuario,
-    puntuaciones_gravedad
-  }
-  
+  const historial_conversaciones = await pool.query(
+    "SELECT fecha, resumen FROM conversacion WHERE id_usuario = $1 ORDER BY fecha DESC",
+    [userId]
+  );
+  const resumenes_chatbot = historial_conversaciones.rows.map(row => ({
+    fecha: row.fecha,
+    resumen: row.resumen,
+  }));
+
   return res.json({
     usuario,
-    puntuaciones_gravedad
+    puntuaciones_gravedad,
+    resumenes_chatbot,
   });
 
 });
