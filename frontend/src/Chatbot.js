@@ -37,12 +37,23 @@ const Chatbot = () => {
     }
   };
 
+  const handleIrPerfil = async () => {
+    try {
+      await axios.post('https://localhost:5000/guardar-resumen', {
+        user_id: userId,
+        historial
+      });
+    } catch (error) {
+      console.error('Error al guardar el resumen:', error);
+    }
+  };
+
   return (
     <div className='chatbot-container'>
       <div className='chatbot-header'>
         <h2>¡Bienvenido a AnxBot!</h2>
         <p>¿Que tal estás {nombreUsuario} ?  ¡Sientete libre de contarme todo lo relacionado con tu ansiedad!</p>
-        <a href='./perfil-usuario' className='perfil-link'>Ir a mi perfil</a>
+        <a href='./perfil-usuario' className='perfil-link' onClick={handleIrPerfil}>Ir a mi perfil</a>
       </div>
       <div className='chatbot-historial'>
         {historial.map((msg, idx) => (
@@ -73,7 +84,7 @@ const Chatbot = () => {
         <h2>Parece que AnxBot ha detectado que puedes tener un tipo de ansiedad.</h2>
         <p>Recuerda que <strong>NO SE TRATA DE UN DIAGNÓSTICO MÉDICO</strong>, simplemente es una ORIENTACIÓN.</p>  
         <p>¡Te aconsejamos que visites tu perfil de usuario para encontrar herramientas que te ayuden a combatir la ansiedad!</p>
-        <a href="./perfil-usuario" className="perfil-link">Ir a mi perfil</a>
+        <a href="./perfil-usuario" className="perfil-link" onClick={handleIrPerfil}>Ir a mi perfil</a>
         <button onClick={() => setModalIsOpen(false)} className="close-button">Cerrar</button>
       </Modal>
 

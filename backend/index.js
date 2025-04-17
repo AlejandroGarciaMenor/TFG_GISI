@@ -356,6 +356,40 @@ async function insertarTiposAnsiedad(user_id, tiposAnsiedadDetectados) {
   }
 }
 
+// ruta para guardar el resumen de la conversacion
+app.post("/guardar-resumen", async (req, res) => {
+  const { user_id, historial } = req.body;
+
+  if (!user_id || !historial || historial.length === 0) {
+    return res.status(400).json({ message: "Datos insuficientes para guardar el resumen" });
+  }
+
+  try {
+    const mensajesUsuario = historial.filter(msg => msg.quien === "usuario").map(msg => msg.texto).join(" ");
+    const promptResumen = `A partir de la siguiente conversación, genera un resumen de los síntomas mencionados por el usuario. 
+    Hazlo en un tono que luego se le pueda presentar al usuario en su perfil, contándoselo de forma sensible: ${mensajesUsuario}`;
+    
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: "system", content: promptResumen }],
+      temperature: 0.7,
+      max_tokens: 500
+    });
+
+    const resumenSintomas = response.choices[0].message.content;
+
+    await pool.query(
+      "INSERT INTO conversacion (id_usuario, resumen) VALUES ($1, $2)",
+      [user_id, resumenSintomas]
+    );
+
+    res.json({ message: "Resumen guardado correctamente", resumen: resumenSintomas });
+  } catch (error) {
+    console.error("Error al guardar el resumen:", error);
+    res.status(500).json({ message: "Error al guardar el resumen" });
+  }
+});
+
 // ruta para obtener los datos del usuario
 app.get("/usuario", async (req, res) => {
   const { userId } = req.query;
