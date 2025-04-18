@@ -125,3 +125,32 @@
   background-color: #b6d6d2; 
   border-color: #00796b;
 }
+
+.modal-gravedad {
+  background: #d15353;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+.overlay-gravedad {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.link-ayuda {
+  background-color: #00796b;
+  text-decoration: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+}

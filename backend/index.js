@@ -425,6 +425,8 @@ app.get("/usuario", async (req, res) => {
     puntuacion_gravedad: row.puntuacion_gravedad,
   }));
 
+  const alerta_gravedad_severa = puntuaciones_gravedad[puntuaciones_gravedad.length - 1]?.puntuacion_gravedad >= 28;
+
   const historial_conversaciones = await pool.query(
     "SELECT fecha, resumen FROM conversacion WHERE id_usuario = $1 ORDER BY fecha DESC",
     [userId]
@@ -437,6 +439,7 @@ app.get("/usuario", async (req, res) => {
   return res.json({
     usuario,
     puntuaciones_gravedad,
+    alerta_gravedad_severa,
     resumenes_chatbot,
   });
 
