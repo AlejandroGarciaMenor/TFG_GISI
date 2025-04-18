@@ -6,6 +6,7 @@ import DatosPerfilUsuario from "./components/DatosPerfilUsuario";
 import EstadisticasUsuario from "./components/EstadisticasUsuario";
 import DiarioEvaluaciones from "./components/DiarioEvaluaciones";
 import AlertaGravedad from "./components/AlertaGravedad";
+import ReEvaluacion from "./components/ReEvaluacion";
 
 const PerfilUsuario = () => {
     const userId = sessionStorage.getItem("id");
@@ -36,6 +37,7 @@ const PerfilUsuario = () => {
     return (
         <div className="perfil-usuario-container">
             <DatosPerfilUsuario usuario={usuario.usuario}/>
+            <ReEvaluacion/>
             <EstadisticasUsuario puntuaciones_gravedad={usuario.puntuaciones_gravedad}/>
             <DiarioEvaluaciones resumenes_chatbot={usuario.resumenes_chatbot}/>
             {usuario.alerta_gravedad_severa && <AlertaGravedad />}
