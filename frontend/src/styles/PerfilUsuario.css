@@ -154,3 +154,13 @@
   padding: 10px 20px;
   border-radius: 5px;
 }
+
+.cerrar-modal {
+  background-color: #ea8585;
+  color: white;
+  padding: 10px 20px;
+  margin-right: auto;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}

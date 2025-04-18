@@ -21,6 +21,7 @@ const AlertaGravedad = () => {
                 <p>En tu perfil, te hemos preparado algunos tips generales y minijuegos para combatir la ansiedad.</p>
                 <p>No obstante, es necesario que <strong>pidas ayuda a un profesional</strong> de la salud mental.</p>
                 <a href="./ayuda-urgente" className="link-ayuda" target="blank">¿Cómo puedo pedir ayuda?</a>
+                <button className="cerrar-modal" onClick={() => setModalIsOpen(false)}>Continuar en mi perfil</button>
             </Modal>
         </div>
     );

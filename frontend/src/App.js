@@ -7,6 +7,7 @@ import Cribado from "./Cribado";
 import Gravedad from "./Gravedad";
 import Chatbot from "./Chatbot";
 import PerfilUsuario from "./PerfilUsuario";
+import AyudaUrgente from "./AyudaUrgente";
 import PoliticaPrivacidad from "./PoliticaPrivacidad";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/gravedad" element={<Gravedad />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/perfil-usuario" element={<PerfilUsuario />} />
+          <Route path="/ayuda-urgente" element={<AyudaUrgente />} />
           <Route path="/privacidad" element={<PoliticaPrivacidad />} />
         </Routes>
       </div>
