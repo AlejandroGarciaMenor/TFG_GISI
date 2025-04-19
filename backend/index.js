@@ -467,7 +467,7 @@ app.put("/usuario", async (req, res) => {
 });
 
 // ruta para obtener un reto diario no completado
-app.get("/reto-diatio", async (req, res) => {
+app.get("/reto-diario", async (req, res) => {
   const userId = req.query.userId;
 
   try{
@@ -489,6 +489,8 @@ app.get("/reto-diatio", async (req, res) => {
     res.json({
       reto: obtenerRetoAleatorioDiario.rows[0]
     });
+
+    console.log("Reto diario obtenido:", obtenerRetoAleatorioDiario.rows[0]);
     
   } catch (error) {
     console.error("Error al obtener el reto diario:", error);
