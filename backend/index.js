@@ -498,6 +498,25 @@ app.get("/reto-diario", async (req, res) => {
   }
 });
 
+app.post("/completar-reto-diario", async (req, res) => {
+  const {userId, idReto} = req.body;
+
+  try{
+    const diaActual = new Date().toISOString().split('T')[0];
+
+    await pool.query(
+      "INSERT INTO usuarios_retocompletado (id_usuario, id_reto, fecha, completado) VALUES ($1, $2, $3, true)",
+      [userId, idReto, diaActual]
+    );
+
+  } catch (error) {
+    console.error("Error al completar el reto diario:", error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+
+});
+
+
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS en ejecución en https://localhost:${PORT}`);
 });
