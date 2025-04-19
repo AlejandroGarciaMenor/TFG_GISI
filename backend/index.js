@@ -466,6 +466,36 @@ app.put("/usuario", async (req, res) => {
 
 });
 
+// ruta para obtener un reto diario no completado
+app.get("/reto-diatio", async (req, res) => {
+  const userId = req.query.userId;
+
+  try{
+    const diaActual = new Date().toISOString().split('T')[0];
+
+    const obtenerRetoAleatorioDiario = await pool.query(
+      `select * from retos 
+       where activo = true
+       and id_reto not in (select id_reto from usuarios_retocompletado where id_usuario = $1 and fecha::date = $2)
+       order by random()
+       limit 1`,
+      [userId, diaActual]
+    );
+
+    if(obtenerRetoAleatorioDiario.rows.length === 0) {
+      return res.json({reto: null, mensaje: "El usuario ha completado hoy todos los retos"})
+    }
+
+    res.json({
+      reto: obtenerRetoAleatorioDiario.rows[0]
+    });
+    
+  } catch (error) {
+    console.error("Error al obtener el reto diario:", error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+});
+
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS en ejecución en https://localhost:${PORT}`);
 });
