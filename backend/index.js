@@ -473,6 +473,22 @@ app.get("/reto-diario", async (req, res) => {
   try{
     const diaActual = new Date().toISOString().split('T')[0];
 
+    const retoAsignadoHoy = await pool.query (
+      `select retos.*, usuarios_retocompletado.id_usuario_reto
+      from retos inner join usuarios_retocompletado on retos.id_reto = usuarios_retocompletado.id_reto
+      where usuarios_retocompletado.id_usuario = $1 
+      and usuarios_retocompletado.fecha::date = $2
+      and usuarios_retocompletado.completado = false`,
+      [userId, diaActual]
+    );
+
+    if(retoAsignadoHoy.rows.length > 0){
+      return res.json({
+        reto: retoAsignadoHoy.rows[0],
+        mensaje: "Reto ya asignado anteriormente para hoy"
+      });
+    }
+
     const obtenerRetoAleatorioDiario = await pool.query(
       `select * from retos 
        where activo = true
@@ -483,14 +499,22 @@ app.get("/reto-diario", async (req, res) => {
     );
 
     if(obtenerRetoAleatorioDiario.rows.length === 0) {
-      return res.json({reto: null, mensaje: "El usuario ha completado hoy todos los retos"})
+      return res.json({
+        reto: null, 
+        mensaje: "El usuario ha completado hoy todos los retos"
+      })
     }
 
-    res.json({
-      reto: obtenerRetoAleatorioDiario.rows[0]
-    });
+    const nuevoRetoDelDia = obtenerRetoAleatorioDiario.rows[0];
+    await pool.query(
+      "insert into usuarios_retocompletado (id_usuario, id_reto, fecha, completado) VALUES ($1, $2, $3, false)",
+      [userId, nuevoRetoDelDia.id_reto, diaActual]
+    );
 
-    console.log("Reto diario obtenido:", obtenerRetoAleatorioDiario.rows[0]);
+    res.json({
+      reto: nuevoRetoDelDia,
+      mensaje: "Nuevo reto asignado para el día de hoy"
+    });
     
   } catch (error) {
     console.error("Error al obtener el reto diario:", error);
@@ -499,14 +523,13 @@ app.get("/reto-diario", async (req, res) => {
 });
 
 app.post("/completar-reto-diario", async (req, res) => {
-  const {userId, idReto} = req.body;
+  const {idUsuarioReto} = req.body;
+  console.log("idusuarioreto", idUsuarioReto);
 
   try{
-    const diaActual = new Date().toISOString().split('T')[0];
-
     await pool.query(
-      "INSERT INTO usuarios_retocompletado (id_usuario, id_reto, fecha, completado) VALUES ($1, $2, $3, true)",
-      [userId, idReto, diaActual]
+      "UPDATE usuarios_retocompletado SET completado = true WHERE id_usuario_reto = $1",
+      [idUsuarioReto]
     );
 
   } catch (error) {

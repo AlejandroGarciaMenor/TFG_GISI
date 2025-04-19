@@ -30,8 +30,7 @@ const RetoDiario = ({ userId }) => {
     const completarReto = async () => {
         try {
             await axios.post('https://localhost:5000/completar-reto-diario', {
-                userId,
-                idReto: reto.id_reto
+                idUsuarioReto: reto.id_usuario_reto,
         });
         setCompletado(true);
         } catch (error) {
