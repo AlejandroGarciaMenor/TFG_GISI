@@ -474,17 +474,20 @@ app.get("/reto-diario", async (req, res) => {
     const diaActual = new Date().toISOString().split('T')[0];
 
     const retoAsignadoHoy = await pool.query (
-      `select retos.*, usuarios_retocompletado.id_usuario_reto
+      `select retos.*, usuarios_retocompletado.*
       from retos inner join usuarios_retocompletado on retos.id_reto = usuarios_retocompletado.id_reto
       where usuarios_retocompletado.id_usuario = $1 
-      and usuarios_retocompletado.fecha::date = $2
-      and usuarios_retocompletado.completado = false`,
+      and usuarios_retocompletado.fecha::date = $2`,
       [userId, diaActual]
     );
 
     if(retoAsignadoHoy.rows.length > 0){
+      const reto = retoAsignadoHoy.rows[0];
       return res.json({
-        reto: retoAsignadoHoy.rows[0],
+        reto: {
+          ...reto,
+          completado: reto.completado,
+        },
         mensaje: "Reto ya asignado anteriormente para hoy"
       });
     }
