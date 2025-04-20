@@ -436,11 +436,21 @@ app.get("/usuario", async (req, res) => {
     resumen: row.resumen,
   }));
 
+  const detecciones_ansiedad = await pool.query(
+    "SELECT tipo_ansiedad.nombre, deteccion.fecha from deteccion inner join tipo_ansiedad on deteccion.id_ansiedad = tipo_ansiedad.id_ansiedad where id_usuario = $1",
+    [userId]
+  );
+  const tipos_ansiedad_detectados = detecciones_ansiedad.rows.map(row => ({
+    nombre: row.nombre,
+    fecha: row.fecha,
+  }));
+
   return res.json({
     usuario,
     puntuaciones_gravedad,
     alerta_gravedad_severa,
     resumenes_chatbot,
+    tipos_ansiedad_detectados,
   });
 
 });
