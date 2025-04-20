@@ -5,57 +5,74 @@ const RetoDiario = ({ userId }) => {
 
     const [reto, setReto] = useState(null);
     const [mensaje, setMensaje] = useState('');
-    const [completado, setCompletado] = useState(false);
+    const [cargando, setCargando] = useState(true);
+    const [retoCompletado, setRetoCompletado] = useState(false);
+
+    const obtenerReto = async () => {
+        try {
+            setCargando(true);
+            const res = await axios.get('https://localhost:5000/reto-diario', { 
+                params: { userId } 
+            });
+            if (res.data.reto === null) {
+                setMensaje(res.data.mensaje);
+                setReto(null);
+            } else {
+                setReto(res.data.reto);
+                setMensaje('');
+            }
+        } catch (error) {
+            console.error("Error cargando el reto diario", error);
+        } finally {
+            setCargando(false);
+        }
+    };
 
     useEffect(() => {
-        const obtenerReto = async () => {
-            try {
-                const res = await axios.get('https://localhost:5000/reto-diario', { 
-                    params: { userId } 
-                });
-                if (res.data.reto === null) {
-                    setMensaje(res.data.mensaje);
-                    setReto(null);
-                } else {
-                    setReto(res.data.reto);
-                    setMensaje('');
-                }
-            } catch (error) {
-                console.error("Error cargando los tips diarios", error);
-            }
-        };
        obtenerReto();
     }, [userId]);
 
     const completarReto = async () => {
+        setReto((prevReto) => {
+            const nuevoReto = { ...prevReto, completado: true };
+            return nuevoReto;
+        });
+        setRetoCompletado(true);
         try {
             await axios.post('https://localhost:5000/completar-reto-diario', {
                 idUsuarioReto: reto.id_usuario_reto,
-        });
-        setCompletado(true);
+            });
         } catch (error) {
             console.error("Error completando el reto diario", error);
+            setReto((prevReto) => ({ ...prevReto, completado: false }));
+        } finally {
+            setTimeout(() => { setRetoCompletado(false); }, 3000);
         }
+    };
+    
+
+    if (cargando) {
+        return <p>Cargando reto diario...</p>;
     }
 
-
     return (
-        <div className="tips-diarios-container">
-            <h2>Reto diario</h2>
+        <div className={`reto-diario-container ${reto?.completado ? 'reto-completado' : ''}`}>
+            <h3 className='reto-diario-titulo'>Este es tu reto del día!</h3>
             {mensaje ? (
                 <p>{mensaje}</p>
             ) : reto ? (
                 <div className="reto-item">
-                    <h3>{reto.categoria}</h3>
-                    <p>{reto.contenido}</p>
-                    {!completado ? (
-                        <button className='boton-completar-reto' onClick={completarReto}>He completado el reto</button>
-                    ) : (
-                        <p>¡Reto completado!</p>
-                    )}
+                    <h3 className="reto-categoria">{reto.categoria}</h3>
+                    <p className="reto-contenido">{reto.contenido}</p>
+                    <button 
+                        className={`boton-completar-reto ${reto.completado ? 'boton-completado' : ''}`} 
+                        onClick={completarReto} 
+                        disabled={reto.completado}>
+                        {reto.completado ? 'Reto Completado' : 'Marcar reto como completado'}
+                    </button> 
                 </div>
             ) : (
-                <p>Cargando reto diario...</p>
+                <p>No hay retos disponibles para hoy.</p>
             )}
         </div>
     );
