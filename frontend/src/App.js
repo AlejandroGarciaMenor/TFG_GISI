@@ -9,6 +9,7 @@ import Chatbot from "./Chatbot";
 import PerfilUsuario from "./PerfilUsuario";
 import AyudaUrgente from "./AyudaUrgente";
 import PoliticaPrivacidad from "./PoliticaPrivacidad";
+import MinijuegoRespiracion478 from "./MinijuegoRespiracion478";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/perfil-usuario" element={<PerfilUsuario />} />
           <Route path="/ayuda-urgente" element={<AyudaUrgente />} />
           <Route path="/privacidad" element={<PoliticaPrivacidad />} />
+          <Route path="/minijuego-respiracion" element={<MinijuegoRespiracion478 />} /> 
         </Routes>
       </div>
     </Router>
