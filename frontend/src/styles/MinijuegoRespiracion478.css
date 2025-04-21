@@ -1,0 +1,41 @@
+.minijuego-container {
+    display: flex;
+    flex-direction: column;
+    background: #e0f7fa;
+}
+
+.circulo-respiracion{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #007bff;
+    transition: all ease-in-out;
+}
+
+.aumentar{
+    transform: scale(2); /*aumento de la escala*/
+    transition: transform 4s ease-in-out; /*transicion de 4s en el aumento*/
+}
+
+.mantener{
+    transform: scale(2);
+}
+
+.contraer{
+    transform: scale(1); /*vuelve a la escala original*/
+    transition: transform 8s ease-in-out;
+}
+
+.texto-respiracion{
+    color: black;
+}
+
+.boton-comenzar-minijuego{
+    margin-top: 30px;
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    background-color: #007bff;
+    border-radius: 10px;
+    cursor: pointer;
+}
