@@ -505,6 +505,7 @@ app.get("/reto-diario", async (req, res) => {
     const obtenerRetoAleatorioDiario = await pool.query(
       `select * from retos 
        where activo = true
+       and id_ansiedad = 0
        and id_reto not in (select id_reto from usuarios_retocompletado where id_usuario = $1 and fecha::date = $2)
        order by random()
        limit 1`,
@@ -531,6 +532,50 @@ app.get("/reto-diario", async (req, res) => {
     
   } catch (error) {
     console.error("Error al obtener el reto diario:", error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+});
+
+app.get("/racha", async (req, res) => {
+  const userId = req.query.userId;
+
+  try {
+    const rachaQuery = await pool.query(
+      `WITH fechas_distintas_reto_completado AS (
+        SELECT DISTINCT fecha::date FROM usuarios_retocompletado WHERE id_usuario = $1 AND completado = true
+      ),
+      fechas_con_rownumber AS (
+        SELECT
+          fecha,
+          ROW_NUMBER() OVER (ORDER BY fecha) AS rn
+        FROM fechas_distintas_reto_completado
+      ),
+      grupos AS (
+        SELECT
+          fecha,
+          fecha - (rn || ' days')::interval AS grupo
+        FROM fechas_con_rownumber
+      ),
+      racha_actual AS (
+        SELECT
+          grupo,
+          COUNT(*) AS dias
+        FROM grupos
+        GROUP BY grupo
+        ORDER BY grupo DESC
+        LIMIT 1
+      )
+      SELECT dias AS racha_actual
+      FROM racha_actual;
+      `,
+      [userId]
+    );
+
+    const racha = rachaQuery.rows[0]?.racha_actual || 0;
+    res.json({ racha });
+
+  } catch (error) {
+    console.error("Error al obtener la racha:", error);
     res.status(500).json({ message: "Error en el servidor" });
   }
 });

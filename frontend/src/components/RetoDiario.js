@@ -7,6 +7,7 @@ const RetoDiario = ({ userId }) => {
     const [mensaje, setMensaje] = useState('');
     const [cargando, setCargando] = useState(true);
     const [retoCompletado, setRetoCompletado] = useState(false);
+    const [racha, setRacha] = useState(null);
 
     const obtenerReto = async () => {
         try {
@@ -28,8 +29,21 @@ const RetoDiario = ({ userId }) => {
         }
     };
 
+    const obtenerRacha = async () => {
+        try {
+            const res = await axios.get('https://localhost:5000/racha', { 
+                params: { userId } 
+            });
+            setRacha(res.data.racha);
+        } catch (error) {
+            console.error("Error cargando la racha", error);
+            setRacha(null);
+        }
+    }
+
     useEffect(() => {
        obtenerReto();
+       obtenerRacha();
     }, [userId]);
 
     const completarReto = async () => {
@@ -63,6 +77,7 @@ const RetoDiario = ({ userId }) => {
             ) : reto ? (
                 <div className="reto-item">
                     <h3 className="reto-categoria">{reto.categoria}</h3>
+                    <p className='racha'>Llevas una racha de {racha || 0} días</p>
                     <p className="reto-contenido">{reto.contenido}</p>
                     <button 
                         className={`boton-completar-reto ${reto.completado ? 'boton-completado' : ''}`} 
