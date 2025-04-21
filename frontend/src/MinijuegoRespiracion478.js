@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import './styles/MinijuegoRespiracion478.css';
+import sonidoRelajante from './audio/relaxation-music-49-50061.mp3';
 
 const pasos = [
     {nombre: "Inhala", duracion: 4000},
     {nombre: "Mantén", duracion: 7000},
     {nombre: "Exhala", duracion: 8000},
 ];
+
+const audio = new Audio(sonidoRelajante);
+audio.loop = true;
 
 const MinijuegoRespiracion478 = () => {
     
@@ -36,6 +40,8 @@ const MinijuegoRespiracion478 = () => {
                         setRondas(ronda + 1);
                     } else {
                         setEsActivo(false);
+                        audio.pause();
+                        audio.currentTime = 0;
                         return;
                     }
                 }
@@ -50,13 +56,22 @@ const MinijuegoRespiracion478 = () => {
         setEsActivo(true);
         setPasoIndex(0);
         setRondas(1);
+        audio.play();
     };
 
     const pausarOReanudar = () => {
-        setPausado(!pausado);
-    }
+        if (pausado) {
+            setPausado(false);
+            audio.play();
+        } else {
+            setPausado(true);
+            audio.pause();
+        }
+    };
 
     const salir = () => {
+        audio.pause();
+        audio.currentTime = 0;
         setEsActivo(false);
         setPasoIndex(0);
         setRondas(1);
