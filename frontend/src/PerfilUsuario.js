@@ -8,6 +8,7 @@ import DiarioEvaluaciones from "./components/DiarioEvaluaciones";
 import AlertaGravedad from "./components/AlertaGravedad";
 import ReEvaluacion from "./components/ReEvaluacion";
 import RetoDiario from "./components/RetoDiario";
+import TiposAnsiedad from "./components/TiposAnsiedad";
 
 const PerfilUsuario = () => {
     const userId = sessionStorage.getItem("id");
@@ -40,6 +41,7 @@ const PerfilUsuario = () => {
             <DatosPerfilUsuario usuario={usuario.usuario}/>
             <ReEvaluacion/>
             <EstadisticasUsuario puntuaciones_gravedad={usuario.puntuaciones_gravedad}/>
+            <TiposAnsiedad tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
             <DiarioEvaluaciones resumenes_chatbot={usuario.resumenes_chatbot}/>
             {usuario.alerta_gravedad_severa && <AlertaGravedad />}
             <RetoDiario userId={userId} tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>

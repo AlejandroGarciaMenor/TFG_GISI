@@ -437,11 +437,12 @@ app.get("/usuario", async (req, res) => {
   }));
 
   const detecciones_ansiedad = await pool.query(
-    "SELECT deteccion.id_ansiedad, tipo_ansiedad.nombre, deteccion.fecha from deteccion inner join tipo_ansiedad on deteccion.id_ansiedad = tipo_ansiedad.id_ansiedad where id_usuario = $1",
+    "SELECT deteccion.id_ansiedad, tipo_ansiedad.nombre, tipo_ansiedad.informacion, deteccion.fecha from deteccion inner join tipo_ansiedad on deteccion.id_ansiedad = tipo_ansiedad.id_ansiedad where id_usuario = $1",
     [userId]
   );
   const tipos_ansiedad_detectados = detecciones_ansiedad.rows.map(row => ({
     nombre: row.nombre,
+    informacion: row.informacion,
     fecha: row.fecha,
     id_ansiedad: row.id_ansiedad,
   }));
@@ -481,9 +482,7 @@ app.put("/usuario", async (req, res) => {
 app.get("/reto-diario", async (req, res) => {
   const userId = req.query.userId;
   const tiposAnsiedad = req.query.tipos_ansiedad_detectados;
-  console.log(tiposAnsiedad);
   const idsAnsiedadUnicos = [...new Set(tiposAnsiedad.map(item => item.id_ansiedad))];
-  console.log(idsAnsiedadUnicos);
 
   try{
     const diaActual = new Date().toISOString().split('T')[0];
@@ -497,7 +496,6 @@ app.get("/reto-diario", async (req, res) => {
       and usuarios_retocompletado.fecha::date = $2`,
       [userId, diaActual]
     );
-    console.log(retoAsignadoHoy.rows);
 
     if(retoAsignadoHoy.rows.length > 0){
       const reto = retoAsignadoHoy.rows[0];
