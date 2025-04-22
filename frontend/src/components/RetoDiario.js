@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const RetoDiario = ({ userId }) => {
+const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
 
     const [reto, setReto] = useState(null);
     const [mensaje, setMensaje] = useState('');
@@ -13,7 +13,7 @@ const RetoDiario = ({ userId }) => {
         try {
             setCargando(true);
             const res = await axios.get('https://localhost:5000/reto-diario', { 
-                params: { userId } 
+                params: { userId, tipos_ansiedad_detectados } 
             });
             if (res.data.reto === null) {
                 setMensaje(res.data.mensaje);
@@ -72,6 +72,11 @@ const RetoDiario = ({ userId }) => {
     return (
         <div className={`reto-diario-container ${reto?.completado ? 'reto-completado' : ''}`}>
             <h3 className='reto-diario-titulo'>Este es tu reto del día!</h3>
+            {reto.id_ansiedad !== 0 ? (
+                <p>Hoy te proponemos un reto especial para ayudarte a manejar el tipo de trastorno de ansiedad que fue detectado por AnxBot, el {reto.nombre}</p>
+            ):(
+                <p>El reto de hoy es útil para manejar cualquier tipo e intensidad de ansiedad!</p>
+            )}
             {mensaje ? (
                 <p>{mensaje}</p>
             ) : reto ? (

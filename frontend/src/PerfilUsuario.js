@@ -42,7 +42,7 @@ const PerfilUsuario = () => {
             <EstadisticasUsuario puntuaciones_gravedad={usuario.puntuaciones_gravedad}/>
             <DiarioEvaluaciones resumenes_chatbot={usuario.resumenes_chatbot}/>
             {usuario.alerta_gravedad_severa && <AlertaGravedad />}
-            <RetoDiario userId={userId} />
+            <RetoDiario userId={userId} tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
             <div className="acceso-minijuego-478">
                 <h2>Minijuego</h2>
                 <p>Te hemos preparado un minijuego de relajación!</p>

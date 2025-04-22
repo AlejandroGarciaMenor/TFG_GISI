@@ -437,12 +437,13 @@ app.get("/usuario", async (req, res) => {
   }));
 
   const detecciones_ansiedad = await pool.query(
-    "SELECT tipo_ansiedad.nombre, deteccion.fecha from deteccion inner join tipo_ansiedad on deteccion.id_ansiedad = tipo_ansiedad.id_ansiedad where id_usuario = $1",
+    "SELECT deteccion.id_ansiedad, tipo_ansiedad.nombre, deteccion.fecha from deteccion inner join tipo_ansiedad on deteccion.id_ansiedad = tipo_ansiedad.id_ansiedad where id_usuario = $1",
     [userId]
   );
   const tipos_ansiedad_detectados = detecciones_ansiedad.rows.map(row => ({
     nombre: row.nombre,
     fecha: row.fecha,
+    id_ansiedad: row.id_ansiedad,
   }));
 
   return res.json({
@@ -479,17 +480,24 @@ app.put("/usuario", async (req, res) => {
 // ruta para obtener un reto diario no completado
 app.get("/reto-diario", async (req, res) => {
   const userId = req.query.userId;
+  const tiposAnsiedad = req.query.tipos_ansiedad_detectados;
+  console.log(tiposAnsiedad);
+  const idsAnsiedadUnicos = [...new Set(tiposAnsiedad.map(item => item.id_ansiedad))];
+  console.log(idsAnsiedadUnicos);
 
   try{
     const diaActual = new Date().toISOString().split('T')[0];
 
     const retoAsignadoHoy = await pool.query (
-      `select retos.*, usuarios_retocompletado.*
-      from retos inner join usuarios_retocompletado on retos.id_reto = usuarios_retocompletado.id_reto
+      `select retos.*, usuarios_retocompletado.*, tipo_ansiedad.nombre
+      from retos 
+      inner join tipo_ansiedad on retos.id_ansiedad = tipo_ansiedad.id_ansiedad
+      inner join usuarios_retocompletado on retos.id_reto = usuarios_retocompletado.id_reto
       where usuarios_retocompletado.id_usuario = $1 
       and usuarios_retocompletado.fecha::date = $2`,
       [userId, diaActual]
     );
+    console.log(retoAsignadoHoy.rows);
 
     if(retoAsignadoHoy.rows.length > 0){
       const reto = retoAsignadoHoy.rows[0];
@@ -505,11 +513,11 @@ app.get("/reto-diario", async (req, res) => {
     const obtenerRetoAleatorioDiario = await pool.query(
       `select * from retos 
        where activo = true
-       and id_ansiedad = 0
+       and (id_ansiedad = 0 OR id_ansiedad = ANY($3))
        and id_reto not in (select id_reto from usuarios_retocompletado where id_usuario = $1 and fecha::date = $2)
        order by random()
        limit 1`,
-      [userId, diaActual]
+      [userId, diaActual, idsAnsiedadUnicos]
     );
 
     if(obtenerRetoAleatorioDiario.rows.length === 0) {
