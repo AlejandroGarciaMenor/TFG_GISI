@@ -224,3 +224,35 @@
   cursor: not-allowed;
 }
 
+/* Contenedor principal del acceso al minijuego */
+.acceso-minijuego-478 {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #c1ebda, #a1d9f7);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Título del minijuego */
+.acceso-minijuego-478 h2 {
+  color: #00796b;
+  margin-bottom: 10px;
+}
+
+.acceso-minijuego-478 p {
+  color: #004d40;
+  margin-bottom: 20px;
+}
+
+.acceso-minijuego-478-link {
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  background-color: #00796b;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}

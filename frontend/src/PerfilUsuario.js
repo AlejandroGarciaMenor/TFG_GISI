@@ -43,6 +43,11 @@ const PerfilUsuario = () => {
             <DiarioEvaluaciones resumenes_chatbot={usuario.resumenes_chatbot}/>
             {usuario.alerta_gravedad_severa && <AlertaGravedad />}
             <RetoDiario userId={userId} />
+            <div className="acceso-minijuego-478">
+                <h2>Minijuego</h2>
+                <p>Te hemos preparado un minijuego de relajación!</p>
+                <a href="/minijuego-respiracion" className="acceso-minijuego-478-link">Acceso al minijuego de respiración 478</a>
+            </div>
         </div>
     );
 }
