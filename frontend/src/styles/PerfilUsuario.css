@@ -254,3 +254,56 @@
   text-decoration: none;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
+.tipos-ansiedad-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tipos-ansiedad-titulo {
+  color: #00796b;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.tipos-ansiedad-nota {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.tipos-ansiedad-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tipo-ansiedad-item {
+  padding: 15px;
+  border-left: 5px solid #00796b;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tipo-ansiedad-nombre {
+  font-size: 18px;
+  color: #004d40;
+  margin-bottom: 10px;
+}
+
+.tipo-ansiedad-informacion {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.tipo-ansiedad-fecha {
+  font-size: 14px;
+  color: #555;
+  text-align: right;
+}
