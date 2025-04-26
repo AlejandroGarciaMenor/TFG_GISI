@@ -22,7 +22,7 @@ const Login = () => {
         localStorage.setItem("token", res.data.token);
         sessionStorage.setItem("nombre", res.data.nombre);
         sessionStorage.setItem("id", res.data.id);
-        navigate("/cribado");
+        navigate("/perfil-usuario");
       }
     } catch (err) {
         setError("Error en el login:", err.response ? err.response.data : err.message);
