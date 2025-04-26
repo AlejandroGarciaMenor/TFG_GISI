@@ -1,7 +1,8 @@
 /*  PERFIL USUARIO CONTAINER */
 
 .perfil-usuario-container {
-  max-width: 1900px;
+  width: 100%;
+  max-width: 1700px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9; 
@@ -33,18 +34,20 @@
   }
 }
 
-/* RE-EVALUACION SECCCION */
-.seccion-re-evaluacion {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
+.seccion-re-evaluacion,
+.seccion-estadisticas-gravedad,
+.seccion-diario-evaluaciones,
+.seccion-reto-diario,
+.seccion-minijuego,
+.seccion-tipos-ansiedad {
+  width: 100%;
+  margin: 20px auto;
   padding: 20px;
-  background-color: #ffffff; 
-  border-radius: 10px; 
+  background-color: #ffffff;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
-
 
 .diario-evaluaciones {
   margin: 20px auto;
