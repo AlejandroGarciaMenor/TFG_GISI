@@ -1,0 +1,43 @@
+.diario-evaluaciones-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+  
+.diario-evaluaciones-container h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.diario-evaluaciones-descripcion {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+    line-height: 1.5;
+}
+  
+.diario-evaluaciones-container ul {
+    list-style-type: none; 
+  }
+  
+.diario-evaluaciones-container li {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd; 
+    border-left: #00796b solid 8px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+  
+  .diario-evaluaciones-container p {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .diario-evaluaciones-container li:hover {
+    background-color: #b6d6d2; 
+    border-color: #00796b;
+  }

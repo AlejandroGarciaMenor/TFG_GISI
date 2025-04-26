@@ -1,9 +1,16 @@
 import React from "react";
+import "../styles/DiarioEvaluaciones.css";
 
 const DiarioEvaluaciones = ({ resumenes_chatbot }) => {
     return (
-        <div className="diario-evaluaciones">
-            <h3>Diario de Evaluaciones</h3>
+        <div className="diario-evaluaciones-container">
+            <h3>
+                <span className="material-symbols-outlined">assignment</span>
+                Diario de Evaluaciones
+            </h3>
+            <p className="diario-evaluaciones-descripcion">
+                Te hemos preparado un resumen de tus conversaciones con VITA:
+            </p>
             {resumenes_chatbot.length > 0 ? (
                 <ul>
                     {resumenes_chatbot.map((resumen_chatbot, index) => (

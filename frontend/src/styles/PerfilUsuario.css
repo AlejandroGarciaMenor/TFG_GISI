@@ -49,53 +49,6 @@
   box-sizing: border-box;
 }
 
-.diario-evaluaciones {
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 600px;
-  background-color: #f9f9f9; 
-  border: 2px solid #00796b;
-  border-radius: 10px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.diario-evaluaciones h3 {
-  font-size: 24px;
-  color: #00796b;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.diario-evaluaciones ul {
-  list-style-type: none; 
-  padding: 0;
-}
-
-.diario-evaluaciones li {
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: #ffffff; 
-  border: 1px solid #ddd; 
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.diario-evaluaciones li strong {
-  color: #333;
-  font-weight: bold;
-}
-
-.diario-evaluaciones p {
-  font-size: 16px;
-  color: #555;
-  text-align: center;
-}
-
-.diario-evaluaciones li:hover {
-  background-color: #b6d6d2; 
-  border-color: #00796b;
-}
-
 .modal-gravedad {
   background: #d15353;
   color: white;
