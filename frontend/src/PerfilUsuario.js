@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./styles/PerfilUsuario.css";
+import BarraNavegacion from "./components/BarraNavegacion";
 import DatosPerfilUsuario from "./components/DatosPerfilUsuario";
 import EstadisticasUsuario from "./components/EstadisticasUsuario";
 import DiarioEvaluaciones from "./components/DiarioEvaluaciones";
@@ -38,18 +39,33 @@ const PerfilUsuario = () => {
 
     return (
         <div className="perfil-usuario-container">
-            <DatosPerfilUsuario usuario={usuario.usuario}/>
-            <ReEvaluacion/>
-            <EstadisticasUsuario puntuaciones_gravedad={usuario.puntuaciones_gravedad}/>
-            <TiposAnsiedad tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
-            <DiarioEvaluaciones resumenes_chatbot={usuario.resumenes_chatbot}/>
-            {usuario.alerta_gravedad_severa && <AlertaGravedad />}
-            <RetoDiario userId={userId} tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
-            <div className="acceso-minijuego-478">
-                <h2>Minijuego</h2>
-                <p>Te hemos preparado un minijuego de relajación!</p>
-                <a href="/minijuego-respiracion" className="acceso-minijuego-478-link">Acceso al minijuego de respiración 478</a>
+            <div className="perfil-usuario-header">
+                <DatosPerfilUsuario usuario={usuario.usuario}/>
+                <BarraNavegacion/>
             </div>
+            {usuario.alerta_gravedad_severa && <AlertaGravedad />}
+            <section id="re-evaluacion" className="seccion-re-evaluacion">
+                <ReEvaluacion/>
+            </section>
+            <section id="estadisticas-gravedad" className="seccion-estadisticas-gravedad">
+                <EstadisticasUsuario puntuaciones_gravedad={usuario.puntuaciones_gravedad}/>
+            </section>
+            <section id="tipos-ansiedad" className="seccion-tipos-ansiedad">
+                <TiposAnsiedad tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
+            </section>
+            <section id="diario-evaluaciones" className="seccion-diario-evaluaciones">
+                <DiarioEvaluaciones resumenes_chatbot={usuario.resumenes_chatbot}/>
+            </section>
+            <section id="reto-diario" className="seccion-reto-diario">
+                <RetoDiario userId={userId} tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
+            </section>
+            <section id="minijuego" className="seccion-minijuego">
+                <div className="acceso-minijuego-478">
+                    <h2>Minijuego</h2>
+                    <p>Te hemos preparado un minijuego de relajación!</p>
+                    <a href="/minijuego-respiracion" className="acceso-minijuego-478-link">Acceso al minijuego de respiración 478</a>
+                </div>
+            </section>
         </div>
     );
 }

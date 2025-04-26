@@ -5,11 +5,26 @@ const BarraNavegacion = () => {
     return (
         <nav className="barra-navegacion">
         <ul>
-            <li><a href="#estadisticas-gravedad">Evolución niveles de ansiedad</a></li>
-            <li><a href="#tipos-ansiedad">Tipos de ansiedad detectados</a></li>
-            <li><a href="#diario-evaluaciones">Diario de evaluaciones</a></li>
-            <li><a href="#reto-diario">Reto diario</a></li>
-            <li><a href="#minijuego">Minijuego</a></li>
+            <li><a href="#estadisticas-gravedad">
+                <span className="material-symbols-outlined">bar_chart</span>
+                Evolución niveles de ansiedad
+            </a></li>
+            <li><a href="#tipos-ansiedad">
+                <span className="material-symbols-outlined">notification_important</span>
+                Tipos de ansiedad detectados
+            </a></li>
+            <li><a href="#diario-evaluaciones">
+                <span className="material-symbols-outlined">assignment</span>
+                Diario de evaluaciones
+            </a></li>
+            <li><a href="#reto-diario">
+                <span className="material-symbols-outlined">target</span>
+                Reto diario
+            </a></li>
+            <li><a href="#minijuego">
+                <span className="material-symbols-outlined">joystick</span>
+                Minijuego
+            </a></li>
         </ul>
     </nav>
     );

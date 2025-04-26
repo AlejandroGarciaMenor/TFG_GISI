@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "../styles/DatosPerfilUsuario.css";
 
 const BloqueDatosUsuario = ({ usuario }) => {
     const [editando, setEditando] = useState(false);
@@ -46,38 +47,36 @@ const BloqueDatosUsuario = ({ usuario }) => {
 
     return (
         <div className="datos-perfil-usuario">
-            <div className="perfil-header">
-                <img 
-                    src={usuario.fotoPerfil || "./images/default-user.png"} 
-                    alt="Foto de perfil" 
-                    className="perfil-imagen" 
-                />
-                <div className="perfil-info">
-                    {editando ? (
-                        <form>
-                            <label>Nombre: <input type="text" name="nombre" value={datosFormulario.nombre} onChange={handleChange} /></label>
-                            <label>Email: <input type="email" name="email" value={datosFormulario.email} onChange={handleChange} /></label>
-                            <label>Fecha de nacimiento: <input type="date" name="fechanacimiento" value={datosFormulario.fechanacimiento} onChange={handleChange} /></label>
-                            <label>Género: 
-                                <select name="genero" value={datosFormulario.genero} onChange={handleChange}>
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Femenino">Femenino</option>
-                                </select>
-                            </label>
-                            <button className="boton-editar" type="button" onClick={handleGuardar}>Guardar</button>
-                            <button className="boton-cancelar" type="button" onClick={() => setEditando(false)}>Cancelar</button>
-                        </form>
-                    ) : (
-                        <>
-                        <h2>{usuario.nombre}</h2>
-                        <p>Email: {usuario.email}</p>
-                        <p>Fecha de nacimiento: {new Date(usuario.fechanacimiento).toLocaleDateString()}</p>
-                        <p>Género: {usuario.genero}</p>
-                        <button className="boton-editar" onClick={() => setEditando(true)}>Editar</button>
-                        </>
-                    )}
-                    {mensaje && <p className="mensaje-error">{mensaje}</p>}
-                </div>
+            <img 
+                src={usuario.fotoPerfil || "./images/default-user.png"} 
+                alt="Foto de perfil" 
+                className="perfil-imagen" 
+            />
+            <div className="perfil-info">
+                {editando ? (
+                    <form>
+                        <label>Nombre: <input type="text" name="nombre" value={datosFormulario.nombre} onChange={handleChange} /></label>
+                        <label>Email: <input type="email" name="email" value={datosFormulario.email} onChange={handleChange} /></label>
+                        <label>Fecha de nacimiento: <input type="date" name="fechanacimiento" value={datosFormulario.fechanacimiento} onChange={handleChange} /></label>
+                        <label>Género: 
+                            <select name="genero" value={datosFormulario.genero} onChange={handleChange}>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                            </select>
+                        </label>
+                        <button className="boton-editar" type="button" onClick={handleGuardar}>Guardar</button>
+                        <button className="boton-cancelar" type="button" onClick={() => setEditando(false)}>Cancelar</button>
+                    </form>
+                ) : (
+                    <>
+                    <h2>{usuario.nombre}</h2>
+                    <p>Email: {usuario.email}</p>
+                    <p>Fecha de nacimiento: {new Date(usuario.fechanacimiento).toLocaleDateString()}</p>
+                    <p>Género: {usuario.genero}</p>
+                    <button className="boton-editar" onClick={() => setEditando(true)}>Editar</button>
+                    </>
+                )}
+                {mensaje && <p className="mensaje-error">{mensaje}</p>}
             </div>
         </div>
     );
