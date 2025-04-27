@@ -7,8 +7,9 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const axios = require('axios');
-// const { HfInference } = require("@huggingface/inference");
 const OpenAI = require('openai');
+const multer = require('multer');
+const path = require('path');
 
 
 
@@ -407,7 +408,7 @@ app.get("/usuario", async (req, res) => {
   const { userId } = req.query;
 
   const usuarioQuery = await pool.query(
-    "SELECT nombre, fechanacimiento, genero, email FROM usuarios WHERE id = $1",
+    "SELECT nombre, fechanacimiento, genero, email, foto_perfil FROM usuarios WHERE id = $1",
     [userId]
   );
   const usuario = usuarioQuery.rows[0];
@@ -457,16 +458,31 @@ app.get("/usuario", async (req, res) => {
 
 });
 
+// multer para subir imagenes
+const almacenamiento = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${req.body.user_id}_${Date.now()}_${file.originalname}`);
+  }
+});
+const upload = multer({ storage: almacenamiento });
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // ruta para actualizar los datos del usuario
-app.put("/usuario", async (req, res) => {
+app.put("/usuario",upload.single("fotoPerfil"), async (req, res) => {
   const {nombre, fechanacimiento, genero, email} = req.body;
   const userId = req.body.user_id;
+  const fotoPerfil = req.file ? `/uploads/${req.file.filename}` : null;
+  console.log(fotoPerfil);
 
   try {
     const result = await pool.query(
-      "UPDATE usuarios SET nombre = $1, fechanacimiento = $2, genero = $3, email = $4 WHERE id = $5",
-      [nombre, fechanacimiento, genero, email, userId]
-    );
+      "UPDATE usuarios SET nombre = $1, fechanacimiento = $2, genero = $3, email = $4, foto_perfil = $5 WHERE id = $6",
+      [nombre, fechanacimiento, genero, email, fotoPerfil,userId]
+    ); 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }

@@ -11,11 +11,16 @@ const BloqueDatosUsuario = ({ usuario }) => {
         fechanacimiento: usuario.fechanacimiento,
         genero: usuario.genero,
     });
+    const [fotoPerfil, setFotoPerfil] = useState(null);
     const [mensaje, setMensaje] = useState("");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setdatosFormulario({ ...datosFormulario, [name]: value });
+    }
+
+    const handleFotoPerfilChange = (e) => {
+        setFotoPerfil(e.target.files[0]);
     }
 
     const handleGuardar = async () => {
@@ -32,13 +37,18 @@ const BloqueDatosUsuario = ({ usuario }) => {
             return setMensaje("No puedes editar tu perfil si eres menor de edad");
         }
 
-        const datosFormularioConFechaISO= {
-            ...datosFormulario,
-            fechanacimiento: new Date(datosFormulario.fechanacimiento).toISOString().split("T")[0],
-        };
+        const datosForm = new FormData();
+        datosForm.append("user_id", datosFormulario.user_id);
+        datosForm.append("nombre", datosFormulario.nombre);
+        datosForm.append("email", datosFormulario.email);
+        datosForm.append("fechanacimiento", new Date(datosFormulario.fechanacimiento).toISOString().split("T")[0]);
+        datosForm.append("genero", datosFormulario.genero);
+        if (fotoPerfil) {
+            datosForm.append("fotoPerfil", fotoPerfil);
+        }
 
         try {
-            await axios.put("https://localhost:5000/usuario", datosFormularioConFechaISO);
+            await axios.put("https://localhost:5000/usuario", datosForm);
             setEditando(false);
         } catch (error) {
             console.error("Error actualizando los datos del usuario", error);
@@ -48,7 +58,7 @@ const BloqueDatosUsuario = ({ usuario }) => {
     return (
         <div className="datos-perfil-usuario">
             <img 
-                src={usuario.fotoPerfil || "./images/default-user.png"} 
+                src={usuario.foto_perfil ? `https://localhost:5000${usuario.foto_perfil}` : "./images/default-user.png"} 
                 alt="Foto de perfil" 
                 className="perfil-imagen" 
             />
@@ -64,6 +74,7 @@ const BloqueDatosUsuario = ({ usuario }) => {
                                 <option value="Femenino">Femenino</option>
                             </select>
                         </label>
+                        <label>Foto de perfil: <input type="file" name="fotoPerfil" onChange={handleFotoPerfilChange} /></label>
                         <button className="boton-editar" type="button" onClick={handleGuardar}>Guardar</button>
                         <button className="boton-cancelar" type="button" onClick={() => setEditando(false)}>Cancelar</button>
                     </form>
