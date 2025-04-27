@@ -482,6 +482,12 @@ app.put("/usuario", async (req, res) => {
 app.get("/reto-diario", async (req, res) => {
   const userId = req.query.userId;
   const tiposAnsiedad = req.query.tipos_ansiedad_detectados;
+  console.log("Tipos de ansiedad detectados:", tiposAnsiedad);
+
+  if (!Array.isArray(tiposAnsiedad) || tiposAnsiedad.length === 0) {
+    return res.status(400).json({ message: "Tipos de ansiedad no válidos o no proporcionados" });
+  }
+
   const idsAnsiedadUnicos = [...new Set(tiposAnsiedad.map(item => item.id_ansiedad))];
 
   try{
