@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../styles/RetoDiario.css';
 
 const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
 
@@ -7,13 +8,19 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
     const [mensaje, setMensaje] = useState('');
     const [cargando, setCargando] = useState(true);
     const [retoCompletado, setRetoCompletado] = useState(false);
-    const [racha, setRacha] = useState(null);
+    const [racha, setRacha] = useState({ mejor_racha: 0, racha_actual: 0 });
 
     const obtenerReto = async () => {
         try {
             setCargando(true);
+
+            // si tipos_ansiedad_detectados es nulo, ponemos id_ansiedad 0 por defecto para que siga devolviendo retos generales
+            const tiposAnsiedad = (!Array.isArray(tipos_ansiedad_detectados) || tipos_ansiedad_detectados.length === 0)
+                ? [{ id_ansiedad: 0 }]
+                : tipos_ansiedad_detectados;
+
             const res = await axios.get('https://localhost:5000/reto-diario', { 
-                params: { userId, tipos_ansiedad_detectados } 
+                params: { userId, tipos_ansiedad_detectados: tiposAnsiedad } 
             });
             if (res.data.reto === null) {
                 setMensaje(res.data.mensaje);
@@ -71,25 +78,44 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
 
     return (
         <div className={`reto-diario-container ${reto?.completado ? 'reto-completado' : ''}`}>
-            <h3 className='reto-diario-titulo'>Este es tu reto del día!</h3>
-            {reto.id_ansiedad !== 0 ? (
-                <p>Hoy te proponemos un reto especial para ayudarte a manejar el tipo de trastorno de ansiedad que fue detectado por AnxBot, el {reto.nombre}</p>
-            ):(
-                <p>El reto de hoy es útil para manejar cualquier tipo e intensidad de ansiedad!</p>
-            )}
+            <h3 className='reto-diario-titulo'>
+                <span className="material-symbols-outlined">target</span>
+                El reto del día
+            </h3>
             {mensaje ? (
                 <p>{mensaje}</p>
             ) : reto ? (
                 <div className="reto-item">
-                    <h3 className="reto-categoria">{reto.categoria}</h3>
-                    <p className='racha'>Llevas una racha de {racha || 0} días</p>
+                    <div className="rachas-container">
+                        <div className="racha-item">
+                            <div className="racha-circulo">
+                                <span className="material-symbols-outlined racha-icono">app_badging</span>
+                                <span className="racha-numero">{racha.mejor_racha || 0}</span>
+                            </div>
+                            <p className="racha-texto">Mejor racha histórica</p>
+                        </div>
+                        <div className="racha-item">
+                            <div className="racha-circulo">
+                                <span className="material-symbols-outlined racha-icono">app_badging</span>
+                                <span className="racha-numero">{racha.racha_actual || 0}</span>
+                            </div>
+                            <p className="racha-texto">Racha actual</p>
+                        </div>
+                    </div>
+                    {reto.id_ansiedad !== 0 ? (
+                        <p className='reto-diario-finalidad'>Finalidad del reto: Hoy te proponemos un reto especial para ayudarte a manejar el tipo de trastorno de ansiedad que fue detectado por VITA, el {reto.nombre}</p>
+                    ):(
+                        <p className='reto-diario-finalidad'>Finalidad del reto: El reto de hoy es útil para manejar cualquier tipo e intensidad de ansiedad!</p>
+                    )}
+                    <h3 className="reto-diario-estrategia">Estrategia del reto: {reto.categoria}</h3>
+
                     <p className="reto-contenido">{reto.contenido}</p>
                     <button 
                         className={`boton-completar-reto ${reto.completado ? 'boton-completado' : ''}`} 
                         onClick={completarReto} 
                         disabled={reto.completado}>
                         {reto.completado ? 'Reto Completado' : 'Marcar reto como completado'}
-                    </button> 
+                    </button>
                 </div>
             ) : (
                 <p>No hay retos disponibles para hoy.</p>

@@ -482,7 +482,6 @@ app.put("/usuario", async (req, res) => {
 app.get("/reto-diario", async (req, res) => {
   const userId = req.query.userId;
   const tiposAnsiedad = req.query.tipos_ansiedad_detectados;
-  console.log("Tipos de ansiedad detectados:", tiposAnsiedad);
 
   if (!Array.isArray(tiposAnsiedad) || tiposAnsiedad.length === 0) {
     return res.status(400).json({ message: "Tipos de ansiedad no válidos o no proporcionados" });
@@ -552,21 +551,60 @@ app.get("/racha", async (req, res) => {
   const userId = req.query.userId;
 
   try {
-    const rachaQuery = await pool.query(
-      `WITH fechas_distintas_reto_completado AS (
-        SELECT DISTINCT fecha::date FROM usuarios_retocompletado WHERE id_usuario = $1 AND completado = true
+    const queryMejorRachaHistorica = await pool.query(
+      `WITH fechas_distintas AS (
+        SELECT DISTINCT fecha::date
+        FROM usuarios_retocompletado
+        WHERE id_usuario = $1 AND completado = true
       ),
-      fechas_con_rownumber AS (
+      fechas_con_rn AS (
         SELECT
           fecha,
           ROW_NUMBER() OVER (ORDER BY fecha) AS rn
-        FROM fechas_distintas_reto_completado
+        FROM fechas_distintas
       ),
       grupos AS (
         SELECT
           fecha,
           fecha - (rn || ' days')::interval AS grupo
-        FROM fechas_con_rownumber
+        FROM fechas_con_rn
+      ),
+      rachas AS (
+        SELECT
+          grupo,
+          COUNT(*) AS dias
+        FROM grupos
+        GROUP BY grupo
+      )
+      SELECT MAX(dias) AS mejor_racha
+      FROM rachas;
+      `,
+      [userId]
+    );
+
+    const queryRachaHastaDiaAnterior = await pool.query(
+      `WITH fechas_distintas AS (
+        SELECT DISTINCT fecha::date
+        FROM usuarios_retocompletado
+        WHERE id_usuario = $1 AND completado = true
+      ),
+      ayer_completado AS (
+        SELECT 1
+        FROM fechas_distintas
+        WHERE fecha = CURRENT_DATE - INTERVAL '1 day'
+      ),
+      fechas_con_rn AS (
+        SELECT
+          fecha,
+          ROW_NUMBER() OVER (ORDER BY fecha) AS rn
+        FROM fechas_distintas
+        WHERE fecha <= CURRENT_DATE - INTERVAL '1 day'
+      ),
+      grupos AS (
+        SELECT
+          fecha,
+          fecha - (rn || ' days')::interval AS grupo
+        FROM fechas_con_rn
       ),
       racha_actual AS (
         SELECT
@@ -577,13 +615,22 @@ app.get("/racha", async (req, res) => {
         ORDER BY grupo DESC
         LIMIT 1
       )
-      SELECT dias AS racha_actual
-      FROM racha_actual;
+      SELECT
+        CASE
+          WHEN EXISTS (SELECT 1 FROM ayer_completado)
+          THEN (SELECT dias FROM racha_actual)
+          ELSE 0
+        END AS racha_actual;
       `,
       [userId]
     );
 
-    const racha = rachaQuery.rows[0]?.racha_actual || 0;
+    const mejorRacha = queryMejorRachaHistorica.rows[0]?.mejor_racha || 0;
+    const rachaHastaDiaAnterior = queryRachaHastaDiaAnterior.rows[0]?.racha_actual || 0;
+    const racha = {
+      mejor_racha: mejorRacha,
+      racha_actual: rachaHastaDiaAnterior,
+    };
     res.json({ racha });
 
   } catch (error) {

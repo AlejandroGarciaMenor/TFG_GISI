@@ -37,11 +37,29 @@
 .seccion-re-evaluacion,
 .seccion-estadisticas-gravedad,
 .seccion-diario-evaluaciones,
-.seccion-reto-diario,
-.seccion-minijuego,
 .seccion-tipos-ansiedad {
   width: 100%;
   margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.seccion-reto-minijuego {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin: 20px auto;
+}
+
+.seccion-reto-diario,
+.seccion-acceso-minijuego {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
   padding: 20px;
   background-color: #ffffff;
   border-radius: 10px;
@@ -88,56 +106,15 @@
   border: none;
 }
 
-/* Contenedor principal */
-.reto-diario-container {
-  max-width: 600px;
-  margin: 20px auto;
-  text-align: center;
-  padding: 20px;
-  border: 2px solid #00796b;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
 
-.reto-diario-titulo {
-  font-size: 24px;
-  color: #00796b;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.reto-diario-container.reto-completado {
-  background-color: #d4edda; 
-}
-
-.boton-completar-reto {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #00796b;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.boton-completar-reto.boton-completado {
-  background-color: grey;
-  cursor: not-allowed;
-}
 
 .acceso-minijuego-478 {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  background: linear-gradient(135deg, #c1ebda, #a1d9f7);
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .acceso-minijuego-478 h2 {
@@ -158,8 +135,4 @@
   border-radius: 5px;
   text-decoration: none;
   transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.barra-navegacion {
-  background-color: #00796b;
 }

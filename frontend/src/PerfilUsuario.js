@@ -56,15 +56,17 @@ const PerfilUsuario = () => {
             <section id="diario-evaluaciones" className="seccion-diario-evaluaciones">
                 <DiarioEvaluaciones resumenes_chatbot={usuario.resumenes_chatbot}/>
             </section>
-            <section id="reto-diario" className="seccion-reto-diario">
-                <RetoDiario userId={userId} tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
-            </section>
-            <section id="minijuego" className="seccion-minijuego">
-                <div className="acceso-minijuego-478">
-                    <h2>Minijuego</h2>
-                    <p>Te hemos preparado un minijuego de relajación!</p>
-                    <a href="/minijuego-respiracion" className="acceso-minijuego-478-link">Acceso al minijuego de respiración 478</a>
-                </div>
+            <section className="seccion-reto-minijuego">
+                <section id="reto-diario" className="seccion-reto-diario">
+                    <RetoDiario userId={userId} tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
+                </section>
+                <section id="minijuego" className="seccion-acceso-minijuego">
+                    <div className="acceso-minijuego-478">
+                        <h2>Minijuego</h2>
+                        <p>Te hemos preparado un minijuego de relajación!</p>
+                        <a href="/minijuego-respiracion" className="acceso-minijuego-478-link">Acceso al minijuego de respiración 478</a>
+                    </div>
+                </section>
             </section>
         </div>
     );
