@@ -22,8 +22,8 @@ const BarraNavegacion = () => {
                 Reto diario
             </a></li>
             <li><a href="#minijuego">
-                <span className="material-symbols-outlined">joystick</span>
-                Minijuego
+                <span className="material-symbols-outlined">self_improvement</span>
+                Minijuego de respiración
             </a></li>
         </ul>
     </nav>

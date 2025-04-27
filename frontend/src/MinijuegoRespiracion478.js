@@ -4,9 +4,9 @@ import './styles/MinijuegoRespiracion478.css';
 import sonidoRelajante from './audio/relaxation-music-49-50061.mp3';
 
 const pasos = [
-    {nombre: "Inhala", duracion: 4000},
-    {nombre: "Mantén", duracion: 7000},
-    {nombre: "Exhala", duracion: 8000},
+    {nombre: "INHALA", duracion: 4000},
+    {nombre: "MANTÉN", duracion: 7000},
+    {nombre: "EXHALA", duracion: 8000},
 ];
 
 const audio = new Audio(sonidoRelajante);
@@ -80,7 +80,10 @@ const MinijuegoRespiracion478 = () => {
 
     return (
         <div className="minijuego-container">
-            <h3 className="minijuego-titulo">Relajación 4-7-8</h3>
+            <h3 className="minijuego-titulo">
+            <span className="material-symbols-outlined">self_improvement</span>
+                Relajación 4-7-8
+            </h3>
             <p className="minijuego-instrucciones">Siéntate cómodamente, con la espalda recta. Inhala por la nariz durante 4 segundos, mantén la respiración durante 7 segundos y exhala por la boca durante 8 segundos.</p>
             {!esActivo && (
                 <div className="configuracion-rondas">

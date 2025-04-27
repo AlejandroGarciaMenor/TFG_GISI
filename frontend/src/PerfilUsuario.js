@@ -10,6 +10,7 @@ import AlertaGravedad from "./components/AlertaGravedad";
 import ReEvaluacion from "./components/ReEvaluacion";
 import RetoDiario from "./components/RetoDiario";
 import TiposAnsiedad from "./components/TiposAnsiedad";
+import MinijuegoRespiracion478 from "./MinijuegoRespiracion478";
 
 const PerfilUsuario = () => {
     const userId = sessionStorage.getItem("id");
@@ -61,11 +62,7 @@ const PerfilUsuario = () => {
                     <RetoDiario userId={userId} tipos_ansiedad_detectados={usuario.tipos_ansiedad_detectados}/>
                 </section>
                 <section id="minijuego" className="seccion-acceso-minijuego">
-                    <div className="acceso-minijuego-478">
-                        <h2>Minijuego</h2>
-                        <p>Te hemos preparado un minijuego de relajación!</p>
-                        <a href="/minijuego-respiracion" className="acceso-minijuego-478-link">Acceso al minijuego de respiración 478</a>
-                    </div>
+                    <MinijuegoRespiracion478/>
                 </section>
             </section>
         </div>
