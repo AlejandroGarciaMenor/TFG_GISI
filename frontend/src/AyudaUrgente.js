@@ -4,7 +4,10 @@ import "./styles/AyudaUrgente.css";
 const AyudaUrgente = () => {
     return (
         <div className="ayuda-urgente-container">
-            <h2>¿Necesitas ayuda urgente para combatir tus síntomas de ansiedad?</h2>
+            <h2>
+                <span className="material-symbols-outlined">notification_important</span>
+                ¿Necesitas ayuda urgente para combatir tus síntomas de ansiedad?
+            </h2>
             <p>Si estás experimentando síntomas graves de ansiedad y sientes que no puedes manejarlos solo, es importante que busques ayuda profesional de inmediato. Aquí tienes algunas opciones que pueden ayudarte:</p>
 
             <div className="ayuda-bloque">

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import Modal from "react-modal";
+import "../styles/AlertaGravedad.css";
 
 Modal.setAppElement('#root');
 

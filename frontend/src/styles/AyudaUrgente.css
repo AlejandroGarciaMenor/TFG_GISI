@@ -1,11 +1,9 @@
 .ayuda-urgente-container {
-    margin: 20px auto;
+    width: 100%;
+    max-width: 1700px;
+    margin: 0 auto;
     padding: 20px;
-    max-width: 800px;
-    background-color: #f9f9f9;
-    border: 2px solid #00796b;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9; 
 }
 
 .ayuda-urgente-container h2 {
@@ -54,16 +52,20 @@
 .ayuda-enlaces ul {
     list-style-type: none;
     display: flex;
+    justify-content: center;
+    gap: 50px;
 }
 
 .ayuda-enlaces li {
-    margin-bottom: 10px;
-    flex-direction: row;
-    margin-right: auto;
+    display: inline-block;
+    padding: 10px;
+    background-color: #00796b;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .ayuda-link {
-    color: #055148;
+    color: white;
     text-decoration: none;
 }
 
