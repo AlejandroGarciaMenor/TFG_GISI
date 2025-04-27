@@ -18,7 +18,7 @@ const EstadisticasUsuario = ({ puntuaciones_gravedad }) => {
     return (
         <div className="estadisticas-usuario-container">
             <h2 className="estadisticas-usuario-titulo">
-                <span className="material-symbols-outlined">bar_chart</span>
+                <span className="material-symbols-outlined">monitor_heart</span>
                 Evolución de los niveles de ansiedad
             </h2>
             <p className="estadisticas-usuario-descripcion">

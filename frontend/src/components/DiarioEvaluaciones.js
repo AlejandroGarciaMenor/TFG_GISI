@@ -5,7 +5,7 @@ const DiarioEvaluaciones = ({ resumenes_chatbot }) => {
     return (
         <div className="diario-evaluaciones-container">
             <h3>
-                <span className="material-symbols-outlined">assignment</span>
+                <span className="material-symbols-outlined">diagnosis</span>
                 Diario de Evaluaciones
             </h3>
             <p className="diario-evaluaciones-descripcion">
