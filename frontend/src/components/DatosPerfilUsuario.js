@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/DatosPerfilUsuario.css";
 
@@ -13,6 +13,12 @@ const BloqueDatosUsuario = ({ usuario }) => {
     });
     const [fotoPerfil, setFotoPerfil] = useState(null);
     const [mensaje, setMensaje] = useState("");
+
+    useEffect(() => {
+        if (usuario.foto_perfil) {
+            sessionStorage.setItem("fotoPerfil", usuario.foto_perfil);
+        }
+    }, [usuario.foto_perfil]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -48,7 +54,10 @@ const BloqueDatosUsuario = ({ usuario }) => {
         }
 
         try {
-            await axios.put("https://localhost:5000/usuario", datosForm);
+            const response = await axios.put("https://localhost:5000/usuario", datosForm);
+            if(response.data.fotoPerfil){    
+                sessionStorage.setItem("fotoPerfil", response.data.fotoPerfil);
+            }
             setEditando(false);
         } catch (error) {
             console.error("Error actualizando los datos del usuario", error);

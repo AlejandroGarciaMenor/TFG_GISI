@@ -8,7 +8,7 @@ Modal.setAppElement('#root');
 const Chatbot = () => {
   const userId = sessionStorage.getItem("id");
   const nombreUsuario = sessionStorage.getItem("nombre");
-  const imagenUsuario = sessionStorage.getItem("fotoPerfil") || "./images/default-user.png";
+  const imagenUsuario = sessionStorage.getItem("fotoPerfil") ? `https://localhost:5000${sessionStorage.getItem("fotoPerfil")}` : "./images/default-user.png";
   const imagenBot = "./images/chatbot.jpg";
   const [mensaje, setMensaje] = useState('');
   const [historial, setHistorial] = useState([]);
@@ -51,8 +51,8 @@ const Chatbot = () => {
   return (
     <div className='chatbot-container'>
       <div className='chatbot-header'>
-        <h2>¡Bienvenido a AnxBot!</h2>
-        <p>¿Que tal estás {nombreUsuario} ?  Cuénatme todos los síntomas que tengas relacionados con tu ansiedad!</p>
+        <h2>¡Bienvenido a VITA!</h2>
+        <p>¿Que tal estás {nombreUsuario} ?  Cuéntame todos los síntomas que tengas relacionados con tu ansiedad!</p>
       </div>
       <div className='chatbot-historial'>
         {historial.map((msg, idx) => (
@@ -67,7 +67,8 @@ const Chatbot = () => {
         <input 
           type="text" 
           value={mensaje} 
-          onChange={(e) => setMensaje(e.target.value)} 
+          onChange={(e) => setMensaje(e.target.value)}
+          onKeyDown={(e => e.key === "Enter" ? handleEnviar() : null)} 
           placeholder="Escribe un mensaje..." 
         />
         <button onClick={handleEnviar}>Enviar</button>

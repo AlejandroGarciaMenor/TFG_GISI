@@ -486,7 +486,8 @@ app.put("/usuario",upload.single("fotoPerfil"), async (req, res) => {
     if (result.rowCount === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    res.json({ message: "Datos actualizados correctamente" });
+    res.json({ message: "Datos actualizados correctamente", fotoPerfil: fotoPerfil });
+    console.log("Datos actualizados correctamente", result.rows[0]);
   } catch (err) {
     console.error("Error al actualizar los datos del usuario:", err);
     res.status(500).json({ message: "Error en el servidor" });

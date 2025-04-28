@@ -1,9 +1,7 @@
 .chatbot-container {
-    max-width: 800px;
     width: 70%;
     margin: 0 auto;
     padding: 20px;
-    font-family: Arial, sans-serif;
     border: 1px solid #ddd;
     border-radius: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -68,6 +66,7 @@
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+    object-fit: cover;
 }
 
 .mensaje.usuario img {
@@ -79,7 +78,7 @@
     max-width: 70%;
     padding: 10px;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 1.5;
 }
 
