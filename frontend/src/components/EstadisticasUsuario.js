@@ -3,7 +3,9 @@ import { Bar, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import "../styles/EstadisticasUsuario.css";
 
 const EstadisticasUsuario = ({ puntuaciones_gravedad }) => {
-    const datosGrafico = (puntuaciones_gravedad).map((item) => ({
+    const datosGrafico = (puntuaciones_gravedad)
+    .filter((item) => item.puntuacion_gravedad > 0)
+    .map((item) => ({
         fecha: new Date(item.fecha).toLocaleDateString(), 
         puntuacion: item.puntuacion_gravedad || 0, 
     }));
@@ -26,7 +28,7 @@ const EstadisticasUsuario = ({ puntuaciones_gravedad }) => {
                 Las puntuaciones que observas son el resultado del cuestionario de gravedad
                 <a href="https://www.promishealth.org/" target="__blank"> PROMIS® Emotional Distress - Anxiety – Short Form 7a. </a>
                 Este cuestionario sirve para evaluar el nivel de ansiedad de un adulto en los últimos 7 días y hacer un seguimiento de su evolución.
-                Si faltan más del 25% de las respuestas, el resultado no es válido.
+                Si faltan más del 25% de las respuestas, el resultado no es válido y no se muestra en el gráfico.
                 Las puntuaciones se corresponden a un nivel (aproximado) de ansiedad:
                 <br />
             </p>
