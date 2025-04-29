@@ -67,7 +67,7 @@ app.post("/register", async (req, res) => {
   try {
     const existingUser = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);
     if (existingUser.rows.length > 0) {
-      return res.status(400).json({ message: "El correo ya está registrado" });
+      return res.status(400).json({ message: "Ya esxiste un usuario registrado con este correo." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -138,11 +138,11 @@ app.post("/verificar-2fa", async (req, res) => {
     }
 
     if (user.two_factor_codigo !== codigo) {
-      return res.status(400).send("Código incorrecto");
+      return res.status(400).send("El código es incorrecto");
     }
 
     if (new Date() > user.two_factor_expiracion) {
-      return res.status(400).send("Código expirado");
+      return res.status(400).send("El código ha expirado");
     }
 
     // si el codigo es correcto

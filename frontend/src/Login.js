@@ -25,7 +25,7 @@ const Login = () => {
         navigate("/perfil-usuario");
       }
     } catch (err) {
-        setError("Error en el login:", err.response ? err.response.data : err.message);
+        setError(err.response?.data|| "Error en el registro");
       }
       
   };
@@ -39,7 +39,7 @@ const Login = () => {
       sessionStorage.setItem("id", res.data.id);
       navigate("/perfil-usuario");
     } catch (err) {
-      setError("Error en la verificación:", err.response ? err.response.data : err.message);
+      setError(err.response?.data || "Error en el servidor");
     }
   };
 
