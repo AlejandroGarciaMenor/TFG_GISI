@@ -1,0 +1,97 @@
+.cuestionario-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-height: 800px;
+    max-width: 1200px;
+    border-radius: 10px;
+}
+
+.titulo {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.descripcion {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #555;
+}
+
+.descripcion a {
+    color: #00796b;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.pregunta-card {
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 80%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.pregunta-texto {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.entrada {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.salida {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.boton-opcion.boton-opcion.boton-opcion  {
+    width: 100%;
+    color: black;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+    cursor: pointer;
+    font-size: 1.45rem;
+    transition: background 0.3s ease;
+}
+
+.boton-opcion.opcion-0 {
+    background-color: #78cc7b; 
+}
+  
+.boton-opcion.opcion-1 {
+    background-color: #e6e477; 
+  }
+  
+.boton-opcion.opcion-2 {
+    background-color: #dfb04ab2;
+  }
+  
+.boton-opcion.opcion-3 {
+    background-color: #ce7a43;
+}
+.boton-opcion.opcion-4 {
+    background-color: #d45e56;
+}
+
+.boton-opcion.boton-opcion:hover {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid #000000;
+    transform: scale(1.08);
+}

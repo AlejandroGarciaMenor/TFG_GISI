@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./styles/Cribado.css";
-import "./styles/common.css";
+import "./styles/PaginaCuestionario.css";
 
 const Cribado = () => {
   const navigate = useNavigate();
@@ -15,7 +14,10 @@ const Cribado = () => {
 
   // creo una sesion de cribado
   useEffect(() => {
+    let sesionIniciada = false;
     const iniciarSesionCribado = async () => {
+      if (sesionIniciada) return;
+      sesionIniciada = true;
       try {
         const res = await axios.post("https://localhost:5000/iniciar-sesion-cribado", { userId });
         setIdSesion(res.data.idSesion);
@@ -83,7 +85,6 @@ const Cribado = () => {
         idSesion,
         respuestas: respuestasFinales
       });
-      //navigate("/gravedad");
     } catch (err) {
       console.error("Error al guardar las respuestas:", err);
       alert("Error al guardar las respuestas");
@@ -92,15 +93,23 @@ const Cribado = () => {
 
 
   return (
-    <div className="cribado-container">
+    <div className="cuestionario-container">
       <h1 className="titulo">Hola, {nombre}!</h1>
-      <p className="subtitulo">Realizaremos un breve cribado sobre tu estado emocional (Medida de síntomas transversales del DSM-5).</p>
-      <p className="subtitulo">Durante las últimas DOS (2) SEMANAS, ¿cuánto (o con qué frecuencia) le han perturbado los siguientes problemas?</p>
+      <p className="descripcion">
+        Realizaremos un breve cribado sobre tu estado emocional basado en la   
+        <a href="https://www.psychiatry.org/news-room/news-releases/asociacion-americana-de-psiquiatria-publica-el-man" target="_blank">
+          Medida de síntomas transversales del DSM-5
+        </a>. 
+        Esta medida de 3 preguntas es una herramienta utilizada en fases iniciales de evaluación para conocer tu estado y determinar si es necesario realizar una evaluación más profunda.
+      </p>
+      <p className="descripcion">
+        Durante las últimas DOS (2) SEMANAS,<strong> ¿cuánto (o con qué frecuencia) le han perturbado los siguientes problemas?</strong>
+      </p>
 
       <div className={`pregunta-card ${animacion ? "salida" : "entrada"}`}>
-        <h2>{preguntas[indicePregunta].texto}</h2>
+        <h2 className="pregunta-texto">{preguntas[indicePregunta].texto}</h2>
         {opciones.map((opcion, index) => (
-          <button key={index} className="boton-opcion" onClick={() => handleSelect(opcion.valor)}>
+          <button key={index} className={`boton-opcion opcion-${opcion.valor}`} onClick={() => handleSelect(opcion.valor)}>
             {opcion.texto}
           </button>
         ))}

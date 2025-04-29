@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./styles/Gravedad.css";
-import "./styles/common.css";
+import "./styles/PaginaCuestionario.css";
 
 const Gravedad = () => {
   const navigate = useNavigate();
@@ -82,15 +81,21 @@ const Gravedad = () => {
   };
 
   return (
-    <div className="gravedad-container">
+    <div className="cuestionario-container">
       <h1 className="titulo">Hola, {nombre}!</h1>
-      <p className="subtitulo">Este segundo cuestionario breve nos ayudará a determinar la gravedad de los síntomas.</p>
-      <p className="subtitulo">En los últimos 7 días... </p>
-
+      <p className="descripcion">
+          Ahora vamos a evaluar tu nivel de ansiedad, a través del cuestionario
+          <a href="https://www.promishealth.org/" target="__blank">PROMIS® Emotional Distress - Anxiety – Short Form 7a. </a>
+          Este cuestionario sirve para evaluar el nivel de ansiedad de un adulto en los últimos 7 días y hacer un seguimiento de su evolución.
+          Si faltan más del 25% de las respuestas, el resultado no es válido. Podrás encontrar tus resultados en la sección de estadísticas de tu perfil.
+      </p>
+      <p className="descripcion">
+        Por favor, selecciona la opción que mejor describa tu <strong>experiencia en los últimos 7 días.</strong>
+      </p>
       <div className={`pregunta-card ${animacion ? "salida" : "entrada"}`}>
-        <h2>{preguntasGravedad[indicePreguntaGravedad].texto}</h2>
+        <h2 className="pregunta-texto">{preguntasGravedad[indicePreguntaGravedad].texto}</h2>
         {opcionesGravedad.map((opcion, index) => (
-          <button key={index} className="boton-opcion" onClick={() => handleSelect(opcion.valor)}>
+          <button key={index} className={`boton-opcion opcion-${opcion.valor-1}`} onClick={() => handleSelect(opcion.valor)}>
             {opcion.texto}
           </button>
         ))}
