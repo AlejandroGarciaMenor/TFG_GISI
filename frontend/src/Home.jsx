@@ -4,18 +4,18 @@ import {
   Box,
   Text,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import {motion} from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const MotionText = motion(Text);
 const TituloAnimado = () => (
-  <MotionText fontSize={{ base: "2xl", md: "4xl" }} color="#00796b" textAlign="center" initial={{ opacity: 0, y: -100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 2 }}>
-    <span style={{ color: "#004d40" }}>S</span>istema de{" "}
-    <span style={{ color: "#004d40" }}>E</span>valuación y{" "}
-    <span style={{ color: "#004d40" }}>RE</span>come<span style={{ color: "#004d40" }}>N</span>daciones para la{" "}
-    <span style={{ color: "#004d40" }}>A</span>nsiedad
-  </MotionText>
+  <MotionBox initial={{ opacity: 0, y: -100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 2 }} textAlign="center">
+    <Image src="/images/logo.png" alt="Logo" objectFit="cover" width="230px" height="70px" mb={4} mx="auto"/>
+    <Text fontSize={{ base: "l", md: "xl" }} color="#00796b">
+      Bienvenido a Serena, el Sistema de Evaluación y REcomeNdaciones para la Ansiedad, una aplicacción diseñada para acompañarte en la gestión de tu ansiedad.
+    </Text>
+  </MotionBox>
 );
 
 const MotionBox = motion(Box);
