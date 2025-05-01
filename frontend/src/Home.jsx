@@ -18,6 +18,8 @@ const TituloAnimado = () => (
   </MotionText>
 );
 
+const MotionBox = motion(Box);
+const MotionDiv = motion.div;
 const caracteristicasApp = [
   {
     titulo: "Cuestionarios de autoevaluación",
@@ -54,27 +56,29 @@ export default function Home() {
     <VStack spacing={16} p={8} align="center">
       <TituloAnimado />
 
-      <Box w="1000px" h="150px" p={4} borderRadius="md" boxShadow="lg" bg="#a8d1c5" mt={4}>
-        <Text fontSize="xl" fontWeight="bold" color="#000000" textAlign="center">
-          {caracteristicasApp[caracteristicaActual].titulo}
-        </Text>
-        <Text fontSize="lg" color="#000000" textAlign="center" mt={2}>
-          {caracteristicasApp[caracteristicaActual].descripcion}
-        </Text>
+      <MotionBox initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} w="1000px" h="150px" p={4} borderRadius="md" boxShadow="lg" bg="#a8d1c5" mt={4}>
+        <MotionDiv key={caracteristicaActual} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}transition={{ duration: 0.5 }}>
+          <Text fontSize="xl" fontWeight="bold" color="#000000" textAlign="center">
+            {caracteristicasApp[caracteristicaActual].titulo}
+          </Text>
+          <Text fontSize="lg" color="#000000" textAlign="center" mt={2}>
+            {caracteristicasApp[caracteristicaActual].descripcion}
+          </Text>
+        </MotionDiv>
         <Box display="flex" justifyContent="center" mt={4}>
           {caracteristicasApp.map((_, index) => (
             <Box key={index} w={3}  h={3}  mx={1}  borderRadius="50%"  bg={index === caracteristicaActual ? "#00796b" : "gray.300"}
             />
           ))}
         </Box>
-      </Box>
+      </MotionBox>
 
       <Box display="flex" flexDirection="row" alignItems="center" gap={6} mt={8}>
         <Box w="400px" p={4} borderRadius="md" boxShadow="lg" textAlign="center">
           <Text fontSize="sm" color="gray.600" mb={4}>
             Si nunca has utilizado la app, crea un perfil y realiza un primer proceso evaluación, realizando los cuestionarios y hablando con SERENA.
           </Text>
-          <Button bg="#00796b" color="white" _hover={{ bg: "#388e3c" }} size="lg" onClick={() => navigate("/register")}>
+          <Button bg="#00796b" color="white" _hover={{ bg: "#a8d1c5" }} size="lg" onClick={() => navigate("/register")}>
             Registrarse
           </Button>
         </Box>
@@ -82,7 +86,7 @@ export default function Home() {
           <Text fontSize="sm" color="gray.600" mb={4}>
             Accede a tu perfil para ver tu progreso y herramientas de ayuda. Puedes iniciar un nuevo proceso de evaluación desde tu perfil.
           </Text>
-          <Button bg="#00796b" color="white" _hover={{ bg: "#388e3c" }} size="lg" onClick={() => navigate("/login")}>
+          <Button bg="#00796b" color="white" _hover={{ bg: "#a8d1c5" }} size="lg" onClick={() => navigate("/login")}>
             Iniciar Sesión
           </Button>
         </Box>
