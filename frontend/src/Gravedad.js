@@ -7,6 +7,7 @@ const Gravedad = () => {
   const navigate = useNavigate();
   const nombre = sessionStorage.getItem("nombre");
   const userId = sessionStorage.getItem("id");
+  const token = sessionStorage.getItem("token");
   const [indicePreguntaGravedad, setIndicePreguntaGravedad] = useState(0);
   const [respuestasGravedad, setRespuestasGravedad] = useState({});
   const [animacion, setAnimacion] = useState(false);
@@ -70,10 +71,10 @@ const Gravedad = () => {
   // guardo las respuestas en la base de datos
   const guardarRespuestas = async (puntuacion_gravedad) => {
     try {
-      await axios.post("https://localhost:5000/guardar-gravedad", {
-        user_id: userId,
-        puntuacion_gravedad
-      });
+      await axios.post("http://localhost:5000/cuestionarios/guardar-gravedad", 
+        {user_id: userId, puntuacion_gravedad},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
     } catch (err) {
       console.error("Error al guardar las respuestas:", err);
       alert("Error al guardar las respuestas");

@@ -14,23 +14,33 @@ import MinijuegoRespiracion478 from "./MinijuegoRespiracion478";
 
 const PerfilUsuario = () => {
     const userId = sessionStorage.getItem("id");
+    const token = sessionStorage.getItem("token");
     const [usuario, setUsuario] = useState(null);
     const [cargando, setCargando] = useState(true);
 
     useEffect(() => {
         const fetchUsuario = async () => {
+            console.log("userId", userId);
+            console.log("token", token);
             try {
-                const res = await axios.get("https://localhost:5000/usuario", { 
-                    params: { userId } 
+                const res = await axios.get("http://localhost:5000/user/usuario", { 
+                    params: { userId } ,
+                    headers: { Authorization: `Bearer ${token}` }
                 });
                 setUsuario(res.data);
                 setCargando(false);
             } catch (error) {
-                console.error("Error cargando los datos del usuario", error);
+                if (error.response && error.response.status === 401) {
+                    console.error("Token expirado. Redirigiendo al inicio de sesión...");
+                    sessionStorage.clear(); 
+                    window.location.href = "/login"; 
+                } else {
+                    console.error("Error cargando los datos del usuario:", error);
+                }
             }
         };
         fetchUsuario();
-    }, []);
+    }, [userId, token]);
 
     if (cargando) {
         return (

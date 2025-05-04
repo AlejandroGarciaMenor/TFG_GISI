@@ -14,3 +14,4 @@ package-lock.json
 .dependencias.txt
 
 /ssl
+backend/index_old.js

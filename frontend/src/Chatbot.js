@@ -8,6 +8,7 @@ Modal.setAppElement('#root');
 const Chatbot = () => {
   const userId = sessionStorage.getItem("id");
   const nombreUsuario = sessionStorage.getItem("nombre");
+  const token = sessionStorage.getItem("token");
   const imagenUsuario = sessionStorage.getItem("fotoPerfil") ? `https://localhost:5000${sessionStorage.getItem("fotoPerfil")}` : "./images/default-user.png";
   const imagenBot = "./images/chatbot.jpg";
   const [mensaje, setMensaje] = useState('');
@@ -17,10 +18,10 @@ const Chatbot = () => {
   const handleEnviar = async () => {
     if (!mensaje.trim()) return;
     try {
-      const response = await axios.post('https://localhost:5000/chatbot', { 
-        input: mensaje,
-        user_id: userId
-      });
+      const response = await axios.post('http://localhost:5000/chatbot/chatbot-conversacion', 
+        { input: mensaje, user_id: userId},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
       setHistorial([...historial, { quien: 'usuario', texto: mensaje }, { quien: 'bot', texto: response.data.respuesta }]);
 
@@ -39,10 +40,10 @@ const Chatbot = () => {
 
   const handleIrPerfil = async () => {
     try {
-      await axios.post('https://localhost:5000/guardar-resumen', {
-        user_id: userId,
-        historial
-      });
+      await axios.post('http://localhost:5000/chatbot/guardar-resumen', 
+        { user_id: userId, historial},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
     } catch (error) {
       console.error('Error al guardar el resumen:', error);
     }

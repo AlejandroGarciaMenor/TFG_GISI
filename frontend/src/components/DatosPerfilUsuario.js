@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles/DatosPerfilUsuario.css";
 
 const BloqueDatosUsuario = ({ usuario }) => {
+    const token = sessionStorage.getItem("token");
     const [editando, setEditando] = useState(false);
     const [datosFormulario, setdatosFormulario] = useState({
         user_id: sessionStorage.getItem("id"),
@@ -54,7 +55,10 @@ const BloqueDatosUsuario = ({ usuario }) => {
         }
 
         try {
-            const response = await axios.put("https://localhost:5000/usuario", datosForm);
+            const response = await axios.put("http://localhost:5000/user/usuario", 
+                datosForm,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
             if(response.data.fotoPerfil){    
                 sessionStorage.setItem("fotoPerfil", response.data.fotoPerfil);
             }
@@ -67,7 +71,7 @@ const BloqueDatosUsuario = ({ usuario }) => {
     return (
         <div className="datos-perfil-usuario">
             <img 
-                src={usuario.foto_perfil ? `https://localhost:5000${usuario.foto_perfil}` : "./images/default-user.png"} 
+                src={usuario.foto_perfil ? `http://localhost:5000${usuario.foto_perfil}` : "./images/default-user.png"} 
                 alt="Foto de perfil" 
                 className="perfil-imagen" 
             />

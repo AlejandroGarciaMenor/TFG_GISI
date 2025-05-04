@@ -15,11 +15,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://localhost:5000/login", { email, password });
+      const res = await axios.post("http://localhost:5000/auth/login", { email, password });
       if (res.data.message === "Código de verificación enviado") {	
         setShow2FA(true);
       } else {
-        localStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("token", res.data.token);
         sessionStorage.setItem("nombre", res.data.nombre);
         sessionStorage.setItem("id", res.data.id);
         navigate("/perfil-usuario");
@@ -33,7 +33,7 @@ const Login = () => {
   const handle2FA = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://localhost:5000/verificar-2fa", { email, codigo });
+      const res = await axios.post("http://localhost:5000/auth/verificar-2fa", { email, codigo });
       localStorage.setItem("token", res.data.token);
       sessionStorage.setItem("nombre", res.data.nombre);
       sessionStorage.setItem("id", res.data.id);

@@ -7,6 +7,7 @@ const Cribado = () => {
   const navigate = useNavigate();
   const nombre = sessionStorage.getItem("nombre");
   const userId = sessionStorage.getItem("id");
+  const token = sessionStorage.getItem("token");
   const [indicePregunta, setIndicePregunta] = useState(0);
   const [respuestas, setRespuestas] = useState({});
   const [animacion, setAnimacion] = useState(false);
@@ -19,14 +20,17 @@ const Cribado = () => {
       if (sesionIniciada) return;
       sesionIniciada = true;
       try {
-        const res = await axios.post("https://localhost:5000/iniciar-sesion-cribado", { userId });
+        const res = await axios.post("http://localhost:5000/cuestionarios/iniciar-sesion-cribado", 
+          { userId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         setIdSesion(res.data.idSesion);
       } catch (err) {
         console.error("Error al iniciar la sesión de cribado:", err);
       }
     };
     iniciarSesionCribado();
-  }, [userId]);
+  }, [userId, token]);
 
   const preguntas = [
     { id: 1, texto: "¿Sentirse nervioso, ansioso, preocupado o al límite?" },
@@ -81,10 +85,10 @@ const Cribado = () => {
   // guardo las respuestas en la base de datos
   const guardarRespuestas = async (respuestasFinales) => {
     try {
-      await axios.post("https://localhost:5000/guardar-respuestas", {
-        idSesion,
-        respuestas: respuestasFinales
-      });
+      await axios.post("http://localhost:5000/cuestionarios/guardar-respuestas", 
+        { idSesion, respuestas: respuestasFinales},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
     } catch (err) {
       console.error("Error al guardar las respuestas:", err);
       alert("Error al guardar las respuestas");

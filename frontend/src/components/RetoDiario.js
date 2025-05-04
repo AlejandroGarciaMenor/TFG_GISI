@@ -4,6 +4,9 @@ import '../styles/RetoDiario.css';
 
 const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
 
+    const token = sessionStorage.getItem("token");
+    console.log(token);
+    console.log(userId);
     const [reto, setReto] = useState(null);
     const [mensaje, setMensaje] = useState('');
     const [cargando, setCargando] = useState(true);
@@ -19,8 +22,9 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
                 ? [{ id_ansiedad: 0 }]
                 : tipos_ansiedad_detectados;
 
-            const res = await axios.get('https://localhost:5000/reto-diario', { 
-                params: { userId, tipos_ansiedad_detectados: tiposAnsiedad } 
+            const res = await axios.get('http://localhost:5000/reto-diario/obtener-reto-diario', { 
+                params: { userId, tipos_ansiedad_detectados: tiposAnsiedad } ,
+                headers: { Authorization: `Bearer ${token}` }
             });
             if (res.data.reto === null) {
                 setMensaje(res.data.mensaje);
@@ -38,8 +42,9 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
 
     const obtenerRacha = async () => {
         try {
-            const res = await axios.get('https://localhost:5000/racha', { 
-                params: { userId } 
+            const res = await axios.get('http://localhost:5000/reto-diario/racha' , {
+                params: { userId } ,
+                headers: { Authorization: `Bearer ${token}` }
             });
             setRacha(res.data.racha);
         } catch (error) {
@@ -51,7 +56,7 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
     useEffect(() => {
        obtenerReto();
        obtenerRacha();
-    }, [userId]);
+    }, [userId, token]);
 
     const completarReto = async () => {
         setReto((prevReto) => {
@@ -60,9 +65,10 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
         });
         setRetoCompletado(true);
         try {
-            await axios.post('https://localhost:5000/completar-reto-diario', {
-                idUsuarioReto: reto.id_usuario_reto,
-            });
+            await axios.post('http://localhost:5000/reto-diario/completar-reto-diario', 
+                {idUsuarioReto: reto.id_usuario_reto},
+                {headers: { Authorization: `Bearer ${token}` }} 
+            );
         } catch (error) {
             console.error("Error completando el reto diario", error);
             setReto((prevReto) => ({ ...prevReto, completado: false }));
