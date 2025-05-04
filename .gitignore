@@ -1,10 +1,15 @@
 /backend/.env
 /backend/node_modules
 /backend/uploads
+/backend/package-lock.json
 
 /frontend/build
 /frontend/node_modules
 /frontend/.env
+/frontend/package-lock.json
+
+node_modules/
+package-lock.json
 
 .dependencias.txt
 
