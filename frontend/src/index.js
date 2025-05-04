@@ -8,11 +8,9 @@ import { system } from "@chakra-ui/react/preset";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-
-    <ChakraProvider value={system}>
-      <App />
-    </ChakraProvider>
-
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
