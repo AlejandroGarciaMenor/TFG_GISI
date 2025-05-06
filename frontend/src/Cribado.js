@@ -4,6 +4,7 @@ import axios from "axios";
 import "./styles/PaginaCuestionario.css";
 
 const Cribado = () => {
+  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
   const navigate = useNavigate();
   const nombre = sessionStorage.getItem("nombre");
   const userId = sessionStorage.getItem("id");
@@ -20,7 +21,7 @@ const Cribado = () => {
       if (sesionIniciada) return;
       sesionIniciada = true;
       try {
-        const res = await axios.post("http://localhost:5000/cuestionarios/iniciar-sesion-cribado", 
+        const res = await axios.post(`${servidorURL}/cuestionarios/iniciar-sesion-cribado`, 
           { userId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -85,7 +86,7 @@ const Cribado = () => {
   // guardo las respuestas en la base de datos
   const guardarRespuestas = async (respuestasFinales) => {
     try {
-      await axios.post("http://localhost:5000/cuestionarios/guardar-respuestas", 
+      await axios.post(`${servidorURL}/cuestionarios/guardar-respuestas`, 
         { idSesion, respuestas: respuestasFinales},
         { headers: { Authorization: `Bearer ${token}` } }
       );

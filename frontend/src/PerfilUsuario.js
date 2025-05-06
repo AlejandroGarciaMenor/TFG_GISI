@@ -13,6 +13,7 @@ import TiposAnsiedad from "./components/TiposAnsiedad";
 import MinijuegoRespiracion478 from "./MinijuegoRespiracion478";
 
 const PerfilUsuario = () => {
+    const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
     const userId = sessionStorage.getItem("id");
     const token = sessionStorage.getItem("token");
     const [usuario, setUsuario] = useState(null);
@@ -23,7 +24,7 @@ const PerfilUsuario = () => {
             console.log("userId", userId);
             console.log("token", token);
             try {
-                const res = await axios.get("http://localhost:5000/user/usuario", { 
+                const res = await axios.get(`${servidorURL}/user/usuario`, { 
                     params: { userId } ,
                     headers: { Authorization: `Bearer ${token}` }
                 });

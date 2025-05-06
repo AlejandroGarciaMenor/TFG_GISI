@@ -5,6 +5,7 @@ import "./styles/Login.css";
 import "./styles/common.css";
 
 const Login = () => {
+  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [codigo, setCodigo] = useState("");
@@ -15,7 +16,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/auth/login", { email, password });
+      const res = await axios.post(`${servidorURL}/auth/login`, { email, password });
       if (res.data.message === "Código de verificación enviado") {	
         setShow2FA(true);
       } else {
@@ -33,7 +34,7 @@ const Login = () => {
   const handle2FA = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/auth/verificar-2fa", { email, codigo });
+      const res = await axios.post(`${servidorURL}/auth/verificar-2fa`, { email, codigo });
       localStorage.setItem("token", res.data.token);
       sessionStorage.setItem("nombre", res.data.nombre);
       sessionStorage.setItem("id", res.data.id);

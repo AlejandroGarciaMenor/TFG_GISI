@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./styles/Register.css";
 
 const Register = () => {
+  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
   const [nombre, setNombre] = useState("");
   const [fechanacimiento, setFechaNacimiento] = useState("");
   const [genero, setGenero] = useState("");
@@ -40,7 +41,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/auth/register", { nombre, fechanacimiento: fechaISO, genero, email, password });
+      const res = await axios.post(`${servidorURL}/auth/register`, { nombre, fechanacimiento: fechaISO, genero, email, password });
       navigate("/login");
       setMensaje(res.data.message);
     } catch (err) {

@@ -6,10 +6,11 @@ import "./styles/Chatbot.css";
 Modal.setAppElement('#root');
 
 const Chatbot = () => {
+  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
   const userId = sessionStorage.getItem("id");
   const nombreUsuario = sessionStorage.getItem("nombre");
   const token = sessionStorage.getItem("token");
-  const imagenUsuario = sessionStorage.getItem("fotoPerfil") ? `https://localhost:5000${sessionStorage.getItem("fotoPerfil")}` : "./images/default-user.png";
+  const imagenUsuario = sessionStorage.getItem("fotoPerfil") ? `http://localhost:5000${sessionStorage.getItem("fotoPerfil")}` : "./images/default-user.png";
   const imagenBot = "./images/chatbot.jpg";
   const [mensaje, setMensaje] = useState('');
   const [historial, setHistorial] = useState([]);
@@ -18,7 +19,7 @@ const Chatbot = () => {
   const handleEnviar = async () => {
     if (!mensaje.trim()) return;
     try {
-      const response = await axios.post('http://localhost:5000/chatbot/chatbot-conversacion', 
+      const response = await axios.post(`${servidorURL}/chatbot/chatbot-conversacion`,
         { input: mensaje, user_id: userId},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -40,7 +41,7 @@ const Chatbot = () => {
 
   const handleIrPerfil = async () => {
     try {
-      await axios.post('http://localhost:5000/chatbot/guardar-resumen', 
+      await axios.post(`${servidorURL}/chatbot/guardar-resumen`, 
         { user_id: userId, historial},
         { headers: { Authorization: `Bearer ${token}` } }
       );

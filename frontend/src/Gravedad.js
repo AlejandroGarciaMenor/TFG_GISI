@@ -4,6 +4,7 @@ import axios from "axios";
 import "./styles/PaginaCuestionario.css";
 
 const Gravedad = () => {
+  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
   const navigate = useNavigate();
   const nombre = sessionStorage.getItem("nombre");
   const userId = sessionStorage.getItem("id");
@@ -71,7 +72,7 @@ const Gravedad = () => {
   // guardo las respuestas en la base de datos
   const guardarRespuestas = async (puntuacion_gravedad) => {
     try {
-      await axios.post("http://localhost:5000/cuestionarios/guardar-gravedad", 
+      await axios.post( `${servidorURL}/cuestionarios/guardar-gravedad`, 
         {user_id: userId, puntuacion_gravedad},
         { headers: { Authorization: `Bearer ${token}` } }
       );

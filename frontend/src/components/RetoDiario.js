@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../styles/RetoDiario.css';
 
 const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
-
+    const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
     const token = sessionStorage.getItem("token");
     console.log(token);
     console.log(userId);
@@ -22,7 +22,7 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
                 ? [{ id_ansiedad: 0 }]
                 : tipos_ansiedad_detectados;
 
-            const res = await axios.get('http://localhost:5000/reto-diario/obtener-reto-diario', { 
+            const res = await axios.get(`${servidorURL}/reto-diario/obtener-reto-diario`, { 
                 params: { userId, tipos_ansiedad_detectados: tiposAnsiedad } ,
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -42,7 +42,7 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
 
     const obtenerRacha = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/reto-diario/racha' , {
+            const res = await axios.get(`${servidorURL}/reto-diario/racha` , {
                 params: { userId } ,
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -65,7 +65,7 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
         });
         setRetoCompletado(true);
         try {
-            await axios.post('http://localhost:5000/reto-diario/completar-reto-diario', 
+            await axios.post(`${servidorURL}/reto-diario/completar-reto-diario`, 
                 {idUsuarioReto: reto.id_usuario_reto},
                 {headers: { Authorization: `Bearer ${token}` }} 
             );

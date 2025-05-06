@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles/DatosPerfilUsuario.css";
 
 const BloqueDatosUsuario = ({ usuario }) => {
+    const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
     const token = sessionStorage.getItem("token");
     const [editando, setEditando] = useState(false);
     const [datosFormulario, setdatosFormulario] = useState({
@@ -55,7 +56,7 @@ const BloqueDatosUsuario = ({ usuario }) => {
         }
 
         try {
-            const response = await axios.put("http://localhost:5000/user/usuario", 
+            const response = await axios.put(`${servidorURL}/user/usuario`, 
                 datosForm,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
