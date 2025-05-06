@@ -8,7 +8,8 @@ const userRoutes = require('./routes/userRoutes');
 const retoDiarioRoutes = require('./routes/retoDiarioRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.SERVER_PORT || 5000;
+const IP = process.env.SERVER_IP || 'localhost'; 
 
 // Middlewares
 app.use(cors());
@@ -31,5 +32,5 @@ app.get('/', (req, res) => {
 
 // Iniciar el servidor HTTP
 app.listen(PORT, () => {
-  console.log(`Servidor HTTP en ejecución en http://localhost:${PORT}`);
+  console.log(`Servidor HTTP en ejecución en http://${IP}:${PORT}`);
 });
