@@ -52,7 +52,9 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log('me ha llegado');
   try {
+
     const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
     const user = result.rows[0];
 

@@ -42,7 +42,7 @@ const Register = () => {
 
     try {
       const res = await axios.post(`${servidorURL}/auth/register`, { nombre, fechanacimiento: fechaISO, genero, email, password });
-      navigate("/login");
+      navigate("/cribado");
       setMensaje(res.data.message);
     } catch (err) {
       const errorMessage = err.response?.data?.message || "Error en el registro";
