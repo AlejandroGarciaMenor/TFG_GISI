@@ -3,7 +3,7 @@ import axios from "axios";
 import "../styles/DatosPerfilUsuario.css";
 
 const BloqueDatosUsuario = ({ usuario }) => {
-    const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
+    const servidorURL = process.env.SERVER_IP_PORT || 'https://tfg-app.xyz';
     const token = sessionStorage.getItem("token");
     const [editando, setEditando] = useState(false);
     const [datosFormulario, setdatosFormulario] = useState({

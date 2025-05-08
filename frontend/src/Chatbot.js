@@ -6,11 +6,11 @@ import "./styles/Chatbot.css";
 Modal.setAppElement('#root');
 
 const Chatbot = () => {
-  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
+  const servidorURL = process.env.SERVER_IP_PORT || 'https://tfg-app.xyz';
   const userId = sessionStorage.getItem("id");
   const nombreUsuario = sessionStorage.getItem("nombre");
   const token = sessionStorage.getItem("token");
-  const imagenUsuario = sessionStorage.getItem("fotoPerfil") ? `http://localhost:5000${sessionStorage.getItem("fotoPerfil")}` : "./images/default-user.png";
+  const imagenUsuario = sessionStorage.getItem("fotoPerfil") ? `https://tfg-app.xyz${sessionStorage.getItem("fotoPerfil")}` : "./images/default-user.png";
   const imagenBot = "./images/chatbot.jpg";
   const [mensaje, setMensaje] = useState('');
   const [historial, setHistorial] = useState([]);

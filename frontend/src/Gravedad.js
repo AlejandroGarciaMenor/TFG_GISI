@@ -4,7 +4,7 @@ import axios from "axios";
 import "./styles/PaginaCuestionario.css";
 
 const Gravedad = () => {
-  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
+  const servidorURL = process.env.SERVER_IP_PORT || 'https://tfg-app.xyz';
   const navigate = useNavigate();
   const nombre = sessionStorage.getItem("nombre");
   const userId = sessionStorage.getItem("id");

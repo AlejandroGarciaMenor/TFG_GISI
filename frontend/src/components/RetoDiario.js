@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../styles/RetoDiario.css';
 
 const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
-    const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
+    const servidorURL = process.env.SERVER_IP_PORT || 'https://tfg-app.xyz';
     const token = sessionStorage.getItem("token");
     console.log(token);
     console.log(userId);
