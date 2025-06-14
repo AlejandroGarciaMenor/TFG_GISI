@@ -11,13 +11,23 @@ const pool = new Pool({
 // Obtener un reto diario no completado
 const obtenerRetoDiario = async (req, res) => {
   const userId = req.query.userId;
-  const tiposAnsiedad = req.query.tipos_ansiedad_detectados;
 
-  if (!Array.isArray(tiposAnsiedad) || tiposAnsiedad.length === 0) {
-    return res.status(400).json({ message: "Tipos de ansiedad no válidos o no proporcionados" });
+  let tiposAnsiedad = req.query.tipos_ansiedad_detectados;
+  if (typeof tiposAnsiedad === 'string') {
+    try {
+      tiposAnsiedad = JSON.parse(tiposAnsiedad);
+    } catch {
+      tiposAnsiedad = [];
+    }
   }
+  if (!Array.isArray(tiposAnsiedad)) {
+    tiposAnsiedad = [];
+  }
+  const idsAnsiedadUnicos = tiposAnsiedad.length > 0
+    ? [...new Set(tiposAnsiedad.map(item => item.id_ansiedad))]
+    : [0]; // Si no hay tipos, solo retos generales
 
-  const idsAnsiedadUnicos = [...new Set(tiposAnsiedad.map(item => item.id_ansiedad))];
+  console.log('idsAnsiedadUnicos:', idsAnsiedadUnicos);
 
   try {
     const diaActual = new Date().toISOString().split('T')[0];

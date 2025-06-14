@@ -3,7 +3,7 @@ import axios from "axios";
 import "../styles/DatosPerfilUsuario.css";
 
 const BloqueDatosUsuario = ({ usuario }) => {
-    const servidorURL = process.env.SERVER_IP_PORT || 'https://tfg-app.xyz';
+    const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
     const token = sessionStorage.getItem("token");
     const [editando, setEditando] = useState(false);
     const [datosFormulario, setdatosFormulario] = useState({
@@ -94,6 +94,7 @@ const BloqueDatosUsuario = ({ usuario }) => {
                     </form>
                 ) : (
                     <>
+                    <p>{sessionStorage.getItem("id")}</p>
                     <h2>{usuario.nombre}</h2>
                     <p>Email: {usuario.email}</p>
                     <p>Fecha de nacimiento: {new Date(usuario.fechanacimiento).toLocaleDateString()}</p>

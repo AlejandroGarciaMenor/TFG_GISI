@@ -1,6 +1,25 @@
 const { Pool } = require('pg');
 const multer = require('multer');
 const path = require('path');
+const crypto = require('crypto');
+
+const algorithm = 'aes-256-cbc';
+const key = Buffer.from(process.env.ENCRYPTION_KEY, 'hex');
+const iv = Buffer.from(process.env.ENCRYPTION_IV, 'hex');
+
+function encrypt(text) {
+  const cipher = crypto.createCipheriv(algorithm, key, iv);
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
+}
+
+function decrypt(encrypted) {
+  const decipher = crypto.createDecipheriv(algorithm, key, iv);
+  let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
+}
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -19,11 +38,19 @@ const obtenerUsuario = async (req, res) => {
       "SELECT nombre, fechanacimiento, genero, email, foto_perfil FROM usuarios WHERE id = $1",
       [userId]
     );
-    const usuario = usuarioQuery.rows[0];
+    let usuario = usuarioQuery.rows[0];
 
     if (!usuario) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
+
+    usuario = {
+      ...usuario,
+      nombre: decrypt(usuario.nombre),
+      fechanacimiento: usuario.fechanacimiento, 
+      genero: decrypt(usuario.genero),
+      email: decrypt(usuario.email),
+    };
 
     const cribadoQuery = await pool.query(
       "SELECT fecha, puntuacion_gravedad FROM (SELECT fecha, puntuacion_gravedad FROM cribado_sesiones WHERE id_usuario = $1 ORDER BY fecha DESC LIMIT 10) AS subquery ORDER BY fecha ASC",
@@ -87,9 +114,14 @@ const actualizarUsuario = async (req, res) => {
   const fotoPerfil = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
+
+    const nombreCifrado = encrypt(nombre);
+    const generoCifrado = encrypt(genero);
+    const emailCifrado = encrypt(email);
+
     const result = await pool.query(
       "UPDATE usuarios SET nombre = $1, fechanacimiento = $2, genero = $3, email = $4, foto_perfil = $5 WHERE id = $6",
-      [nombre, fechanacimiento, genero, email, fotoPerfil, userId]
+      [nombreCifrado, fechanacimiento, generoCifrado, emailCifrado, fotoPerfil, userId]
     );
 
     if (result.rowCount === 0) {

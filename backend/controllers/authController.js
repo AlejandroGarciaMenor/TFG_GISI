@@ -4,6 +4,25 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
+require('dotenv').config();
+const algorithm = 'aes-256-cbc';
+const key = Buffer.from(process.env.ENCRYPTION_KEY, 'hex'); // 32 bytes (256 bits)
+const iv = Buffer.from(process.env.ENCRYPTION_IV, 'hex');   // 16 bytes (128 bits)
+
+function encrypt(text) {
+  const cipher = crypto.createCipheriv(algorithm, key, iv);
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
+}
+
+function decrypt(encrypted) {
+  const decipher = crypto.createDecipheriv(algorithm, key, iv);
+  let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
+}
+
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -29,8 +48,9 @@ const register = async (req, res) => {
     return res.status(400).json({ message: 'La contraseña debe cumplir con los requisitos de seguridad.' });
   }
 
+  const emailEncriptado = encrypt(email);
   try {
-    const existingUser = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    const existingUser = await pool.query('SELECT * FROM usuarios WHERE email = $1', [emailEncriptado]);
     if (existingUser.rows.length > 0) {
       return res.status(400).json({ message: 'Ya existe un usuario registrado con este correo.' });
     }
@@ -38,7 +58,13 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     await pool.query(
       'INSERT INTO usuarios (nombre, fechanacimiento, genero, email, password) VALUES ($1, $2, $3, $4, $5)',
-      [nombre, fechanacimiento, genero, email, hashedPassword]
+      [
+        encrypt(nombre),
+        fechanacimiento,
+        encrypt(genero),
+        encrypt(email),
+        hashedPassword
+      ]
     );
 
     res.json({ message: 'Usuario registrado correctamente' });
@@ -55,12 +81,16 @@ const login = async (req, res) => {
   console.log('me ha llegado');
   try {
 
-    const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    const emailEncriptado = encrypt(email);
+
+    const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [emailEncriptado]);
     const user = result.rows[0];
 
     if (!user) {
       return res.status(400).send('Usuario no encontrado');
     }
+
+    user.email = decrypt(user.email);
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -102,8 +132,10 @@ const login = async (req, res) => {
 const verificarCodigo2FA = async (req, res) => {
   const { email, codigo } = req.body;
 
+  const emailEncriptado = encrypt(email);
+
   try {
-    const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [emailEncriptado]);
     const user = result.rows[0];
 
     if (!user) {

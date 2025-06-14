@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../styles/RetoDiario.css';
 
 const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
-    const servidorURL = process.env.SERVER_IP_PORT || 'https://tfg-app.xyz';
+    const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
     const token = sessionStorage.getItem("token");
     console.log(token);
     console.log(userId);
@@ -26,6 +26,9 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
                 params: { userId, tipos_ansiedad_detectados: tiposAnsiedad } ,
                 headers: { Authorization: `Bearer ${token}` }
             });
+
+            console.log('Respuesta del backend (reto diario):', res.data);
+
             if (res.data.reto === null) {
                 setMensaje(res.data.mensaje);
                 setReto(null);
