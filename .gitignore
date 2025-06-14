@@ -2,6 +2,7 @@
 /backend/node_modules
 /backend/uploads
 /backend/package-lock.json
+/backend/tests/
 
 /frontend/build
 /frontend/node_modules
