@@ -4,11 +4,11 @@ Serena (Sistema de Evaluación y REcomeNdaciones para la Ansiedad) es una aplica
 
 La plataforma no realiza diagnósticos médicos ni sustituye la atención profesional, sino que sirve como una herramienta de apoyo para ayudar al usuario a identificar su estado emocional, reflexionar sobre sus síntomas y mejorar su bienestar emocional a lo largo del tiempo. Si en algún momento necesitas ayuda especializada, te animamos a consultar con un profesional de la salud mental.
 
-🌐 [Accede a la aplicación](https://tfg-app.xyz)
+[Accede a la aplicación](https://tfg-app.xyz)
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 - Página de aterrizaje
 - Registro y autentificación de usuarios
@@ -18,7 +18,7 @@ La plataforma no realiza diagnósticos médicos ni sustituye la atención profes
 
 ---
 
-## 🛠️ Tecnologías
+## Tecnologías
 
 - **Frontend:** React
 - **Backend:** Node.js + Express
@@ -28,7 +28,7 @@ La plataforma no realiza diagnósticos médicos ni sustituye la atención profes
 
 ---
 
-## 🚀 Instalación local
+## Instalación local
 
 ### 1. Clona el repositorio
 
@@ -61,7 +61,7 @@ Debes tener una instancia de PostgreSQL local o en la nube, con la estructura de
 
 ---
 
-## 🧪 Credenciales de prueba
+## Credenciales de prueba
 
 Puedes utilizar el siguiente usuario de prueba para acceder a la aplicación:
 
@@ -70,7 +70,7 @@ Puedes utilizar el siguiente usuario de prueba para acceder a la aplicación:
 
 ---
 
-## 🧠 Manual de uso
+## Manual de uso
 
 El usuario llega a una página de aterrizaje donde se exponen las principales funcionalidades de la aplicación web, y desde esta página, existen dos opciones:
 
@@ -78,6 +78,6 @@ Si es la primera vez que utilizas la aplicación, deberás pulsar el botón de R
 
 Si ya tienes una cuenta, puedes pulsar el botón de Inicio de Sesión para introducir tus credenciales e ir directamente a tu página de perfil. Siempre que lo desees, puedes volver a iniciar desde tu perfil un nuevo proceso de cuestionarios y conversación con el chatbot. De hecho, es lo ideal ya que de esta forma podrás llevar un seguimiento de tu evolución en el tiempo con el objetivo de que mejoren tus síntomas y tu estado emocional.
 
-## 👨‍💻 Autor
+## Autor
 ##### Alejandro García Menor (Email: alejandro.garciamenor@usp.ceu.es)
 ##### Trabajo Fin de Grado de Ingeniería en Sistemas de Información – Universidad CEU San Pablo
