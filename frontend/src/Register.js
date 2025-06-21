@@ -42,8 +42,11 @@ const Register = () => {
 
     try {
       const res = await axios.post(`${servidorURL}/auth/register`, { nombre, fechanacimiento: fechaISO, genero, email, password });
-      navigate("/cribado");
-      setMensaje(res.data.message);
+    	setMensaje("Registro exitoso. Por favor, inicia sesión.");
+    	sessionStorage.setItem("primer_login", "true");
+	setTimeout(() => {
+  		navigate("/login");
+    	}, 2000);  
     } catch (err) {
       const errorMessage = err.response?.data?.message || "Error en el registro";
       setMensaje(errorMessage);

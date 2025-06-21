@@ -157,7 +157,8 @@ const verificarCodigo2FA = async (req, res) => {
     );
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '2h' });
-    res.json({ token, nombre: user.nombre, id: user.id });
+    user.nombre = decrypt(user.nombre);
+	  res.json({ token, nombre: user.nombre, id: user.id });
   } catch (err) {
     console.error('Error al verificar el código de 2FA:', err);
     res.status(500).send('Error en el servidor');

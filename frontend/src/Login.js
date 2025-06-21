@@ -23,7 +23,13 @@ const Login = () => {
         sessionStorage.setItem("token", res.data.token);
         sessionStorage.setItem("nombre", res.data.nombre);
         sessionStorage.setItem("id", res.data.id);
-        navigate("/perfil-usuario");
+        const primerLogin = sessionStorage.getItem("primer_login");
+	if (primerLogin === "true") {
+  		sessionStorage.removeItem("primer_login");
+  		navigate("/cribado");
+	} else {
+  		navigate("/perfil-usuario");
+	}
       }
     } catch (err) {
         setError(err.response?.data|| "Error en el registro");
@@ -35,10 +41,16 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(`${servidorURL}/auth/verificar-2fa`, { email, codigo });
-      localStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("token", res.data.token);
       sessionStorage.setItem("nombre", res.data.nombre);
       sessionStorage.setItem("id", res.data.id);
-      navigate("/perfil-usuario");
+      const primerLogin = sessionStorage.getItem("primer_login");
+      if (primerLogin === "true") {
+	      sessionStorage.removeItem("primer_login");
+	      navigate("/cribado");
+      } else {
+	      navigate("/perfil-usuario");
+      }
     } catch (err) {
       setError(err.response?.data || "Error en el servidor");
     }
