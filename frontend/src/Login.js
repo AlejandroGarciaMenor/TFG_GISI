@@ -5,7 +5,7 @@ import "./styles/Login.css";
 import "./styles/common.css";
 
 const Login = () => {
-  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
+  const servidorURL = process.env.REACT_APP_SERVER_IP_PORT;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [codigo, setCodigo] = useState("");

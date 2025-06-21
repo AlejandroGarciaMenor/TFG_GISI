@@ -13,7 +13,7 @@ import TiposAnsiedad from "./components/TiposAnsiedad";
 import MinijuegoRespiracion478 from "./MinijuegoRespiracion478";
 
 const PerfilUsuario = () => {
-    const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
+    const servidorURL = process.env.REACT_APP_SERVER_IP_PORT;
     const userId = sessionStorage.getItem("id");
     const token = sessionStorage.getItem("token");
     const [usuario, setUsuario] = useState(null);

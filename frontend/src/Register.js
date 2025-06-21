@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./styles/Register.css";
 
 const Register = () => {
-  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
+  const servidorURL = process.env.REACT_APP_SERVER_IP_PORT;
   const [nombre, setNombre] = useState("");
   const [fechanacimiento, setFechaNacimiento] = useState("");
   const [genero, setGenero] = useState("");

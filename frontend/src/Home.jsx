@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles/Home.css"; // Importa la hoja de estilos CSS
+import "./styles/Home.css";
 
 const caracteristicasApp = [
   {

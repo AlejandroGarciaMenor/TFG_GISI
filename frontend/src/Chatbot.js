@@ -6,7 +6,7 @@ import "./styles/Chatbot.css";
 Modal.setAppElement('#root');
 
 const Chatbot = () => {
-  const servidorURL = process.env.SERVER_IP_PORT || 'http://localhost:5000';
+  const servidorURL = process.env.REACT_APP_SERVER_IP_PORT;
   const userId = sessionStorage.getItem("id");
   const nombreUsuario = sessionStorage.getItem("nombre");
   const token = sessionStorage.getItem("token");
