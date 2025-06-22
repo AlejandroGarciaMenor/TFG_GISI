@@ -2,7 +2,7 @@ config:
   target: "https://tfg-app.xyz"
   phases:
     - duration: 30
-      arrivalRate: 10
+      arrivalRate: 6
   processor: "./test_perfil.js"
 scenarios:
   - beforeScenario: "beforeScenario"

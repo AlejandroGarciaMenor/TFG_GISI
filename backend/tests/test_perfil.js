@@ -2,7 +2,7 @@ require('dotenv').config();
 
 module.exports = {
   // Hook que se ejecuta antes de cada escenario
-  async beforeScenario(context, ee, done) {
+  async beforeScenario(context, ee) {
     const axios = require('axios');
     try {
       // Login para obtener el JWT de usuario sin 2FA
@@ -15,6 +15,5 @@ module.exports = {
     } catch (err) {
       console.error('Error obteniendo JWT:', err.message);
     }
-    return done();
   }
 };
