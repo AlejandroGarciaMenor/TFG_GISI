@@ -1,0 +1,15 @@
+config:
+  target: "https://tfg-app.xyz"
+  phases:
+    - duration: 30
+      arrivalRate: 10
+  processor: "./test_perfil.js"
+scenarios:
+  - beforeScenario: "beforeScenario"
+    flow:
+      - get:
+          url: "/user/usuario?userId={{ userId }}"
+          headers:
+            Authorization: "Bearer {{ jwt }}"
+          expect:
+            - statusCode: 200
