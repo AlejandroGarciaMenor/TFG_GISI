@@ -1,0 +1,25 @@
+config:
+  target: "https://tfg-gisi.xyz"
+  phases:
+    - duration: 30
+      arrivalRate: 10
+  payload:
+    path: "users.csv"
+    fields:
+      - email
+      - password
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - flow:
+      - post:
+          url: "/auth/login"
+          json:
+            email: "{{ email }}"
+            password: "{{ password }}"
+          expect:
+            - statusCode: 200
+            - contentType: json
+            - body: "Código de verificación enviado"
