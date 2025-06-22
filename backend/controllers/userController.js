@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+const pool = require('../db/pool');
 const multer = require('multer');
 const path = require('path');
 const crypto = require('crypto');
@@ -20,14 +20,6 @@ function decrypt(encrypted) {
   decrypted += decipher.final('utf8');
   return decrypted;
 }
-
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
 
 // Obtener datos del usuario
 const obtenerUsuario = async (req, res) => {

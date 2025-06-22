@@ -1,14 +1,6 @@
-const { Pool } = require('pg');
+const pool = require('../db/pool');
 const OpenAI = require('openai');
 const generarPromptPersonalizado = require('../promptPersonalizado');
-
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

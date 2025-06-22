@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+const pool = require('../db/pool');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
@@ -22,17 +22,6 @@ function decrypt(encrypted) {
   decrypted += decipher.final('utf8');
   return decrypted;
 }
-
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  max: 50,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
 
 // Configuración del servicio de correo
 const transporter = nodemailer.createTransport({
