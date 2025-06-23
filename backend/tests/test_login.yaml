@@ -4,7 +4,7 @@ config:
     - duration: 30
       arrivalRate: 10
   payload:
-    path: "users.csv"
+    path: "users_login.csv"
     fields:
       - email
       - password
