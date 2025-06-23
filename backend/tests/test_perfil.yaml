@@ -1,15 +1,15 @@
 config:
   target: "https://tfg-app.xyz"
   phases:
-    - duration: 30
-      arrivalRate: 20 # usuarios virtuales por segundo
-  processor: "./test_perfil.js"
+    - duration: 60
+      arrivalRate: 100
+  defaults:
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI3LCJpYXQiOjE3NTA2OTMzODcsImV4cCI6MTc1MDcwMDU4N30.K3_D7ggzoGc-2ecnaDDNIpaKZ2VLJbyrhhWx6qGeqxc" 
 scenarios:
-  - beforeScenario: "beforeScenario"
-    flow:
+  - flow:
       - get:
-          url: "/user/usuario?userId={{ userId }}"
-          headers:
-            Authorization: "Bearer {{ jwt }}"
+          url: "/user/usuario?userId=27"
           expect:
             - statusCode: 200

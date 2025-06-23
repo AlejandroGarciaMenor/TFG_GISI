@@ -13,6 +13,7 @@ const chatbot = async (req, res) => {
   const { input, user_id } = req.body;
 
   console.log("Input del usuario:", input);
+  console.log('user_id:', user_id, typeof user_id);
 
   if (!input || input.trim() === '') {
     return res.status(400).json({ message: 'El mensaje está vacío' });
@@ -47,9 +48,10 @@ const chatbot = async (req, res) => {
 
     historial_conversacion.push({ role: "user", content: input });
 
+    const maxHistorial = 10;
     const mensajes = [
       { role: "system", content: promptPersonalizado },
-      ...historial_conversacion,
+      ...historial_conversacion.slice(-maxHistorial),
     ];
 
     const response = await openai.chat.completions.create({
@@ -59,6 +61,7 @@ const chatbot = async (req, res) => {
       max_tokens: 2048,
       top_p: 1,
     });
+    console.log('Tokens usados en la petición:', response.usage);
 
     const respuesta = response.choices[0].message.content;
     historial_conversacion.push({ role: "assistant", content: respuesta });

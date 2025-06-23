@@ -1,18 +1,18 @@
 config:
   target: "https://tfg-app.xyz"
   phases:
-    - duration: 30
-      arrivalRate: 2
-  processor: "./test_perfil.js"
+    - duration: 20
+      arrivalRate: 5
+  defaults:
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI3LCJpYXQiOjE3NTA2OTMzODcsImV4cCI6MTc1MDcwMDU4N30.K3_D7ggzoGc-2ecnaDDNIpaKZ2VLJbyrhhWx6qGeqxc"
 scenarios:
-  - beforeScenario: "beforeScenario"
-    flow:
+  - flow:
       - post:
           url: "/chatbot/chatbot-conversacion"
-          headers:
-            Authorization: "Bearer {{ jwt }}"
           json:
             input: "Hola, me siento ansioso y no se qué hacer"
-            user_id: {{ userId }}
+            user_id: "27"
           expect:
             - statusCode: 200
