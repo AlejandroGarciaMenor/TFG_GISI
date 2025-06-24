@@ -86,7 +86,7 @@ const Chatbot = () => {
             Aunque por el momento Serena no ha conseguido clasificar ningún tipo de trastorno de ansiedad, hemos ido recopilando tus síntomas.
             <br />
             <br />
-            Puedes seguir conversando con AnxBot e incluso pedirle algunas recomendaciones, pero si quieres puedes visitar tu perfil de usuario
+            Puedes seguir conversando con Serena e incluso pedirle algunas recomendaciones, pero si quieres puedes visitar tu perfil de usuario
             para ver un resumen de tus síntomas y encontrar herramientas que te ayuden a combatir la ansiedad:
             <br />
           </p>
