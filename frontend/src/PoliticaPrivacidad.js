@@ -6,9 +6,9 @@ const PoliticaPrivacidad = () => {
     return (
         <div className="politica-privacidad-container">
             <h1>Política de Privacidad</h1>
-            <p>Última actualización: Abril 2025</p>
+            <p>Última actualización: Junio 2025</p>
             <h3>1. ¿Qué datos recogemos?</h3>
-            <p>Al registrarte o usar AnxBot, podemos recoger los siguientes datos:</p>
+            <p>Al registrarte o usar Serena, podemos recoger los siguientes datos:</p>
             <ul>
                 <li>Datos personales, como el nombre, el género y la fecha de nacimiento. Estos datos están cifrados.</li>
                 <li>Respuestas a cuestionarios de cribado y gravedad de la ansiedad.</li>

@@ -72,7 +72,7 @@ const BloqueDatosUsuario = ({ usuario }) => {
     return (
         <div className="datos-perfil-usuario">
             <img 
-                src={usuario.foto_perfil ? `https://tfg-app.xyz:5000${usuario.foto_perfil}` : "./images/default-user.png"} 
+                src={usuario.foto_perfil ? `https://tfg-app.xyz${usuario.foto_perfil}` : "./images/default-user.png"} 
                 alt="Foto de perfil" 
                 className="perfil-imagen" 
             />

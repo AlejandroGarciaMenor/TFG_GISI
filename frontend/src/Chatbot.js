@@ -58,7 +58,7 @@ const Chatbot = () => {
     <div className='chatbot-container'>
       <div className='chatbot-header'>
         <h2>¡Bienvenido a SERENA!</h2>
-        <p>¿Que tal estás {nombreUsuario} ?  Cuéntame todos los síntomas que tengas relacionados con tu ansiedad!</p>
+        <p>¿Que tal estás {nombreUsuario} ?  Puedes contarme todos los síntomas que creas que te pueden estar generando ansiedad.</p>
       </div>
       <div className='chatbot-historial'>
         {historial.map((msg, idx) => (

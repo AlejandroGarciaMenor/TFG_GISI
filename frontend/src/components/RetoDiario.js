@@ -91,6 +91,9 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
                 <span className="material-symbols-outlined">target</span>
                 El reto del día
             </h3>
+            <small style={{ color: "#666", display: "block", marginBottom: "15px" }}>
+                Estos retos están pensados para que los realices de forma autónoma en cualquier momento del día. Cuando lo hayas hecho, puedes marcarlo como completado.
+            </small>
             {mensaje ? (
                 <p>{mensaje}</p>
             ) : reto ? (
@@ -112,7 +115,7 @@ const RetoDiario = ({ userId, tipos_ansiedad_detectados }) => {
                         </div>
                     </div>
                     {reto.id_ansiedad !== 0 ? (
-                        <p className='reto-diario-finalidad'>Finalidad del reto: Hoy te proponemos un reto especial para ayudarte a manejar el tipo de trastorno de ansiedad que fue detectado por VITA, el {reto.nombre}</p>
+                        <p className='reto-diario-finalidad'>Finalidad del reto: Hoy te proponemos un reto especial para ayudarte a manejar el tipo de trastorno de ansiedad que fue detectado por Serena, el {reto.nombre}</p>
                     ):(
                         <p className='reto-diario-finalidad'>Finalidad del reto: El reto de hoy es útil para manejar cualquier tipo e intensidad de ansiedad!</p>
                     )}
