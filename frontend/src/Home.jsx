@@ -32,7 +32,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCaracteristicaActual((prev) => (prev + 1) % caracteristicasApp.length);
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);

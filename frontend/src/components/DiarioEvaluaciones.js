@@ -9,7 +9,7 @@ const DiarioEvaluaciones = ({ resumenes_chatbot }) => {
                 Diario de Evaluaciones
             </h3>
             <p className="diario-evaluaciones-descripcion">
-                Te hemos preparado un resumen de tus conversaciones con VITA:
+                Te hemos preparado un resumen de tus conversaciones con Serena:
             </p>
             {resumenes_chatbot.length > 0 ? (
                 <ul>

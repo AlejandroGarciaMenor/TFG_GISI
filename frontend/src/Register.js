@@ -15,7 +15,7 @@ const Register = () => {
 
   // función para validar contraseña
   const validarPassword = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$_!%*?&])[A-Za-z\d@$!%*?&_]{8,}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d[^A-Za-z\d]]{8,}$/;
     return regex.test(password);
   };
 
@@ -70,6 +70,9 @@ return (
         </select>
         <input type="email" placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <small style={{ color: "#666", display: "block", marginBottom: "10px" }}>
+            Mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.
+          </small>
         <div className="checkbox-container">
           <input type="checkbox" required /> 
           <label>He leído y acepto la<a href="/privacidad"> Política de Privacidad</a></label>

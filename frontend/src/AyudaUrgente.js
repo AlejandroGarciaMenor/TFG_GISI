@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles/AyudaUrgente.css";
+import { Link } from "react-router-dom";
 
 const AyudaUrgente = () => {
     return (
@@ -32,8 +33,16 @@ const AyudaUrgente = () => {
             <div className="ayuda-enlaces">
                 <p>Si necesitas más información o herramientas para manejar tu ansiedad, puedes:</p>
                 <ul>
-                    <li><a href="./perfil-usuario" className="ayuda-link">Volver a tu perfil para encontrar tips generales</a></li>
-                    <li><a href="./chatbot" className="ayuda-link">Hablar con AnxBot para contarle tus síntomas</a></li>
+                    <li>
+                        <Link to="/perfil-usuario" className="ayuda-link">
+                            Volver a tu perfil para encontrar tips generales
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/chatbot" className="ayuda-link">
+                            Hablar con Serena para contarle tus síntomas
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </div>

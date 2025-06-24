@@ -84,7 +84,7 @@ const Gravedad = () => {
 
   return (
     <div className="cuestionario-container">
-      <h1 className="titulo">Hola, {nombre}!</h1>
+      <h1 className="titulo">Seguimos, {nombre}!</h1>
       <p className="descripcion">
           Ahora vamos a evaluar tu nivel de ansiedad, a través del cuestionario
           <a href="https://www.promishealth.org/" target="__blank">PROMIS® Emotional Distress - Anxiety – Short Form 7a. </a>

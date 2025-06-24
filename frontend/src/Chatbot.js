@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
+import { useNavigate } from "react-router-dom";
 import "./styles/Chatbot.css";
 
 Modal.setAppElement('#root');
@@ -15,6 +16,7 @@ const Chatbot = () => {
   const [mensaje, setMensaje] = useState('');
   const [historial, setHistorial] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleEnviar = async () => {
     if (!mensaje.trim()) return;
@@ -30,7 +32,7 @@ const Chatbot = () => {
         const tipos = response.data.tipos_ansiedad.join(', ');
         setTimeout(() => {
           setModalIsOpen(true);
-        }, 3000);
+        }, 12000);
       }
 
       setMensaje('');
@@ -39,7 +41,8 @@ const Chatbot = () => {
     }
   };
 
-  const handleIrPerfil = async () => {
+  const handleIrPerfil = async (e) => {
+    if (e) e.preventDefault();
     try {
       await axios.post(`${servidorURL}/chatbot/guardar-resumen`, 
         { user_id: userId, historial},
@@ -48,12 +51,13 @@ const Chatbot = () => {
     } catch (error) {
       console.error('Error al guardar el resumen:', error);
     }
+    navigate('/perfil-usuario');
   };
 
   return (
     <div className='chatbot-container'>
       <div className='chatbot-header'>
-        <h2>¡Bienvenido a VITA!</h2>
+        <h2>¡Bienvenido a SERENA!</h2>
         <p>¿Que tal estás {nombreUsuario} ?  Cuéntame todos los síntomas que tengas relacionados con tu ansiedad!</p>
       </div>
       <div className='chatbot-historial'>
@@ -76,17 +80,17 @@ const Chatbot = () => {
         <button onClick={handleEnviar}>Enviar</button>
       </div>
 
-      {historial.length >= 10 && (
+      {historial.length >= 8 && (
         <div className="perfil-link-container">
           <p>
-            Aunque por el momento AnxBot no ha conseguido clasificar ningún tipo de trastorno de ansiedad, hemos ido recopilando tus síntomas.
+            Aunque por el momento Serena no ha conseguido clasificar ningún tipo de trastorno de ansiedad, hemos ido recopilando tus síntomas.
             <br />
             <br />
             Puedes seguir conversando con AnxBot e incluso pedirle algunas recomendaciones, pero si quieres puedes visitar tu perfil de usuario
             para ver un resumen de tus síntomas y encontrar herramientas que te ayuden a combatir la ansiedad:
             <br />
           </p>
-          <a href='./perfil-usuario' className='perfil-link' onClick={handleIrPerfil}>Ir a mi perfil</a>    
+          <a className='perfil-link' onClick={handleIrPerfil}>Ir a mi perfil</a>    
         </div>
       )}
       
@@ -97,10 +101,10 @@ const Chatbot = () => {
         className="modal"
         overlayClassName="overlay"
       >
-        <h2>Parece que AnxBot ha detectado que puedes tener un tipo de ansiedad.</h2>
+        <h2>Parece que Serena ha detectado que puedes tener un tipo de ansiedad.</h2>
         <p>Recuerda que <strong>NO SE TRATA DE UN DIAGNÓSTICO MÉDICO</strong>, simplemente es una ORIENTACIÓN.</p>  
         <p>¡Te aconsejamos que visites tu perfil de usuario para encontrar herramientas que te ayuden a combatir la ansiedad!</p>
-        <a href="./perfil-usuario" className="perfil-link" onClick={handleIrPerfil}>Ir a mi perfil</a>
+        <a className="perfil-link" onClick={handleIrPerfil}>Ir a mi perfil</a>
         <button onClick={() => setModalIsOpen(false)} className="close-button">Cerrar</button>
       </Modal>
 

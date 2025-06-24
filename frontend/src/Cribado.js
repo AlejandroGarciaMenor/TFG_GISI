@@ -75,7 +75,7 @@ const Cribado = () => {
 
     if(valoresMenoresUmbral){
       guardarRespuestas(respuestasFinales);
-      navigate("/perfil-usuario");
+      navigate("/perfil-usuario", { state: { cribadoBajo: true } });
     } else {
       guardarRespuestas(respuestasFinales);
       navigate("/gravedad");

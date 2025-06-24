@@ -62,7 +62,7 @@ const Login = () => {
         <img src="/images/login.jpg" alt="Imagen de LogIn" />
       </div>
       <div className="login-form">
-        <h2>{show2FA ? "Verificar Código 2FA" : "Iniciar sesión"}</h2>
+        <h2>{show2FA ? "Verificar Código" : "Iniciar sesión"}</h2>
         {!show2FA ? (
           <form onSubmit={handleSubmit}>
             <input type="email" placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -72,8 +72,8 @@ const Login = () => {
         ) : (
           <form onSubmit={handle2FA}>
             <p>Código de verificación enviado a tu correo. Introducelo.</p>
-            <input type="text" placeholder="Código 2FA" value={codigo} onChange={(e) => setCodigo(e.target.value)} required />
-            <button type="submit">Verificar</button>
+            <input type="text" placeholder="Código de verificación" value={codigo} onChange={(e) => setCodigo(e.target.value)} required />
+            <button type="submit">Verificar código</button>
           </form>
         )}
         {error && <p>{error}</p>}

@@ -10,7 +10,7 @@ const PoliticaPrivacidad = () => {
             <h3>1. ¿Qué datos recogemos?</h3>
             <p>Al registrarte o usar AnxBot, podemos recoger los siguientes datos:</p>
             <ul>
-                <li>Datos personales, como el nombre, el género y la fecha de nacimiento.</li>
+                <li>Datos personales, como el nombre, el género y la fecha de nacimiento. Estos datos están cifrados.</li>
                 <li>Respuestas a cuestionarios de cribado y gravedad de la ansiedad.</li>
                 <li>Identificación del posible tipo de trastorno de ansiedad por parte del chatbot</li>
             </ul>
@@ -19,7 +19,7 @@ const PoliticaPrivacidad = () => {
             <ul>
                 <li>Ofrecerte una experiencia personalizada y relevante.</li>
                 <li>Analizar tu evolución emocional y darte recomendaciones adaptadas.</li>
-                <li>Mejorar el funcionamiento de AnxBot y resolver errores técnicos.</li>
+                <li>Mejorar el funcionamiento de Serena y resolver errores técnicos.</li>
             </ul>
             <h3>3. ¿Cómo tratamos tus datos?</h3>
             <p>Los datos se procesan y almacenan en servidores seguros bajo nuestra responsabilidad. Las interacciones del chatbot se procesan a través de la API de OpenAI, que no guarda, entrena ni reutiliza los datos personales, cumpliendo con su política de privacidad: <a href="https://openai.com/policies/privacy-policy/" target="_blank" rel="noopener noreferrer">https://openai.com/policies/privacy-policy/</a>.</p>

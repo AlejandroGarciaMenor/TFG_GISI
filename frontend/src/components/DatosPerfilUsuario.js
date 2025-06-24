@@ -72,7 +72,7 @@ const BloqueDatosUsuario = ({ usuario }) => {
     return (
         <div className="datos-perfil-usuario">
             <img 
-                src={usuario.foto_perfil ? `http://localhost:5000${usuario.foto_perfil}` : "./images/default-user.png"} 
+                src={usuario.foto_perfil ? `https://tfg-app.xyz:5000${usuario.foto_perfil}` : "./images/default-user.png"} 
                 alt="Foto de perfil" 
                 className="perfil-imagen" 
             />
@@ -94,7 +94,6 @@ const BloqueDatosUsuario = ({ usuario }) => {
                     </form>
                 ) : (
                     <>
-                    <p>{sessionStorage.getItem("id")}</p>
                     <h2>{usuario.nombre}</h2>
                     <p>Email: {usuario.email}</p>
                     <p>Fecha de nacimiento: {new Date(usuario.fechanacimiento).toLocaleDateString()}</p>
