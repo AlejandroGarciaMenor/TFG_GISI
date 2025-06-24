@@ -10,6 +10,7 @@ import PerfilUsuario from "./PerfilUsuario";
 import AyudaUrgente from "./AyudaUrgente";
 import PoliticaPrivacidad from "./PoliticaPrivacidad";
 import MinijuegoRespiracion478 from "./MinijuegoRespiracion478";
+import "./styles/responsive.css";
 
 function App() {
   return (
