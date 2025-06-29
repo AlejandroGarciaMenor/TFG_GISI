@@ -1,3 +1,4 @@
+# IMPORTANTE: Actualiza el valor del token JWT en el campo Authorization antes de ejecutar la prueba.
 config:
   target: "https://tfg-app.xyz"
   phases:

@@ -15,3 +15,5 @@ package-lock.json
 
 /ssl
 backend/index_old.js
+
+/db/_*
