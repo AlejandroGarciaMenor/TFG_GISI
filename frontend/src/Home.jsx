@@ -46,8 +46,7 @@ export default function Home() {
           className="logo"
         />
         <p className="bienvenida">
-          Bienvenido a Serena, el Sistema de Evaluación y REcomeNdaciones para
-          la Ansiedad, una aplicación diseñada para acompañarte en la gestión
+          Bienvenido a Serena, una aplicación diseñada para acompañarte en la gestión
           de tu ansiedad.
         </p>
       </div>
